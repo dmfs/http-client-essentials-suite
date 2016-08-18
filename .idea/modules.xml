@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-basics/http-client-basics.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-basics/http-client-basics.iml" group="http-client-basics" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-basics/http-client-basics_main.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-basics/http-client-basics_main.iml" group="http-client-basics" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-basics/http-client-basics_test.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-basics/http-client-basics_test.iml" group="http-client-basics" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-essentials/http-client-essentials.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-essentials/http-client-essentials.iml" group="http-client-essentials" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-essentials-suite.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-essentials-suite.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-essentials-suite_main.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-essentials-suite_main.iml" group="http-client-essentials-suite" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-essentials-suite_test.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-essentials-suite_test.iml" group="http-client-essentials-suite" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-essentials/http-client-essentials_main.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-essentials/http-client-essentials_main.iml" group="http-client-essentials" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-essentials/http-client-essentials_test.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-essentials/http-client-essentials_test.iml" group="http-client-essentials" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-headers/http-client-headers.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-headers/http-client-headers.iml" group="http-client-headers" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-headers/http-client-headers_main.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-headers/http-client-headers_main.iml" group="http-client-headers" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-headers/http-client-headers_test.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-headers/http-client-headers_test.iml" group="http-client-headers" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-mockutils/http-client-mockutils.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-mockutils/http-client-mockutils.iml" group="http-client-mockutils" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-mockutils/http-client-mockutils_main.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-mockutils/http-client-mockutils_main.iml" group="http-client-mockutils" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-mockutils/http-client-mockutils_test.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-mockutils/http-client-mockutils_test.iml" group="http-client-mockutils" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-types/http-client-types.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-types/http-client-types.iml" group="http-client-types" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-types/http-client-types_main.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-types/http-client-types_main.iml" group="http-client-types" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-types/http-client-types_test.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-types/http-client-types_test.iml" group="http-client-types" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-executor-decorators/http-executor-decorators.iml" filepath="$PROJECT_DIR$/.idea/modules/http-executor-decorators/http-executor-decorators.iml" group="http-executor-decorators" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-executor-decorators/http-executor-decorators_main.iml" filepath="$PROJECT_DIR$/.idea/modules/http-executor-decorators/http-executor-decorators_main.iml" group="http-executor-decorators" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-executor-decorators/http-executor-decorators_test.iml" filepath="$PROJECT_DIR$/.idea/modules/http-executor-decorators/http-executor-decorators_test.iml" group="http-executor-decorators" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/httpurlconnection-executor/httpurlconnection-executor.iml" filepath="$PROJECT_DIR$/.idea/modules/httpurlconnection-executor/httpurlconnection-executor.iml" group="httpurlconnection-executor" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/httpurlconnection-executor/httpurlconnection-executor_main.iml" filepath="$PROJECT_DIR$/.idea/modules/httpurlconnection-executor/httpurlconnection-executor_main.iml" group="httpurlconnection-executor" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/httpurlconnection-executor/httpurlconnection-executor_test.iml" filepath="$PROJECT_DIR$/.idea/modules/httpurlconnection-executor/httpurlconnection-executor_test.iml" group="httpurlconnection-executor" />
+    </modules>
+  </component>
+</project>

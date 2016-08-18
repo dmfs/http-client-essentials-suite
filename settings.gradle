@@ -1,0 +1,9 @@
+rootProject.name = 'http-client-essentials-suite'
+include 'http-client-essentials'
+include 'http-client-types'
+include 'http-client-headers'
+include 'http-client-mockutils'
+include 'http-client-basics'
+include 'httpurlconnection-executor'
+include 'http-executor-decorators'
+

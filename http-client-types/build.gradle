@@ -1,0 +1,21 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+sourceCompatibility = 1.7
+
+configurations {
+    pom
+}
+
+apply from: '../publish.gradle'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile project(':http-client-essentials')
+    compile 'org.dmfs:iterators:1.3'
+}
