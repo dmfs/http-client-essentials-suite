@@ -49,6 +49,8 @@ import java.net.URI;
  */
 public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
 {
+    private static final String SYSTEM_USER_AGENT = System.getProperty("http.agent");
+
     private final HttpUrlConnectionFactory mConnectionFactory;
 
 
@@ -144,12 +146,11 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
 
     private void appendSystemUserAgent(HttpURLConnection connection)
     {
-        String systemUserAgent = System.getProperty("http.agent");
         // Not guaranteed to exist on Android according to https://developer.android.com/reference/java/lang/System.html#getProperties()
-        if (systemUserAgent != null)
+        if (SYSTEM_USER_AGENT != null)
         {
             String clientUserAgent = connection.getRequestProperty("User-Agent");
-            String composedUserAgent = clientUserAgent == null ? systemUserAgent : clientUserAgent + " " + systemUserAgent;
+            String composedUserAgent = clientUserAgent == null ? SYSTEM_USER_AGENT : clientUserAgent + " " + SYSTEM_USER_AGENT;
             connection.setRequestProperty("User-Agent", composedUserAgent);
         }
     }
