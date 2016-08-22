@@ -117,6 +117,7 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
         {
             connection.setRequestProperty(header.type().name(), header.toString());
         }
+        appendSystemUserAgent(connection);
         // also set the content-type header if we have any content-type
         if (request.requestEntity().contentType() != null)
         {
@@ -139,4 +140,18 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
         // return the response
         return new HttpUrlConnectionResponse(uri, connection);
     }
+
+
+    private void appendSystemUserAgent(HttpURLConnection connection)
+    {
+        String systemUserAgent = System.getProperty("http.agent");
+        // Not guaranteed to exist on Android according to https://developer.android.com/reference/java/lang/System.html#getProperties()
+        if (systemUserAgent != null)
+        {
+            String clientUserAgent = connection.getRequestProperty("User-Agent");
+            String composedUserAgent = clientUserAgent == null ? systemUserAgent : clientUserAgent + " " + systemUserAgent;
+            connection.setRequestProperty("User-Agent", composedUserAgent);
+        }
+    }
+
 }
