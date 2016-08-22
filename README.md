@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dmfs/http-client-essentials-suite.svg?branch=master)](https://travis-ci.org/dmfs/http-client-essentials-suite)
+
 # http-client-essentials-suite
 
 A lightweight http client suite. All you need to implement an HTTP based protocol.
