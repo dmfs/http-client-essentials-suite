@@ -1,4 +1,16 @@
+plugins {
+    id 'de.fuerstenau.buildconfig' version '1.1.7'
+}
+
 apply plugin: 'java'
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java', 'build/gen/buildconfig/src/main'
+        }
+    }
+}
 
 sourceCompatibility = 1.7
 
@@ -10,6 +22,16 @@ apply from: '../publish.gradle'
 
 repositories {
     mavenCentral()
+}
+
+buildConfig {
+    packageName = 'org.dmfs.httpessentials.httpurlconnection'
+}
+
+tasks.withType(Jar) {
+    eachFile {
+        it.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
 }
 
 dependencies {
