@@ -52,24 +52,8 @@ import java.net.URI;
  */
 public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
 {
-    private static final String USER_AGENT_SUFFIX;
-
-    static
-    {
-        String systemHttpAgent = System.getProperty("http.agent");
-        Product product = new VersionedProduct(new SafeToken(BuildConfig.NAME), new SafeToken(BuildConfig.VERSION));
-        if (systemHttpAgent != null)
-        {
-            USER_AGENT_SUFFIX = String.format(" %s %s", product.toString(), systemHttpAgent);
-        }
-        else
-        {
-            USER_AGENT_SUFFIX = String.format(" %s", product.toString());
-        }
-
-    }
-
     private final HttpUrlConnectionFactory mConnectionFactory;
+    private final String mUserAgentSuffix;
 
 
     /**
@@ -90,6 +74,7 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
     public HttpUrlConnectionExecutor(final HttpUrlConnectionFactory connectionFactory)
     {
         mConnectionFactory = connectionFactory;
+        mUserAgentSuffix = createUserAgentSuffix();
     }
 
 
@@ -137,7 +122,7 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
         {
             if ("user-agent".equalsIgnoreCase(header.type().name()))
             {
-                connection.setRequestProperty(header.type().name(), header.toString() + USER_AGENT_SUFFIX);
+                connection.setRequestProperty(header.type().name(), header.toString() + mUserAgentSuffix);
             }
             else
             {
@@ -165,6 +150,18 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
         }
         // return the response
         return new HttpUrlConnectionResponse(uri, connection);
+    }
+
+
+    private String createUserAgentSuffix()
+    {
+        Product product = new VersionedProduct(new SafeToken(BuildConfig.NAME), new SafeToken(BuildConfig.VERSION));
+        String systemHttpAgent = System.getProperty("http.agent");
+        if (systemHttpAgent == null)
+        {
+            return String.format(" %s", product.toString());
+        }
+        return String.format(" %s %s", product.toString(), systemHttpAgent);
     }
 
 }
