@@ -28,6 +28,9 @@ import org.dmfs.httpessentials.headers.Header;
 import org.dmfs.httpessentials.headers.HttpHeaders;
 import org.dmfs.httpessentials.httpurlconnection.factories.DefaultHttpUrlConnectionFactory;
 import org.dmfs.httpessentials.httpurlconnection.factories.decorators.Finite;
+import org.dmfs.httpessentials.types.Product;
+import org.dmfs.httpessentials.types.SafeToken;
+import org.dmfs.httpessentials.types.VersionedProduct;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -49,7 +52,14 @@ import java.net.URI;
  */
 public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
 {
-    private static final String SYSTEM_HTTP_AGENT = System.getProperty("http.agent");
+    private static final String USER_AGENT_SUFFIX;
+
+    static
+    {
+        String systemHttpAgent = System.getProperty("http.agent");
+        Product product = new VersionedProduct(new SafeToken(BuildConfig.NAME), new SafeToken(BuildConfig.VERSION));
+        USER_AGENT_SUFFIX = systemHttpAgent == null ? product.toString() : product.toString() + " " + systemHttpAgent;
+    }
 
     private final HttpUrlConnectionFactory mConnectionFactory;
 
@@ -117,10 +127,9 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
         // add all headers
         for (Header<?> header : request.headers())
         {
-            if ("user-agent".equalsIgnoreCase(header.type().name()) && SYSTEM_HTTP_AGENT != null)
+            if ("user-agent".equalsIgnoreCase(header.type().name()))
             {
-                // append system http agent only when user-agent header exist
-                connection.setRequestProperty(header.type().name(), header.toString() + " " + SYSTEM_HTTP_AGENT);
+                connection.setRequestProperty(header.type().name(), header.toString() + " " + USER_AGENT_SUFFIX);
             }
             else
             {
