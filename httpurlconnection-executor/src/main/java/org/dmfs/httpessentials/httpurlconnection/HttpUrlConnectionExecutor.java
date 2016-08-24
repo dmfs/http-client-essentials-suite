@@ -28,6 +28,9 @@ import org.dmfs.httpessentials.headers.Header;
 import org.dmfs.httpessentials.headers.HttpHeaders;
 import org.dmfs.httpessentials.httpurlconnection.factories.DefaultHttpUrlConnectionFactory;
 import org.dmfs.httpessentials.httpurlconnection.factories.decorators.Finite;
+import org.dmfs.httpessentials.types.Product;
+import org.dmfs.httpessentials.types.SafeToken;
+import org.dmfs.httpessentials.types.VersionedProduct;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -50,6 +53,7 @@ import java.net.URI;
 public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
 {
     private final HttpUrlConnectionFactory mConnectionFactory;
+    private final String mUserAgentSuffix;
 
 
     /**
@@ -70,6 +74,7 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
     public HttpUrlConnectionExecutor(final HttpUrlConnectionFactory connectionFactory)
     {
         mConnectionFactory = connectionFactory;
+        mUserAgentSuffix = createUserAgentSuffix();
     }
 
 
@@ -115,7 +120,14 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
         // add all headers
         for (Header<?> header : request.headers())
         {
-            connection.setRequestProperty(header.type().name(), header.toString());
+            if ("user-agent".equalsIgnoreCase(header.type().name()))
+            {
+                connection.setRequestProperty(header.type().name(), header.toString() + mUserAgentSuffix);
+            }
+            else
+            {
+                connection.setRequestProperty(header.type().name(), header.toString());
+            }
         }
         // also set the content-type header if we have any content-type
         if (request.requestEntity().contentType() != null)
@@ -139,4 +151,17 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
         // return the response
         return new HttpUrlConnectionResponse(uri, connection);
     }
+
+
+    private String createUserAgentSuffix()
+    {
+        Product product = new VersionedProduct(new SafeToken(BuildConfig.NAME), new SafeToken(BuildConfig.VERSION));
+        String systemHttpAgent = System.getProperty("http.agent");
+        if (systemHttpAgent == null)
+        {
+            return String.format(" %s", product.toString());
+        }
+        return String.format(" %s %s", product.toString(), systemHttpAgent);
+    }
+
 }
