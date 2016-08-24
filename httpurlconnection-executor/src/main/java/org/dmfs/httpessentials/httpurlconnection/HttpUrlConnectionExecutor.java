@@ -58,7 +58,15 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
     {
         String systemHttpAgent = System.getProperty("http.agent");
         Product product = new VersionedProduct(new SafeToken(BuildConfig.NAME), new SafeToken(BuildConfig.VERSION));
-        USER_AGENT_SUFFIX = systemHttpAgent == null ? product.toString() : product.toString() + " " + systemHttpAgent;
+        if (systemHttpAgent != null)
+        {
+            USER_AGENT_SUFFIX = String.format(" %s %s", product.toString(), systemHttpAgent);
+        }
+        else
+        {
+            USER_AGENT_SUFFIX = String.format(" %s", product.toString());
+        }
+
     }
 
     private final HttpUrlConnectionFactory mConnectionFactory;
@@ -129,7 +137,7 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
         {
             if ("user-agent".equalsIgnoreCase(header.type().name()))
             {
-                connection.setRequestProperty(header.type().name(), header.toString() + " " + USER_AGENT_SUFFIX);
+                connection.setRequestProperty(header.type().name(), header.toString() + USER_AGENT_SUFFIX);
             }
             else
             {
