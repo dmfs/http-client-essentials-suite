@@ -49,7 +49,7 @@ import java.net.URI;
  */
 public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
 {
-    private static final String SYSTEM_USER_AGENT = System.getProperty("http.agent");
+    private static final String SYSTEM_HTTP_AGENT = System.getProperty("http.agent");
 
     private final HttpUrlConnectionFactory mConnectionFactory;
 
@@ -117,9 +117,16 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
         // add all headers
         for (Header<?> header : request.headers())
         {
-            connection.setRequestProperty(header.type().name(), header.toString());
+            if ("user-agent".equalsIgnoreCase(header.type().name()) && SYSTEM_HTTP_AGENT != null)
+            {
+                // append system http agent only when user-agent header exist
+                connection.setRequestProperty(header.type().name(), header.toString() + " " + SYSTEM_HTTP_AGENT);
+            }
+            else
+            {
+                connection.setRequestProperty(header.type().name(), header.toString());
+            }
         }
-        appendSystemUserAgent(connection);
         // also set the content-type header if we have any content-type
         if (request.requestEntity().contentType() != null)
         {
@@ -141,18 +148,6 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
         }
         // return the response
         return new HttpUrlConnectionResponse(uri, connection);
-    }
-
-
-    private void appendSystemUserAgent(HttpURLConnection connection)
-    {
-        // Not guaranteed to exist on Android according to https://developer.android.com/reference/java/lang/System.html#getProperties()
-        if (SYSTEM_USER_AGENT != null)
-        {
-            String clientUserAgent = connection.getRequestProperty("User-Agent");
-            String composedUserAgent = clientUserAgent == null ? SYSTEM_USER_AGENT : clientUserAgent + " " + SYSTEM_USER_AGENT;
-            connection.setRequestProperty("User-Agent", composedUserAgent);
-        }
     }
 
 }
