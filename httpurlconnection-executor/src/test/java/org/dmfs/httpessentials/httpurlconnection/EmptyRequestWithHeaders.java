@@ -5,13 +5,12 @@ import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpRequestEntity;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseHandler;
+import org.dmfs.httpessentials.entities.EmptyHttpRequestEntity;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.headers.Headers;
-import org.dmfs.httpessentials.types.MediaType;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 
 /**
@@ -48,28 +47,7 @@ public final class EmptyRequestWithHeaders implements HttpRequest<String>
     @Override
     public HttpRequestEntity requestEntity()
     {
-        return new HttpRequestEntity()
-        {
-            @Override
-            public MediaType contentType()
-            {
-                return null;
-            }
-
-
-            @Override
-            public long contentLength() throws IOException
-            {
-                return 0;
-            }
-
-
-            @Override
-            public void writeContent(OutputStream out) throws IOException
-            {
-
-            }
-        };
+        return EmptyHttpRequestEntity.INSTANCE;
     }
 
 
