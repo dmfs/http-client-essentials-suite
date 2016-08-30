@@ -18,24 +18,25 @@
 package org.dmfs.httpessentials.executors.useragent;
 
 import org.dmfs.httpessentials.HttpMethod;
-import org.dmfs.httpessentials.client.*;
-import org.dmfs.httpessentials.converters.UserAgentConverter;
+import org.dmfs.httpessentials.client.HttpRequest;
+import org.dmfs.httpessentials.client.HttpRequestEntity;
+import org.dmfs.httpessentials.client.HttpRequestExecutor;
+import org.dmfs.httpessentials.client.HttpResponse;
+import org.dmfs.httpessentials.client.HttpResponseHandler;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
-import org.dmfs.httpessentials.headers.BasicSingletonHeaderType;
 import org.dmfs.httpessentials.headers.EmptyHeaders;
 import org.dmfs.httpessentials.headers.Headers;
-import org.dmfs.httpessentials.headers.SingletonHeaderType;
 import org.dmfs.httpessentials.types.CommentedProduct;
-import org.dmfs.httpessentials.types.UserAgent;
 import org.dmfs.httpessentials.types.VersionedProduct;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
+import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT_HEADER;
 import static org.junit.Assert.assertEquals;
 
 
@@ -46,13 +47,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class BrandedTest
 {
-
-    /**
-     * User-Agent header type.
-     */
-    private final static SingletonHeaderType<UserAgent> USER_AGENT_HEADER = new BasicSingletonHeaderType<UserAgent>(
-            "User-Agent", new UserAgentConverter());
-
 
     private class CapturingExecutor implements HttpRequestExecutor
     {

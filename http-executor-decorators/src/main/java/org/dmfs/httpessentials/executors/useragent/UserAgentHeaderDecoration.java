@@ -17,14 +17,13 @@
 
 package org.dmfs.httpessentials.executors.useragent;
 
-import org.dmfs.httpessentials.converters.UserAgentConverter;
 import org.dmfs.httpessentials.decoration.Decoration;
-import org.dmfs.httpessentials.headers.BasicSingletonHeaderType;
 import org.dmfs.httpessentials.headers.Headers;
-import org.dmfs.httpessentials.headers.SingletonHeaderType;
 import org.dmfs.httpessentials.types.Product;
 import org.dmfs.httpessentials.types.SingletonUserAgent;
 import org.dmfs.httpessentials.types.UserAgent;
+
+import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT_HEADER;
 
 
 /**
@@ -35,12 +34,6 @@ import org.dmfs.httpessentials.types.UserAgent;
  */
 final class UserAgentHeaderDecoration implements Decoration<Headers>
 {
-
-    /**
-     * User-Agent header type.
-     */
-    private final static SingletonHeaderType<UserAgent> USER_AGENT_HEADER = new BasicSingletonHeaderType<UserAgent>(
-            "User-Agent", new UserAgentConverter());
 
     private final Product mProduct;
 

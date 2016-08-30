@@ -17,11 +17,19 @@
 
 package org.dmfs.httpessentials.executors.useragent;
 
-import org.dmfs.httpessentials.converters.UserAgentConverter;
-import org.dmfs.httpessentials.headers.*;
-import org.dmfs.httpessentials.types.*;
+import org.dmfs.httpessentials.headers.EmptyHeaders;
+import org.dmfs.httpessentials.headers.Header;
+import org.dmfs.httpessentials.headers.Headers;
+import org.dmfs.httpessentials.headers.SingletonHeaders;
+import org.dmfs.httpessentials.types.CommentedProduct;
+import org.dmfs.httpessentials.types.Product;
+import org.dmfs.httpessentials.types.SimpleProduct;
+import org.dmfs.httpessentials.types.SingletonUserAgent;
+import org.dmfs.httpessentials.types.UserAgent;
+import org.dmfs.httpessentials.types.VersionedProduct;
 import org.junit.Test;
 
+import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT_HEADER;
 import static org.junit.Assert.assertEquals;
 
 
@@ -32,11 +40,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class UserAgentHeaderDecorationTest
 {
-    /**
-     * User-Agent header type.
-     */
-    private final static SingletonHeaderType<UserAgent> USER_AGENT_HEADER = new BasicSingletonHeaderType<UserAgent>(
-            "User-Agent", new UserAgentConverter());
 
     private UserAgentHeaderDecoration agentDecoration;
 
