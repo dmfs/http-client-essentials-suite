@@ -35,9 +35,10 @@ tasks.withType(Jar) {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
     compile project(':http-client-essentials')
     compile project(':http-client-types')
     compile project(':http-client-headers')
     compile project(':http-client-basics')
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile project(':http-client-mockutils')
 }

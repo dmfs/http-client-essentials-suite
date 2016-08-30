@@ -56,8 +56,8 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
     private HttpUrlConnectionExecutor(HttpRequestExecutor executor)
     {
         mExecutor = new BottomBranded(
-                new BottomBranded(executor, new VersionedProduct(BuildConfig.NAME, BuildConfig.VERSION)),
-                Platform.INSTANCE);
+                new BottomBranded(executor, Platform.INSTANCE),
+                new VersionedProduct(BuildConfig.NAME, BuildConfig.VERSION));
     }
 
 
