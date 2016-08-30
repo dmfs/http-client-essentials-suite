@@ -17,24 +17,15 @@
 
 package org.dmfs.httpessentials.executors.useragent;
 
-import org.dmfs.httpessentials.HttpMethod;
-import org.dmfs.httpessentials.client.HttpRequest;
-import org.dmfs.httpessentials.client.HttpRequestEntity;
-import org.dmfs.httpessentials.client.HttpRequestExecutor;
-import org.dmfs.httpessentials.client.HttpResponse;
-import org.dmfs.httpessentials.client.HttpResponseHandler;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
-import org.dmfs.httpessentials.exceptions.RedirectionException;
-import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
-import org.dmfs.httpessentials.headers.EmptyHeaders;
-import org.dmfs.httpessentials.headers.Headers;
+import org.dmfs.httpessentials.mockutils.executors.CapturingExecutor;
+import org.dmfs.httpessentials.mockutils.requests.EmptyRequest;
 import org.dmfs.httpessentials.types.CommentedProduct;
 import org.dmfs.httpessentials.types.VersionedProduct;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URI;
 
 import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT_HEADER;
 import static org.junit.Assert.assertEquals;
@@ -47,52 +38,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class BrandedTest
 {
-
-    private class CapturingExecutor implements HttpRequestExecutor
-    {
-
-        private HttpRequest mCapturedRequest;
-
-
-        @Override
-        public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
-        {
-            mCapturedRequest = request;
-            return null;
-        }
-    }
-
-
-    private class EmptyRequest<T> implements HttpRequest<T>
-    {
-        @Override
-        public HttpMethod method()
-        {
-            return null;
-        }
-
-
-        @Override
-        public Headers headers()
-        {
-            return EmptyHeaders.INSTANCE;
-        }
-
-
-        @Override
-        public HttpRequestEntity requestEntity()
-        {
-            return null;
-        }
-
-
-        @Override
-        public HttpResponseHandler<T> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
-        {
-            return null;
-        }
-    }
-
 
     @Test
     public void test_userAgentHeaderGetsAdded() throws ProtocolException, ProtocolError, IOException
@@ -121,7 +66,8 @@ public class BrandedTest
                 new CommentedProduct("SmoothSync", "1.0", "debug"));
         Branded smoothSycnApiExecutor = new Branded(smoothSyncExecutor,
                 new VersionedProduct("smoothsync-api-client", "0.4"));
-        Branded oath2Executor = new Branded(smoothSycnApiExecutor, new VersionedProduct("oauth2-essentials", "0.3"));
+        Branded oath2Executor = new Branded(smoothSycnApiExecutor,
+                new VersionedProduct("oauth2-essentials", "0.3"));
 
         // ACT
         oath2Executor.execute(null, new EmptyRequest<String>());
