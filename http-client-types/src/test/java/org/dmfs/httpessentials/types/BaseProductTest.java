@@ -28,16 +28,8 @@ import static org.junit.Assert.assertEquals;
 public abstract class BaseProductTest
 {
 
-    protected void assertNameVersionCommentAndToString(Product product, String name, String version, String comment, String toString)
+    protected void assertProductToStringAndAppendTo(Product product, String toString)
     {
-        assertEquals(name, product.name().toString());
-
-        String actualVersion = product.version() == null ? null : product.version().toString();
-        assertEquals(version, actualVersion);
-
-        String actualComment = product.comment() == null ? null : product.comment().toString();
-        assertEquals(comment, actualComment);
-
         assertEquals(toString, product.toString());
 
         StringBuilder sb = new StringBuilder();

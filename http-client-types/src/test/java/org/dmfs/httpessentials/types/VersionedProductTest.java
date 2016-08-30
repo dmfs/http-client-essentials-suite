@@ -33,7 +33,7 @@ public class VersionedProductTest extends BaseProductTest
     {
         VersionedProduct product = new VersionedProduct("name", "version");
 
-        assertNameVersionCommentAndToString(product, "name", "version", null, "name/version");
+        assertProductToStringAndAppendTo(product, "name/version");
     }
 
 

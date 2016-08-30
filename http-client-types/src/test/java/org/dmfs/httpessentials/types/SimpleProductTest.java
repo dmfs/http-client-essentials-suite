@@ -33,7 +33,7 @@ public class SimpleProductTest extends BaseProductTest
     {
         SimpleProduct product = new SimpleProduct("name");
 
-        assertNameVersionCommentAndToString(product, "name", null, null, "name");
+        assertProductToStringAndAppendTo(product, "name");
     }
 
 
