@@ -15,10 +15,11 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.httpurlconnection;
+package org.dmfs.httpessentials.httpurlconnection.executor_utils.decoration;
 
 import org.dmfs.httpessentials.decoration.Decoration;
 import org.dmfs.httpessentials.headers.Headers;
+import org.dmfs.httpessentials.httpurlconnection.executor_utils.types.BottomBasicUserAgent;
 import org.dmfs.httpessentials.types.Product;
 import org.dmfs.httpessentials.types.UserAgent;
 
@@ -31,7 +32,6 @@ import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT_HEADER;
  *
  * @author Gabor Keszthelyi
  */
-// TODO where should these classes be
 public final class BottomUserAgentHeaderDecoration implements Decoration<Headers>
 {
     private final Product mProduct;

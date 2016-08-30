@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.httpurlconnection;
+package org.dmfs.httpessentials.httpurlconnection.executor_utils.decoration;
 
 import org.dmfs.httpessentials.decoration.Decoration;
 import org.dmfs.httpessentials.headers.EmptyHeaders;

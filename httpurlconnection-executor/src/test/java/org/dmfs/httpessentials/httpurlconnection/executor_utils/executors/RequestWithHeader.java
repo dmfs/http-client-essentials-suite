@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.httpurlconnection;
+package org.dmfs.httpessentials.httpurlconnection.executor_utils.executors;
 
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.client.HttpRequest;

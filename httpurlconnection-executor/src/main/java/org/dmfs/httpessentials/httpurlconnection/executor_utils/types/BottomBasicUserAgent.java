@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.httpurlconnection;
+package org.dmfs.httpessentials.httpurlconnection.executor_utils.types;
 
 import org.dmfs.httpessentials.client.HttpRequestExecutor;
 import org.dmfs.httpessentials.types.BasicUserAgent;
@@ -37,7 +37,7 @@ import java.util.Iterator;
  *
  * @author Gabor Keszthelyi
  */
-final class BottomBasicUserAgent implements UserAgent
+public final class BottomBasicUserAgent implements UserAgent
 {
 
     private final UserAgent mOriginalUserAgent;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.httpurlconnection;
+package org.dmfs.httpessentials.httpurlconnection.executor_utils.types;
 
 import org.dmfs.httpessentials.types.Product;
 

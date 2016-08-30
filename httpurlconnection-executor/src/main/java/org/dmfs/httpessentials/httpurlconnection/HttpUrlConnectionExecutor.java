@@ -23,6 +23,8 @@ import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
+import org.dmfs.httpessentials.httpurlconnection.executor_utils.executors.BottomBranded;
+import org.dmfs.httpessentials.httpurlconnection.executor_utils.types.Platform;
 import org.dmfs.httpessentials.types.VersionedProduct;
 
 import java.io.IOException;
