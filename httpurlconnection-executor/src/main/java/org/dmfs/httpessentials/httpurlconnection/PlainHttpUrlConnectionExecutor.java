@@ -47,27 +47,27 @@ import java.net.URI;
  *
  * @author Marten Gajda <marten@dmfs.org>
  */
-public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
+public final class PlainHttpUrlConnectionExecutor implements HttpRequestExecutor
 {
     private final HttpUrlConnectionFactory mConnectionFactory;
 
 
     /**
-     * Creates an {@link HttpUrlConnectionExecutor} using a {@link Finite} {@link DefaultHttpUrlConnectionFactory} with
+     * Creates an {@link PlainHttpUrlConnectionExecutor} using a {@link Finite} {@link DefaultHttpUrlConnectionFactory} with
      * default timeouts.
      */
-    public HttpUrlConnectionExecutor()
+    public PlainHttpUrlConnectionExecutor()
     {
         this(new Finite(new DefaultHttpUrlConnectionFactory()));
     }
 
 
     /**
-     * Creates an {@link HttpUrlConnectionExecutor} that uses the given {@link HttpUrlConnectionFactory}.
+     * Creates an {@link PlainHttpUrlConnectionExecutor} that uses the given {@link HttpUrlConnectionFactory}.
      *
      * @param connectionFactory
      */
-    public HttpUrlConnectionExecutor(final HttpUrlConnectionFactory connectionFactory)
+    public PlainHttpUrlConnectionExecutor(final HttpUrlConnectionFactory connectionFactory)
     {
         mConnectionFactory = connectionFactory;
     }
