@@ -75,6 +75,6 @@ public interface HttpHeaders
     /**
      * User-Agent header type.
      */
-    public final static SingletonHeaderType<UserAgent> USER_AGENT_HEADER = new BasicSingletonHeaderType<UserAgent>(
+    public final static SingletonHeaderType<UserAgent> USER_AGENT = new BasicSingletonHeaderType<UserAgent>(
             "User-Agent", new UserAgentConverter());
 }

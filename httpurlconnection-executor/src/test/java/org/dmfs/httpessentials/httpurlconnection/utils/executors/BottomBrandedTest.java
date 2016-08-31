@@ -30,7 +30,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT_HEADER;
+import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT;
 import static org.junit.Assert.assertEquals;
 
 
@@ -53,7 +53,7 @@ public class BottomBrandedTest
         wrappedExecutor.execute(null, new EmptyRequest<String>());
 
         // ASSERT
-        String headerString = capturingExecutor.mCapturedRequest.headers().header(USER_AGENT_HEADER).toString();
+        String headerString = capturingExecutor.mCapturedRequest.headers().header(USER_AGENT).toString();
         assertEquals("bottom-product", headerString);
     }
 
@@ -67,13 +67,13 @@ public class BottomBrandedTest
 
         UserAgent userAgent = new SingletonUserAgent(new SimpleProduct("product1")).withProduct(
                 new SimpleProduct("product2"));
-        Header originalHeader = USER_AGENT_HEADER.entity(userAgent);
+        Header originalHeader = USER_AGENT.entity(userAgent);
 
         // ACT
         wrappedExecutor.execute(null, new RequestWithHeader(originalHeader));
 
         // ASSERT
-        String modifiedHeaderString = capturingExecutor.mCapturedRequest.headers().header(USER_AGENT_HEADER).toString();
+        String modifiedHeaderString = capturingExecutor.mCapturedRequest.headers().header(USER_AGENT).toString();
         assertEquals("product2 product1 bottom-product", modifiedHeaderString);
     }
 
@@ -89,13 +89,13 @@ public class BottomBrandedTest
 
         UserAgent userAgent = new SingletonUserAgent(new SimpleProduct("product1")).withProduct(
                 new SimpleProduct("product2"));
-        Header originalHeader = USER_AGENT_HEADER.entity(userAgent);
+        Header originalHeader = USER_AGENT.entity(userAgent);
 
         // ACT
         urlConnectionWrapped.execute(null, new RequestWithHeader(originalHeader));
 
         // ASSERT
-        String modifiedHeaderString = capturingExecutor.mCapturedRequest.headers().header(USER_AGENT_HEADER).toString();
+        String modifiedHeaderString = capturingExecutor.mCapturedRequest.headers().header(USER_AGENT).toString();
         assertEquals("product2 product1 url-connection platform", modifiedHeaderString);
     }
 

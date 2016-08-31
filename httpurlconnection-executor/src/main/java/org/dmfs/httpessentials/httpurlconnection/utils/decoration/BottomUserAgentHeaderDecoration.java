@@ -24,7 +24,7 @@ import org.dmfs.httpessentials.types.Product;
 import org.dmfs.httpessentials.types.SingletonUserAgent;
 import org.dmfs.httpessentials.types.UserAgent;
 
-import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT_HEADER;
+import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT;
 
 
 /**
@@ -49,9 +49,9 @@ public final class BottomUserAgentHeaderDecoration implements Decoration<Headers
     {
         UserAgent newUserAgent;
 
-        if (originalHeaders.contains(USER_AGENT_HEADER))
+        if (originalHeaders.contains(USER_AGENT))
         {
-            UserAgent originalUserAgent = originalHeaders.header(USER_AGENT_HEADER).value();
+            UserAgent originalUserAgent = originalHeaders.header(USER_AGENT).value();
             newUserAgent = new BottomBasicUserAgent(originalUserAgent, mProduct);
         }
         else
@@ -59,6 +59,6 @@ public final class BottomUserAgentHeaderDecoration implements Decoration<Headers
             newUserAgent = new SingletonUserAgent(mProduct);
         }
 
-        return originalHeaders.withHeader(USER_AGENT_HEADER.entity(newUserAgent));
+        return originalHeaders.withHeader(USER_AGENT.entity(newUserAgent));
     }
 }

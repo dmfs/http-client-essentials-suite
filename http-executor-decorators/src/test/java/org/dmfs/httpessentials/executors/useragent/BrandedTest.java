@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT_HEADER;
+import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT;
 import static org.junit.Assert.assertEquals;
 
 
@@ -51,7 +51,7 @@ public class BrandedTest
 
         // ASSERT
         String headerString = capturingExecutor.mCapturedRequest.headers()
-                .header(USER_AGENT_HEADER)
+                .header(USER_AGENT)
                 .toString();
         assertEquals("name/version (comment)", headerString);
     }
@@ -74,7 +74,7 @@ public class BrandedTest
 
         // ASSERT
         String headerString = capturingExecutor.mCapturedRequest.headers()
-                .header(USER_AGENT_HEADER)
+                .header(USER_AGENT)
                 .toString();
         assertEquals("SmoothSync/1.0 (debug) smoothsync-api-client/0.4 oauth2-essentials/0.3", headerString);
     }

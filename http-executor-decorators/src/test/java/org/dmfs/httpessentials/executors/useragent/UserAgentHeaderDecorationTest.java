@@ -29,7 +29,7 @@ import org.dmfs.httpessentials.types.UserAgent;
 import org.dmfs.httpessentials.types.VersionedProduct;
 import org.junit.Test;
 
-import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT_HEADER;
+import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT;
 import static org.junit.Assert.assertEquals;
 
 
@@ -63,7 +63,7 @@ public class UserAgentHeaderDecorationTest
         Product productToAdd = new VersionedProduct("name", "ver");
 
         Product originalProduct = new CommentedProduct("Godzilla", "2.2", "cool");
-        Headers headers = new SingletonHeaders(USER_AGENT_HEADER.entity(new SingletonUserAgent(originalProduct)));
+        Headers headers = new SingletonHeaders(USER_AGENT.entity(new SingletonUserAgent(originalProduct)));
 
         String expectedHeaderString = "name/ver Godzilla/2.2 (cool)";
 
@@ -81,7 +81,7 @@ public class UserAgentHeaderDecorationTest
         Product originalProduct3 = new VersionedProduct("prod3", "2.2");
         UserAgent originalUserAgent = new SingletonUserAgent(originalProduct1).withProduct(originalProduct2)
                 .withProduct(originalProduct3);
-        Headers headers = new SingletonHeaders(USER_AGENT_HEADER.entity(originalUserAgent));
+        Headers headers = new SingletonHeaders(USER_AGENT.entity(originalUserAgent));
 
         String expectedHeaderString = "name/ver (comment) prod3/2.2 prod2 prod1/9.9.9 (cool)";
 
@@ -93,7 +93,7 @@ public class UserAgentHeaderDecorationTest
     {
         agentDecoration = new UserAgentHeaderDecoration(productToAdd);
         Headers newHeaders = agentDecoration.decorated(originalHeaders);
-        Header<UserAgent> userAgentHeader = newHeaders.header(USER_AGENT_HEADER);
+        Header<UserAgent> userAgentHeader = newHeaders.header(USER_AGENT);
         assertEquals(expectedHeaderString, userAgentHeader.toString());
     }
 

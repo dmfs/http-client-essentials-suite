@@ -26,7 +26,7 @@ import org.dmfs.httpessentials.types.SingletonUserAgent;
 import org.dmfs.httpessentials.types.UserAgent;
 import org.junit.Test;
 
-import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT_HEADER;
+import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT;
 import static org.junit.Assert.assertEquals;
 
 
@@ -49,7 +49,7 @@ public class BottomUserAgentHeaderDecorationTest
         Headers decorated = decoration.decorated(original);
 
         // ASSERT
-        UserAgent newUserAgent = decorated.header(USER_AGENT_HEADER).value();
+        UserAgent newUserAgent = decorated.header(USER_AGENT).value();
         assertEquals("bottom-product", newUserAgent.toString());
     }
 
@@ -61,13 +61,13 @@ public class BottomUserAgentHeaderDecorationTest
         Decoration<Headers> decoration = new BottomUserAgentHeaderDecoration(new SimpleProduct("bottom-product"));
         UserAgent originalUserAgent = new SingletonUserAgent(new SimpleProduct("first")).withProduct(
                 new SimpleProduct("second"));
-        Headers original = EmptyHeaders.INSTANCE.withHeader(HttpHeaders.USER_AGENT_HEADER.entity(originalUserAgent));
+        Headers original = EmptyHeaders.INSTANCE.withHeader(HttpHeaders.USER_AGENT.entity(originalUserAgent));
 
         // ACT
         Headers decorated = decoration.decorated(original);
 
         // ASSERT
-        UserAgent newUserAgent = decorated.header(USER_AGENT_HEADER).value();
+        UserAgent newUserAgent = decorated.header(USER_AGENT).value();
         assertEquals("second first bottom-product", newUserAgent.toString());
     }
 
@@ -82,13 +82,13 @@ public class BottomUserAgentHeaderDecorationTest
                 new SimpleProduct("bottom-product2"));
         UserAgent originalUserAgent = new SingletonUserAgent(new SimpleProduct("first")).withProduct(
                 new SimpleProduct("second"));
-        Headers original = EmptyHeaders.INSTANCE.withHeader(HttpHeaders.USER_AGENT_HEADER.entity(originalUserAgent));
+        Headers original = EmptyHeaders.INSTANCE.withHeader(HttpHeaders.USER_AGENT.entity(originalUserAgent));
 
         // ACT
         Headers decorated = bottomDecoration2.decorated(bottomDecoration1.decorated(original));
 
         // ASSERT
-        UserAgent newUserAgent = decorated.header(USER_AGENT_HEADER).value();
+        UserAgent newUserAgent = decorated.header(USER_AGENT).value();
         assertEquals("second first bottom-product1 bottom-product2", newUserAgent.toString());
     }
 
