@@ -77,13 +77,15 @@ public class BottomBrandedTest
         assertEquals("product2 product1 bottom-product", modifiedHeaderString);
     }
 
+
     @Test
     public void test_multipleBottomDecorations_shouldAppendAllAtTheEnd() throws ProtocolException, ProtocolError, IOException
     {
         // ARRANGE
         CapturingExecutor capturingExecutor = new CapturingExecutor();
         HttpRequestExecutor platformWrapped = new BottomBranded(capturingExecutor, new SimpleProduct("platform"));
-        HttpRequestExecutor urlConnectionWrapped = new BottomBranded(platformWrapped, new SimpleProduct("url-connection"));
+        HttpRequestExecutor urlConnectionWrapped = new BottomBranded(platformWrapped,
+                new SimpleProduct("url-connection"));
 
         UserAgent userAgent = new SingletonUserAgent(new SimpleProduct("product1")).withProduct(
                 new SimpleProduct("product2"));

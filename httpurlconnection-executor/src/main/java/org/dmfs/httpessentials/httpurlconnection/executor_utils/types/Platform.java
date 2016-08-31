@@ -24,7 +24,8 @@ import org.dmfs.httpessentials.types.Product;
  * A {@link Product} representing the platform/system (e.g.: "Dalvik/2.1.0 (Linux; U; Android 6.0.1; Nexus 5
  * Build/ABC123)").
  * <p>
- * Uses the value of System.getProperty("http.agent") or {@link #FALLBACK_COMMENT} if that is not present.
+ * Uses the value of <code>System.getProperty("http.agent")</code> (or if that's not present, it assembles a description
+ * from <code>java</code> and <code>os</code> properties.
  *
  * @author Gabor Keszthelyi
  */
@@ -32,15 +33,24 @@ public final class Platform implements Product
 {
     public static final Platform INSTANCE = new Platform();
 
-    private static final String FALLBACK_COMMENT = "(no platform info)";
-
     private final String mHttpAgent;
 
 
     private Platform()
     {
         String httpAgent = System.getProperty("http.agent");
-        mHttpAgent = httpAgent != null ? httpAgent : FALLBACK_COMMENT;
+        if (httpAgent != null)
+        {
+            mHttpAgent = httpAgent;
+        }
+        else
+        {
+            mHttpAgent = String.format("(%s/%s; %s/%s)",
+                    System.getProperty("java.vendor", "unknown"),
+                    System.getProperty("java.version", "unknown"),
+                    System.getProperty("os.name", "unknown OS"),
+                    System.getProperty("os.version", "unknown OS version"));
+        }
     }
 
 
