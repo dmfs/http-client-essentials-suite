@@ -21,14 +21,15 @@ import org.dmfs.httpessentials.decoration.Decoration;
 import org.dmfs.httpessentials.headers.Headers;
 import org.dmfs.httpessentials.httpurlconnection.executor_utils.types.BottomBasicUserAgent;
 import org.dmfs.httpessentials.types.Product;
+import org.dmfs.httpessentials.types.SingletonUserAgent;
 import org.dmfs.httpessentials.types.UserAgent;
 
 import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT_HEADER;
 
 
 /**
- * A {@link Headers} decoration that appends the given {@link Product} to the end of an existing User-Agent header or
- * does nothing if there is no such header present.
+ * A {@link Headers} decoration that appends the given {@link Product} to the end of an existing User-Agent header (or
+ * creates it if it doesn't exist.)
  *
  * @author Gabor Keszthelyi
  */
@@ -46,13 +47,17 @@ public final class BottomUserAgentHeaderDecoration implements Decoration<Headers
     @Override
     public Headers decorated(Headers originalHeaders)
     {
-        if (!originalHeaders.contains(USER_AGENT_HEADER))
-        {
-            return originalHeaders;
-        }
+        UserAgent newUserAgent;
 
-        UserAgent originalUserAgent = originalHeaders.header(USER_AGENT_HEADER).value();
-        UserAgent newUserAgent = new BottomBasicUserAgent(originalUserAgent, mProduct);
+        if (originalHeaders.contains(USER_AGENT_HEADER))
+        {
+            UserAgent originalUserAgent = originalHeaders.header(USER_AGENT_HEADER).value();
+            newUserAgent = new BottomBasicUserAgent(originalUserAgent, mProduct);
+        }
+        else
+        {
+            newUserAgent = new SingletonUserAgent(mProduct);
+        }
 
         return originalHeaders.withHeader(USER_AGENT_HEADER.entity(newUserAgent));
     }

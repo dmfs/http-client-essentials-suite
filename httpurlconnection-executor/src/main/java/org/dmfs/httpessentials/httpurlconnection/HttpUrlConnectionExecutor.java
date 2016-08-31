@@ -34,7 +34,7 @@ import java.net.URI;
 /**
  * An {@link HttpRequestExecutor} that uses Java's HttpUrlConnection (through {@link PlainHttpUrlConnectionExecutor})
  * and appends its name and version, and the platform's description (<code>http.agent</code> system property) to
- * existing User-Agent request headers.
+ * User-Agent request header (or creates it if it doesn't exist).
  *
  * @author Gabor Keszthelyi
  */

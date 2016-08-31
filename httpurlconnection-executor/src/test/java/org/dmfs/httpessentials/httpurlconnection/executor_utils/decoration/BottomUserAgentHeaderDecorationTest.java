@@ -28,7 +28,6 @@ import org.junit.Test;
 
 import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT_HEADER;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 
 
 /**
@@ -40,7 +39,7 @@ public class BottomUserAgentHeaderDecorationTest
 {
 
     @Test
-    public void testDecoration_whenNoUserAgentInOriginal_shouldReturnTheSame()
+    public void testDecoration_whenNoUserAgentInOriginal_shouldAddIt()
     {
         // ARRANGE
         Decoration<Headers> decoration = new BottomUserAgentHeaderDecoration(new SimpleProduct("bottom-product"));
@@ -50,7 +49,8 @@ public class BottomUserAgentHeaderDecorationTest
         Headers decorated = decoration.decorated(original);
 
         // ASSERT
-        assertSame(original, decorated);
+        UserAgent newUserAgent = decorated.header(USER_AGENT_HEADER).value();
+        assertEquals("bottom-product", newUserAgent.toString());
     }
 
 

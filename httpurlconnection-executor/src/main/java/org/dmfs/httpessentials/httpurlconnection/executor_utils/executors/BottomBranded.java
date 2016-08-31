@@ -33,7 +33,7 @@ import java.net.URI;
 
 /**
  * {@link HttpRequestExecutor} decorator that adds the given {@link Product} to the end of User-Agent header of the
- * request.
+ * request (creates the header if it doesn't exist).
  *
  * @author Gabor Keszthelyi
  */

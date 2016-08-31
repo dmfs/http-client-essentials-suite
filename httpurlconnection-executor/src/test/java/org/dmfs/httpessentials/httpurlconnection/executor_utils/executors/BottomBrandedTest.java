@@ -32,7 +32,6 @@ import java.io.IOException;
 
 import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT_HEADER;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 
 /**
@@ -44,7 +43,7 @@ public class BottomBrandedTest
 {
 
     @Test
-    public void test_whenNoUserAgentIsInRequest_shouldNotAddAnything() throws ProtocolException, ProtocolError, IOException
+    public void test_whenNoUserAgentIsInRequest_shouldAddIt() throws ProtocolException, ProtocolError, IOException
     {
         // ARRANGE
         CapturingExecutor capturingExecutor = new CapturingExecutor();
@@ -54,7 +53,8 @@ public class BottomBrandedTest
         wrappedExecutor.execute(null, new EmptyRequest<String>());
 
         // ASSERT
-        assertFalse(capturingExecutor.mCapturedRequest.headers().contains(USER_AGENT_HEADER));
+        String headerString = capturingExecutor.mCapturedRequest.headers().header(USER_AGENT_HEADER).toString();
+        assertEquals("bottom-product", headerString);
     }
 
 
