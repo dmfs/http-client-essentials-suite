@@ -34,14 +34,14 @@ import java.io.IOException;
  *
  * @author Gabor Keszthelyi
  */
-public final class RequestHeaderDecorator<T> implements HttpRequest<T>
+public final class HeaderDecorated<T> implements HttpRequest<T>
 {
 
     private final HttpRequest<T> mOriginalRequest;
     private final Decoration<Headers> mHeadersDecoration;
 
 
-    public RequestHeaderDecorator(HttpRequest<T> originalRequest, Decoration<Headers> headersDecoration)
+    public HeaderDecorated(HttpRequest<T> originalRequest, Decoration<Headers> headersDecoration)
     {
         mOriginalRequest = originalRequest;
         mHeadersDecoration = headersDecoration;

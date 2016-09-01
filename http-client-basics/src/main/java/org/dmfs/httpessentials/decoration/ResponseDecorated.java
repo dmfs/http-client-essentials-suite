@@ -34,14 +34,14 @@ import java.io.IOException;
  *
  * @author Gabor Keszthelyi
  */
-public final class RequestResponseDecorator<T> implements HttpRequest<T>
+public final class ResponseDecorated<T> implements HttpRequest<T>
 {
 
     private final HttpRequest<T> mOriginalRequest;
     private final Decoration<HttpResponse> mResponseDecoration;
 
 
-    public RequestResponseDecorator(HttpRequest<T> originalRequest, Decoration<HttpResponse> responseDecoration)
+    public ResponseDecorated(HttpRequest<T> originalRequest, Decoration<HttpResponse> responseDecoration)
     {
         mOriginalRequest = originalRequest;
         mResponseDecoration = responseDecoration;

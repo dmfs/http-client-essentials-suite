@@ -34,14 +34,14 @@ import java.io.IOException;
  *
  * @author Gabor Keszthelyi
  */
-public final class RequestEntityDecorator<T> implements HttpRequest<T>
+public final class EntityDecorated<T> implements HttpRequest<T>
 {
 
     private final HttpRequest<T> mOriginalRequest;
     private final Decoration<HttpRequestEntity> mRequestEntityDecoration;
 
 
-    public RequestEntityDecorator(HttpRequest<T> originalRequest, Decoration<HttpRequestEntity> requestEntityDecoration)
+    public EntityDecorated(HttpRequest<T> originalRequest, Decoration<HttpRequestEntity> requestEntityDecoration)
     {
         mOriginalRequest = originalRequest;
         mRequestEntityDecoration = requestEntityDecoration;

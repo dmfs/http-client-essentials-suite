@@ -19,7 +19,7 @@ package org.dmfs.httpessentials.executors.useragent;
 
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpRequestExecutor;
-import org.dmfs.httpessentials.decoration.RequestHeaderDecorator;
+import org.dmfs.httpessentials.decoration.HeaderDecorated;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
@@ -53,7 +53,7 @@ public final class Branded implements HttpRequestExecutor
     public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
     {
         return mDecoratedExecutor.execute(uri,
-                new RequestHeaderDecorator<T>(request, new UserAgentHeaderDecoration(mProduct)));
+                new HeaderDecorated<T>(request, new UserAgentHeaderDecoration(mProduct)));
     }
 
 }
