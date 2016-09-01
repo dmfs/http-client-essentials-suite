@@ -13,5 +13,6 @@
     <orderEntry type="module" module-name="http-client-headers_main" />
     <orderEntry type="module" module-name="http-client-types_main" />
     <orderEntry type="library" name="Gradle: org.dmfs:iterators:1.3" level="project" />
+    <orderEntry type="module" module-name="http-client-basics_main" />
   </component>
 </module>
