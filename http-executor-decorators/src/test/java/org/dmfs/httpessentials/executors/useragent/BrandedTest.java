@@ -17,25 +17,17 @@
 
 package org.dmfs.httpessentials.executors.useragent;
 
-import org.dmfs.httpessentials.HttpMethod;
-import org.dmfs.httpessentials.client.*;
-import org.dmfs.httpessentials.converters.UserAgentConverter;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
-import org.dmfs.httpessentials.exceptions.RedirectionException;
-import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
-import org.dmfs.httpessentials.headers.BasicSingletonHeaderType;
-import org.dmfs.httpessentials.headers.EmptyHeaders;
-import org.dmfs.httpessentials.headers.Headers;
-import org.dmfs.httpessentials.headers.SingletonHeaderType;
+import org.dmfs.httpessentials.mockutils.executors.CapturingExecutor;
+import org.dmfs.httpessentials.mockutils.requests.EmptyRequest;
 import org.dmfs.httpessentials.types.CommentedProduct;
-import org.dmfs.httpessentials.types.UserAgent;
 import org.dmfs.httpessentials.types.VersionedProduct;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URI;
 
+import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT;
 import static org.junit.Assert.assertEquals;
 
 
@@ -46,59 +38,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class BrandedTest
 {
-
-    /**
-     * User-Agent header type.
-     */
-    private final static SingletonHeaderType<UserAgent> USER_AGENT_HEADER = new BasicSingletonHeaderType<UserAgent>(
-            "User-Agent", new UserAgentConverter());
-
-
-    private class CapturingExecutor implements HttpRequestExecutor
-    {
-
-        private HttpRequest mCapturedRequest;
-
-
-        @Override
-        public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
-        {
-            mCapturedRequest = request;
-            return null;
-        }
-    }
-
-
-    private class EmptyRequest<T> implements HttpRequest<T>
-    {
-        @Override
-        public HttpMethod method()
-        {
-            return null;
-        }
-
-
-        @Override
-        public Headers headers()
-        {
-            return EmptyHeaders.INSTANCE;
-        }
-
-
-        @Override
-        public HttpRequestEntity requestEntity()
-        {
-            return null;
-        }
-
-
-        @Override
-        public HttpResponseHandler<T> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
-        {
-            return null;
-        }
-    }
-
 
     @Test
     public void test_userAgentHeaderGetsAdded() throws ProtocolException, ProtocolError, IOException
@@ -112,7 +51,7 @@ public class BrandedTest
 
         // ASSERT
         String headerString = capturingExecutor.mCapturedRequest.headers()
-                .header(USER_AGENT_HEADER)
+                .header(USER_AGENT)
                 .toString();
         assertEquals("name/version (comment)", headerString);
     }
@@ -127,14 +66,15 @@ public class BrandedTest
                 new CommentedProduct("SmoothSync", "1.0", "debug"));
         Branded smoothSycnApiExecutor = new Branded(smoothSyncExecutor,
                 new VersionedProduct("smoothsync-api-client", "0.4"));
-        Branded oath2Executor = new Branded(smoothSycnApiExecutor, new VersionedProduct("oauth2-essentials", "0.3"));
+        Branded oath2Executor = new Branded(smoothSycnApiExecutor,
+                new VersionedProduct("oauth2-essentials", "0.3"));
 
         // ACT
         oath2Executor.execute(null, new EmptyRequest<String>());
 
         // ASSERT
         String headerString = capturingExecutor.mCapturedRequest.headers()
-                .header(USER_AGENT_HEADER)
+                .header(USER_AGENT)
                 .toString();
         assertEquals("SmoothSync/1.0 (debug) smoothsync-api-client/0.4 oauth2-essentials/0.3", headerString);
     }

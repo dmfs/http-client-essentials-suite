@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.httpurlconnection;
+package org.dmfs.httpessentials.mockutils.executors;
 
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpRequestExecutor;
@@ -23,49 +23,29 @@ import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
-import org.dmfs.httpessentials.httpurlconnection.utils.executors.BottomBranded;
-import org.dmfs.httpessentials.httpurlconnection.utils.types.Platform;
-import org.dmfs.httpessentials.types.VersionedProduct;
 
 import java.io.IOException;
 import java.net.URI;
 
 
 /**
- * An {@link HttpRequestExecutor} that uses Java's HttpUrlConnection (through {@link PlainHttpUrlConnectionExecutor})
- * and appends its name and version, and the platform's description (<code>http.agent</code> system property) to
- * User-Agent request header (or creates it if it doesn't exist).
+ * Stub {@link HttpRequestExecutor} that captures the last {@link URI} and {@link HttpRequest} arguments it
+ * receives in {@link #execute(URI, HttpRequest)}. Captured objects can be accessed via public fields.
  *
  * @author Gabor Keszthelyi
  */
-public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
+public class CapturingExecutor implements HttpRequestExecutor
 {
-    private final HttpRequestExecutor mExecutor;
 
-
-    public HttpUrlConnectionExecutor()
-    {
-        this(new PlainHttpUrlConnectionExecutor());
-    }
-
-
-    public HttpUrlConnectionExecutor(HttpUrlConnectionFactory connectionFactory)
-    {
-        this(new PlainHttpUrlConnectionExecutor(connectionFactory));
-    }
-
-
-    private HttpUrlConnectionExecutor(HttpRequestExecutor executor)
-    {
-        mExecutor = new BottomBranded(
-                new BottomBranded(executor, Platform.INSTANCE),
-                new VersionedProduct(BuildConfig.NAME, BuildConfig.VERSION));
-    }
+    public HttpRequest mCapturedRequest;
+    public URI mCapturedUri;
 
 
     @Override
     public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
     {
-        return mExecutor.execute(uri, request);
+        mCapturedUri = uri;
+        mCapturedRequest = request;
+        return null;
     }
 }

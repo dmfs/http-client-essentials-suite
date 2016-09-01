@@ -49,7 +49,6 @@ public final class CommentedProduct implements Product
 
     public CommentedProduct(String name, String comment)
     {
-        // TODO Okay to use SafeToken and SimpleComment as defaults? Or remove constructors with string params?
         this(new SimpleProduct(new SafeToken(name)), new SimpleComment(comment));
     }
 
@@ -58,27 +57,6 @@ public final class CommentedProduct implements Product
     {
         mProduct = product;
         mComment = Validate.notNull(comment, "Comment must not be null.");
-    }
-
-
-    @Override
-    public Token name()
-    {
-        return mProduct.name();
-    }
-
-
-    @Override
-    public Token version()
-    {
-        return mProduct.version();
-    }
-
-
-    @Override
-    public Comment comment()
-    {
-        return mComment;
     }
 
 

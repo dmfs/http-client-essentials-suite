@@ -18,36 +18,13 @@
 package org.dmfs.httpessentials.types;
 
 /**
- * Represents a product for the User-Agent header. See <a href="https://tools.ietf.org/html/rfc7231#section-5.5.3">RFC7231</a>.
- * <p>
- * (Note that opposed to the RFC, comment is part of the product here. Also, the definition is constrained here: only 1
- * comment can belong to a product, and this cannot represent a standalone comment.)
+ * Represents a product for the User-Agent header.
  *
  * @author Gabor Keszthelyi
+ * @see <a href="https://tools.ietf.org/html/rfc7231#section-5.5.3">RFC7231</a>
  */
 public interface Product
 {
-
-    /**
-     * Returns the name of the product.
-     *
-     * @return the name, never null
-     */
-    Token name();
-
-    /**
-     * Returns the version of the product.
-     *
-     * @return the version, or null when there is no version
-     */
-    Token version();
-
-    /**
-     * The comment for this product.
-     *
-     * @return the comment, or null when there is no comment
-     */
-    Comment comment();
 
     /**
      * Appends the {@link Product}s string representation as in the User-Agent header value.
