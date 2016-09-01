@@ -22,14 +22,13 @@ import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpRequestEntity;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseHandler;
+import org.dmfs.httpessentials.entities.EmptyHttpRequestEntity;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.headers.EmptyHeaders;
 import org.dmfs.httpessentials.headers.Headers;
-import org.dmfs.httpessentials.types.MediaType;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 
 /**
@@ -56,7 +55,7 @@ public class EmptyRequest<T> implements HttpRequest<T>
     @Override
     public HttpRequestEntity requestEntity()
     {
-        return new EmptyHttpRequestEntity();
+        return EmptyHttpRequestEntity.INSTANCE;
     }
 
 
@@ -66,28 +65,4 @@ public class EmptyRequest<T> implements HttpRequest<T>
         throw new UnsupportedOperationException();
     }
 
-
-    private final class EmptyHttpRequestEntity implements HttpRequestEntity
-    {
-
-        @Override
-        public MediaType contentType()
-        {
-            return null;
-        }
-
-
-        @Override
-        public long contentLength() throws IOException
-        {
-            return -1;
-        }
-
-
-        @Override
-        public void writeContent(OutputStream out) throws IOException
-        {
-        }
-
-    }
 }
