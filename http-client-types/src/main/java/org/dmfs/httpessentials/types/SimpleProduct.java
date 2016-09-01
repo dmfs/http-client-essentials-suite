@@ -41,27 +41,6 @@ public final class SimpleProduct implements Product
 
 
     @Override
-    public Token name()
-    {
-        return mName;
-    }
-
-
-    @Override
-    public Token version()
-    {
-        return null;
-    }
-
-
-    @Override
-    public Comment comment()
-    {
-        return null;
-    }
-
-
-    @Override
     public void appendTo(StringBuilder sb)
     {
         sb.append(mName);

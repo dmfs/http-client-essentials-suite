@@ -43,27 +43,6 @@ public final class VersionedProduct implements Product
 
 
     @Override
-    public Token name()
-    {
-        return mProduct.name();
-    }
-
-
-    @Override
-    public Token version()
-    {
-        return mVersion;
-    }
-
-
-    @Override
-    public Comment comment()
-    {
-        return null;
-    }
-
-
-    @Override
     public void appendTo(StringBuilder sb)
     {
         mProduct.appendTo(sb);

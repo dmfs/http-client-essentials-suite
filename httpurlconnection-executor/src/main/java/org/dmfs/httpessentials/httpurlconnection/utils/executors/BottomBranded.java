@@ -15,57 +15,45 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.httpurlconnection;
+package org.dmfs.httpessentials.httpurlconnection.utils.executors;
 
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpRequestExecutor;
+import org.dmfs.httpessentials.decoration.HeaderDecorated;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
-import org.dmfs.httpessentials.httpurlconnection.utils.executors.BottomBranded;
-import org.dmfs.httpessentials.httpurlconnection.utils.types.Platform;
-import org.dmfs.httpessentials.types.VersionedProduct;
+import org.dmfs.httpessentials.httpurlconnection.utils.decoration.BottomUserAgentHeaderDecoration;
+import org.dmfs.httpessentials.types.Product;
 
 import java.io.IOException;
 import java.net.URI;
 
 
 /**
- * An {@link HttpRequestExecutor} that uses Java's HttpUrlConnection (through {@link PlainHttpUrlConnectionExecutor})
- * and appends its name and version, and the platform's description (<code>http.agent</code> system property) to
- * User-Agent request header (or creates it if it doesn't exist).
+ * {@link HttpRequestExecutor} decorator that adds the given {@link Product} to the end of User-Agent header of the
+ * request (creates the header if it doesn't exist).
  *
  * @author Gabor Keszthelyi
  */
-public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
+public final class BottomBranded implements HttpRequestExecutor
 {
     private final HttpRequestExecutor mExecutor;
+    private final Product mBottomProduct;
 
 
-    public HttpUrlConnectionExecutor()
+    public BottomBranded(HttpRequestExecutor executor, Product bottomProduct)
     {
-        this(new PlainHttpUrlConnectionExecutor());
-    }
-
-
-    public HttpUrlConnectionExecutor(HttpUrlConnectionFactory connectionFactory)
-    {
-        this(new PlainHttpUrlConnectionExecutor(connectionFactory));
-    }
-
-
-    private HttpUrlConnectionExecutor(HttpRequestExecutor executor)
-    {
-        mExecutor = new BottomBranded(
-                new BottomBranded(executor, Platform.INSTANCE),
-                new VersionedProduct(BuildConfig.NAME, BuildConfig.VERSION));
+        mExecutor = executor;
+        mBottomProduct = bottomProduct;
     }
 
 
     @Override
     public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
     {
-        return mExecutor.execute(uri, request);
+        return mExecutor.execute(uri,
+                new HeaderDecorated<T>(request, new BottomUserAgentHeaderDecoration(mBottomProduct)));
     }
 }

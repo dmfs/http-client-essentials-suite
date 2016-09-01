@@ -33,7 +33,7 @@ public class CommentedProductTest extends BaseProductTest
     {
         CommentedProduct product = new CommentedProduct("name", "comment");
 
-        assertNameVersionCommentAndToString(product, "name", null, "(comment)", "name (comment)");
+        assertProductToStringAndAppendTo(product, "name (comment)");
     }
 
 
@@ -42,7 +42,7 @@ public class CommentedProductTest extends BaseProductTest
     {
         CommentedProduct product = new CommentedProduct("name", "version", "comment");
 
-        assertNameVersionCommentAndToString(product, "name", "version", "(comment)", "name/version (comment)");
+        assertProductToStringAndAppendTo(product, "name/version (comment)");
     }
 
 

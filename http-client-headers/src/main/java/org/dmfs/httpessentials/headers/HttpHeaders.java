@@ -17,9 +17,15 @@
 
 package org.dmfs.httpessentials.headers;
 
-import org.dmfs.httpessentials.converters.*;
+import org.dmfs.httpessentials.converters.IntegerConverter;
+import org.dmfs.httpessentials.converters.LinkConverter;
+import org.dmfs.httpessentials.converters.MediaTypeConverter;
+import org.dmfs.httpessentials.converters.QuotedStringConverter;
+import org.dmfs.httpessentials.converters.UriConverter;
+import org.dmfs.httpessentials.converters.UserAgentConverter;
 import org.dmfs.httpessentials.types.Link;
 import org.dmfs.httpessentials.types.MediaType;
+import org.dmfs.httpessentials.types.UserAgent;
 
 import java.net.URI;
 
@@ -66,4 +72,9 @@ public interface HttpHeaders
     public final static SingletonHeaderType<URI> LOCATION = new BasicSingletonHeaderType<URI>("location",
             UriConverter.INSTANCE);
 
+    /**
+     * User-Agent header type.
+     */
+    public final static SingletonHeaderType<UserAgent> USER_AGENT = new BasicSingletonHeaderType<UserAgent>(
+            "User-Agent", new UserAgentConverter());
 }
