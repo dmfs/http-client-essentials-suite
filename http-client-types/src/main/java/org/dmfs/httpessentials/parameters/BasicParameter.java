@@ -61,6 +61,26 @@ public final class BasicParameter<ValueType> implements Parameter<ValueType>
 
 
     @Override
+    public int hashCode()
+    {
+        return mValue == null ? mType.hashCode() : mType.hashCode() * 31 + mValue.hashCode();
+    }
+
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (!(obj instanceof Parameter))
+        {
+            return false;
+        }
+        Parameter<?> other = (Parameter<?>) obj;
+        return (mValue != null && mValue.equals(
+                other.value()) || mValue == null && other.value() == null) && mType.equals(other.type());
+    }
+
+
+    @Override
     public String toString()
     {
         return mType.valueString(mValue);

@@ -19,12 +19,12 @@ package org.dmfs.httpessentials.types;
 
 import org.dmfs.httpessentials.parameters.Parameter;
 import org.dmfs.httpessentials.parameters.ParameterType;
+import org.dmfs.httpessentials.parameters.Parametrized;
 import org.dmfs.iterables.CsvIterable;
 import org.dmfs.iterators.AbstractConvertedIterator;
 import org.dmfs.iterators.AbstractFilteredIterator;
 import org.dmfs.iterators.ConvertedIterator;
 import org.dmfs.iterators.FilteredIterator;
-import org.dmfs.iterators.filters.Skip;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -32,21 +32,26 @@ import java.util.Iterator;
 
 
 /**
- * Created by marten on 10.06.16.
+ * Represents a set of key-value pairs parsed and serializable from/to a x-www-form-url-encoded {@link String}.
+ * <p>
+ *
+ * @author Marten Gajda <marten@dmfs.org>
  */
-public final class SimpleUrlEncodedValuePairs implements UrlEncodedValuePairs
+public final class UrlFormEncoded implements Parametrized
 {
+    private final static String ENCODING = "UTF-8";
+
     private final static char PAIR_SEPARATOR = '&';
     private final static char VALUE_SEPARATOR = '=';
 
-    private final String mQueryString;
+    private final String mFormEncodedString;
     private final Iterable<String> mParts;
 
 
-    public SimpleUrlEncodedValuePairs(String queryString)
+    public UrlFormEncoded(String formEncodedString)
     {
-        mQueryString = queryString;
-        mParts = new CsvIterable(queryString, PAIR_SEPARATOR);
+        mFormEncodedString = formEncodedString;
+        mParts = new CsvIterable(formEncodedString, PAIR_SEPARATOR);
     }
 
 
@@ -62,41 +67,55 @@ public final class SimpleUrlEncodedValuePairs implements UrlEncodedValuePairs
     public <T> Iterator<Parameter<T>> parameters(final ParameterType<T> parameterType)
     {
         return new ConvertedIterator<Parameter<T>, String>(
-                new FilteredIterator<String>(new FilteredIterator<String>(mParts.iterator(), new Skip<String>(1)),
+                new FilteredIterator<String>(mParts.iterator(),
                         new AbstractFilteredIterator.IteratorFilter<String>()
                         {
                             @Override
                             public boolean iterate(String element)
                             {
-                                String param = element.trim();
-                                int equalsIdx = param.indexOf(VALUE_SEPARATOR);
+                                if (element.isEmpty())
+                                {
+                                    return false;
+                                }
+
+                                int equalsIdx = element.indexOf(VALUE_SEPARATOR);
+
                                 try
                                 {
-                                    return parameterType.name()
-                                            .equalsIgnoreCase(
-                                                    URLDecoder.decode(param.substring(0, equalsIdx), "UTF-8"));
+                                    if (equalsIdx < 0)
+                                    {
+                                        return parameterType.name().equals(URLDecoder.decode(element, ENCODING));
+                                    }
+                                    return parameterType.name().equals(
+                                            URLDecoder.decode(element.substring(0, equalsIdx), ENCODING));
                                 }
                                 catch (UnsupportedEncodingException e)
                                 {
                                     throw new RuntimeException("Runtime doesn't support UTF-8 encoding");
                                 }
                             }
-                        }), new AbstractConvertedIterator.Converter<Parameter<T>, String>()
-        {
-            @Override
-            public Parameter<T> convert(String element)
-            {
-                int equalsIdx = element.indexOf(VALUE_SEPARATOR);
-                try
+                        }),
+                new AbstractConvertedIterator.Converter<Parameter<T>, String>()
                 {
-                    return parameterType.entityFromString(URLDecoder.decode(element.substring(equalsIdx + 1), "UTF-8"));
-                }
-                catch (UnsupportedEncodingException e)
-                {
-                    throw new RuntimeException("Runtime doesn't support UTF-8 encoding");
-                }
-            }
-        });
+                    @Override
+                    public Parameter<T> convert(String element)
+                    {
+                        int equalsIdx = element.indexOf(VALUE_SEPARATOR);
+                        if (equalsIdx < 0)
+                        {
+                            return null;
+                        }
+                        try
+                        {
+                            return parameterType.entityFromString(
+                                    URLDecoder.decode(element.substring(equalsIdx + 1), ENCODING));
+                        }
+                        catch (UnsupportedEncodingException e)
+                        {
+                            throw new RuntimeException(String.format("Runtime doesn't support %s encoding", ENCODING));
+                        }
+                    }
+                });
     }
 
 
@@ -110,6 +129,6 @@ public final class SimpleUrlEncodedValuePairs implements UrlEncodedValuePairs
     @Override
     public String toString()
     {
-        return mQueryString;
+        return mFormEncodedString;
     }
 }
