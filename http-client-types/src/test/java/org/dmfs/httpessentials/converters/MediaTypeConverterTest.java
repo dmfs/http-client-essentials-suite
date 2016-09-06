@@ -41,9 +41,9 @@ public class MediaTypeConverterTest
     @Test
     public void valueString() throws Exception
     {
-        assertEquals("application/test",
+        assertEquals(new StructuredMediaType("application", "test").toString(),
                 new MediaTypeConverter().valueString(new StructuredMediaType("application", "test")));
-        assertEquals("application/test;charset=latin-1",
+        assertEquals(new StructuredMediaType("application", "test", "latin-1").toString(),
                 new MediaTypeConverter().valueString(new StructuredMediaType("application", "test", "latin-1")));
 
     }
