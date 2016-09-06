@@ -35,6 +35,8 @@ import static org.junit.Assert.*;
  */
 public class UrlFormEncodedTest
 {
+    private final static ParameterType<String> PARAM_EMPTY_KEY = new BasicParameterType<>("",
+            PlainStringHeaderConverter.INSTANCE);
     private final static ParameterType<String> PARAM_KEY = new BasicParameterType<>("key",
             PlainStringHeaderConverter.INSTANCE);
     private final static ParameterType<String> PARAM_ANOTHER_KEY = new BasicParameterType<>("anotherKey",
@@ -64,20 +66,22 @@ public class UrlFormEncodedTest
                         "defaultValue"));
         assertEquals(PARAM_ANOTHER_KEY.entity("anotherValue"),
                 new UrlFormEncoded("anotherKey=anotherValue&key=value1&key=value2").firstParameter(
-                        PARAM_ANOTHER_KEY,
-                        "defaultValue"));
+                        PARAM_ANOTHER_KEY, "defaultValue"));
+        assertEquals(PARAM_EMPTY_KEY.entity("anotherValue"),
+                new UrlFormEncoded("=anotherValue&key=value1&key=value2").firstParameter(
+                        PARAM_EMPTY_KEY, "defaultValue"));
+        assertEquals(PARAM_EMPTY_KEY.entity("anotherValue"),
+                new UrlFormEncoded("key=value1&key=value2&=anotherValue").firstParameter(
+                        PARAM_EMPTY_KEY, "defaultValue"));
         assertEquals(PARAM_ANOTHER_SPECIAL_KEY.entity("anotherValue"),
                 new UrlFormEncoded("another%26Key=anotherValue&key=value1&key=value2").firstParameter(
-                        PARAM_ANOTHER_SPECIAL_KEY,
-                        "defaultValue"));
+                        PARAM_ANOTHER_SPECIAL_KEY, "defaultValue"));
         assertEquals(PARAM_ANOTHER_SPECIAL_KEY2.entity("anotherValue"),
                 new UrlFormEncoded("another%3DKey=anotherValue&key=value1&key=value2").firstParameter(
-                        PARAM_ANOTHER_SPECIAL_KEY2,
-                        "defaultValue"));
+                        PARAM_ANOTHER_SPECIAL_KEY2, "defaultValue"));
         assertEquals(PARAM_ANOTHER_KEY.entity("another&Value="),
                 new UrlFormEncoded("anotherKey=another%26Value%3D&key=value1&key=value2").firstParameter(
-                        PARAM_ANOTHER_KEY,
-                        "defaultValue"));
+                        PARAM_ANOTHER_KEY, "defaultValue"));
     }
 
 
@@ -100,6 +104,15 @@ public class UrlFormEncodedTest
     @Test
     public void testHasParameter() throws Exception
     {
+        // test empty keys
+        assertTrue(new UrlFormEncoded("").hasParameter(PARAM_EMPTY_KEY));
+        assertTrue(new UrlFormEncoded("=").hasParameter(PARAM_EMPTY_KEY));
+        assertFalse(new UrlFormEncoded("keyX=value&anotherKey=anotherValue").hasParameter(PARAM_EMPTY_KEY));
+        assertTrue(new UrlFormEncoded("key=value&").hasParameter(PARAM_EMPTY_KEY));
+        assertTrue(new UrlFormEncoded("=someValue").hasParameter(PARAM_EMPTY_KEY));
+        assertFalse(new UrlFormEncoded("keyX=value&anotherKey=anotherValue&k=").hasParameter(PARAM_EMPTY_KEY));
+
+        // test non-empty keys
         assertFalse(new UrlFormEncoded("").hasParameter(PARAM_KEY));
         assertFalse(new UrlFormEncoded("keyX=value&anotherKey=anotherValue").hasParameter(PARAM_KEY));
         assertTrue(new UrlFormEncoded("key=value&anotherKey=anotherValue").hasParameter(PARAM_KEY));

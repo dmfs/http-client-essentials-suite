@@ -29,6 +29,7 @@ import org.dmfs.iterators.FilteredIterator;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Iterator;
+import java.util.Map;
 
 
 /**
@@ -66,61 +67,38 @@ public final class UrlFormEncoded implements Parametrized
     @Override
     public <T> Iterator<Parameter<T>> parameters(final ParameterType<T> parameterType)
     {
-        return new ConvertedIterator<Parameter<T>, String>(
-                new FilteredIterator<String>(mParts.iterator(),
-                        new AbstractFilteredIterator.IteratorFilter<String>()
+        return new ConvertedIterator<>(
+                new FilteredIterator<>(
+                        new ConvertedIterator<>(mParts.iterator(),
+                                new AbstractConvertedIterator.Converter<Map.Entry<String, String>, String>()
+                                {
+                                    @Override
+                                    public Map.Entry<String, String> convert(final String element)
+                                    {
+                                        return new KeyValueStringEntry(element, element.indexOf(VALUE_SEPARATOR));
+                                    }
+                                }),
+                        new AbstractFilteredIterator.IteratorFilter<Map.Entry<String, String>>()
                         {
                             @Override
-                            public boolean iterate(String element)
+                            public boolean iterate(final Map.Entry<String, String> element)
                             {
-                                if (element.isEmpty())
-                                {
-                                    return false;
-                                }
-
-                                int equalsIdx = element.indexOf(VALUE_SEPARATOR);
-
-                                try
-                                {
-                                    if (equalsIdx < 0)
-                                    {
-                                        return parameterType.name().equals(URLDecoder.decode(element, ENCODING));
-                                    }
-                                    return parameterType.name().equals(
-                                            URLDecoder.decode(element.substring(0, equalsIdx), ENCODING));
-                                }
-                                catch (UnsupportedEncodingException e)
-                                {
-                                    throw new RuntimeException("Runtime doesn't support UTF-8 encoding");
-                                }
+                                return parameterType.name().equals(element.getKey());
                             }
                         }),
-                new AbstractConvertedIterator.Converter<Parameter<T>, String>()
+                new AbstractConvertedIterator.Converter<Parameter<T>, Map.Entry<String, String>>()
                 {
                     @Override
-                    public Parameter<T> convert(String element)
+                    public Parameter<T> convert(final Map.Entry<String, String> element)
                     {
-                        int equalsIdx = element.indexOf(VALUE_SEPARATOR);
-                        if (equalsIdx < 0)
-                        {
-                            return null;
-                        }
-                        try
-                        {
-                            return parameterType.entityFromString(
-                                    URLDecoder.decode(element.substring(equalsIdx + 1), ENCODING));
-                        }
-                        catch (UnsupportedEncodingException e)
-                        {
-                            throw new RuntimeException(String.format("Runtime doesn't support %s encoding", ENCODING));
-                        }
+                        return parameterType.entityFromString(element.getValue());
                     }
                 });
     }
 
 
     @Override
-    public <T> boolean hasParameter(ParameterType<T> parameterType)
+    public <T> boolean hasParameter(final ParameterType<T> parameterType)
     {
         return parameters(parameterType).hasNext();
     }
@@ -130,5 +108,56 @@ public final class UrlFormEncoded implements Parametrized
     public String toString()
     {
         return mFormEncodedString;
+    }
+
+
+    /**
+     * An {@link Map.Entry} that's derived from a string pair separated by an equals sign like in {@code key=value}
+     */
+    private static class KeyValueStringEntry implements Map.Entry<String, String>
+    {
+        private final int mEqualsIdx;
+        private final String mKeyValueString;
+
+
+        public KeyValueStringEntry(String keyValueString, int equalsIdx)
+        {
+            mEqualsIdx = equalsIdx;
+            mKeyValueString = keyValueString;
+        }
+
+
+        @Override
+        public String getKey()
+        {
+            return decode(mEqualsIdx < 0 ? mKeyValueString : mKeyValueString.substring(0, mEqualsIdx));
+        }
+
+
+        @Override
+        public String getValue()
+        {
+            return mEqualsIdx < 0 ? null : decode(mKeyValueString.substring(mEqualsIdx + 1));
+        }
+
+
+        @Override
+        public String setValue(String s)
+        {
+            throw new UnsupportedOperationException("Setting the value of this Entry is not supported.");
+        }
+
+
+        private String decode(String string)
+        {
+            try
+            {
+                return URLDecoder.decode(string, ENCODING);
+            }
+            catch (UnsupportedEncodingException e)
+            {
+                throw new RuntimeException(String.format("Runtime doesn't support %s encoding", ENCODING));
+            }
+        }
     }
 }
