@@ -38,7 +38,7 @@ import java.util.Map;
  *
  * @author Marten Gajda <marten@dmfs.org>
  */
-public final class UrlFormEncoded implements Parametrized
+public final class UrlFormEncodedKeyValues implements Parametrized
 {
     private final static String ENCODING = "UTF-8";
 
@@ -49,7 +49,7 @@ public final class UrlFormEncoded implements Parametrized
     private final Iterable<String> mParts;
 
 
-    public UrlFormEncoded(String formEncodedString)
+    public UrlFormEncodedKeyValues(String formEncodedString)
     {
         mFormEncodedString = formEncodedString;
         mParts = new CsvIterable(formEncodedString, PAIR_SEPARATOR);
