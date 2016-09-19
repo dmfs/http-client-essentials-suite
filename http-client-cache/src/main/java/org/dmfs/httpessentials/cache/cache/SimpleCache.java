@@ -26,7 +26,7 @@ import java.io.OutputStream;
 
 /**
  * A simple {@link Cache}. This cache never removes any elements, so use it with care.
- *
+ *<y
  * @author Marten Gajda <marten@dmfs.org>
  */
 public final class SimpleCache implements Cache
