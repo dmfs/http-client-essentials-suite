@@ -18,11 +18,13 @@
 package org.dmfs.httpessentials.executors.logging.v2;
 
 import org.dmfs.httpessentials.client.HttpRequest;
+import org.dmfs.httpessentials.client.HttpRequestEntity;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.executors.logging.HttpLogger;
 import org.dmfs.httpessentials.executors.logging.LoggingFacility;
-import org.dmfs.httpessentials.executors.logging.v2.HttpLogPolicy;
+import org.dmfs.httpessentials.headers.Header;
 
+import java.io.IOException;
 import java.net.URI;
 
 
@@ -31,6 +33,7 @@ import java.net.URI;
  */
 public final class DefaultHttpLogger implements HttpLogger
 {
+    public static final String NL = "\n";
     private final HttpLogPolicy mPolicy;
     private final LoggingFacility mLoggingFacility;
 
@@ -50,9 +53,44 @@ public final class DefaultHttpLogger implements HttpLogger
             return;
         }
 
-        String requestLog = null; // compose using uri, request and policy
+        StringBuilder message = new StringBuilder();
 
-        mLoggingFacility.log(mPolicy.logLevel(), mPolicy.tag(), requestLog);
+        message.append("Request sent:").append(NL);
+        message.append("URI: ").append(uri).append(NL);
+        message.append("Method: ").append(request.method()).append(NL);
+
+        if (mPolicy.logHeaders())
+        {
+            message.append("Headers:").append(NL);
+            for (Header<?> header : request.headers())
+            {
+                message.append(" ").append(header.type().name()).append(": ").append(header.value()).append(NL);
+            }
+        }
+
+        if (mPolicy.logAllBody())
+        {
+            HttpRequestEntity requestEntity = request.requestEntity();
+            message.append("Body:").append(NL);
+            message.append(" ").append("ContentType: ").append(requestEntity.contentType()).append(NL);
+            message.append(" ").append("ContentLength: ").append(getContentLength(requestEntity)).append(NL);
+            // TODO body content
+        }
+
+        mLoggingFacility.log(mPolicy.logLevel(), mPolicy.tag(), message.toString());
+    }
+
+
+    private long getContentLength(HttpRequestEntity requestEntity)
+    {
+        try
+        {
+            return requestEntity.contentLength();
+        }
+        catch (IOException e)
+        {
+            return -1;
+        }
     }
 
 
