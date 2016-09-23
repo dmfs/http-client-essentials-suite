@@ -15,20 +15,22 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
+package org.dmfs.httpessentials.executors.logging.v2;
 
-import org.dmfs.httpessentials.client.HttpRequest;
-import org.dmfs.httpessentials.client.HttpResponse;
-
-import java.net.URI;
+import org.dmfs.httpessentials.client.HttpRequestExecutor;
+import org.dmfs.httpessentials.executors.logging.LogcatLoggingFacility;
 
 
 /**
  * @author Gabor Keszthelyi
  */
-public interface HttpLogger
+public final class SampleUsage
 {
-    void log(URI uri, HttpRequest<?> request);
+    public static void main(String[] args)
+    {
+        HttpRequestExecutor executor = null;
 
-    void log(HttpResponse response);
+        HttpRequestExecutor wrappedExecutor = new Logging(executor, new LogcatLoggingFacility());
+    }
+
 }

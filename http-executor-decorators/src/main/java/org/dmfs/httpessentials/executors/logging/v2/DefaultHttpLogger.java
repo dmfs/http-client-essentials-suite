@@ -20,7 +20,6 @@ package org.dmfs.httpessentials.executors.logging.v2;
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpRequestEntity;
 import org.dmfs.httpessentials.client.HttpResponse;
-import org.dmfs.httpessentials.executors.logging.HttpLogger;
 import org.dmfs.httpessentials.executors.logging.LoggingFacility;
 import org.dmfs.httpessentials.headers.Header;
 
@@ -46,11 +45,11 @@ public final class DefaultHttpLogger implements HttpLogger
 
 
     @Override
-    public void log(URI uri, HttpRequest<?> request)
+    public HttpRequest<?> log(URI uri, HttpRequest<?> request)
     {
         if (!mPolicy.logRequest(uri, request))
         {
-            return;
+            return request;
         }
 
         StringBuilder message = new StringBuilder();
@@ -78,6 +77,8 @@ public final class DefaultHttpLogger implements HttpLogger
         }
 
         mLoggingFacility.log(mPolicy.logLevel(), mPolicy.tag(), message.toString());
+
+        return request; // TODO decorate
     }
 
 
@@ -95,15 +96,17 @@ public final class DefaultHttpLogger implements HttpLogger
 
 
     @Override
-    public void log(HttpResponse response)
+    public HttpResponse log(HttpResponse response)
     {
         if (!mPolicy.logResponse(response))
         {
-            return;
+            return response;
         }
 
         String responseLog = null; // compose using response and policy
 
         mLoggingFacility.log(mPolicy.logLevel(), mPolicy.tag(), responseLog);
+
+        return response; // TODO decorate
     }
 }
