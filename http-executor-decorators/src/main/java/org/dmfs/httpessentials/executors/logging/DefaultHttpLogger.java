@@ -15,12 +15,11 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging.v2;
+package org.dmfs.httpessentials.executors.logging;
 
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpRequestEntity;
 import org.dmfs.httpessentials.client.HttpResponse;
-import org.dmfs.httpessentials.executors.logging.LoggingFacility;
 import org.dmfs.httpessentials.headers.Header;
 
 import java.io.IOException;

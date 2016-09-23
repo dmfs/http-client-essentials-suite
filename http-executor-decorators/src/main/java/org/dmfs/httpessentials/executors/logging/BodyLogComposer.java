@@ -20,18 +20,13 @@ package org.dmfs.httpessentials.executors.logging;
 /**
  * @author Gabor Keszthelyi
  */
-public final class LogcatLoggingFacility implements LoggingFacility
+public interface BodyLogComposer
 {
-    @Override
-    public void log(LogLevel logLevel, String tag, String message)
-    {
-        // ...
-    }
+    /**
+     *
+     * @param aLineInTheBody a line in the request or response body
+     * @return the string to print to the log
+     */
+    String bodyLineMsg(String aLineInTheBody);
 
-
-    @Override
-    public void log(LogLevel logLevel, String tag, String message, Throwable throwable)
-    {
-        // ...
-    }
 }

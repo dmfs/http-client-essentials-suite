@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging.v2;
+package org.dmfs.httpessentials.executors.logging;
 
 /**
  * @author Gabor Keszthelyi

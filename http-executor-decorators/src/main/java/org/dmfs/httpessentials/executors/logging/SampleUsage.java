@@ -15,17 +15,21 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging.v2;
+package org.dmfs.httpessentials.executors.logging;
+
+import org.dmfs.httpessentials.client.HttpRequestExecutor;
+
 
 /**
  * @author Gabor Keszthelyi
  */
-public interface LogLevel
+public final class SampleUsage
 {
-    int VERBOSE = 2;
-    int DEBUG = 3;
-    int INFO = 4;
-    int WARN = 5;
-    int ERROR = 6;
+    public static void main(String[] args)
+    {
+        HttpRequestExecutor executor = null;
+
+        HttpRequestExecutor wrappedExecutor = new Logging(executor, new LogcatLoggingFacility());
+    }
 
 }

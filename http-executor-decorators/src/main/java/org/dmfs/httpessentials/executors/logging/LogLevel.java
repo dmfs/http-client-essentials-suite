@@ -20,18 +20,12 @@ package org.dmfs.httpessentials.executors.logging;
 /**
  * @author Gabor Keszthelyi
  */
-public final class LogcatLoggingFacility implements LoggingFacility
+public interface LogLevel
 {
-    @Override
-    public void log(LogLevel logLevel, String tag, String message)
-    {
-        // ...
-    }
+    int VERBOSE = 2;
+    int DEBUG = 3;
+    int INFO = 4;
+    int WARN = 5;
+    int ERROR = 6;
 
-
-    @Override
-    public void log(LogLevel logLevel, String tag, String message, Throwable throwable)
-    {
-        // ...
-    }
 }

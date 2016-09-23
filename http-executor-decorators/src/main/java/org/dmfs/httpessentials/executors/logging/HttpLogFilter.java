@@ -15,22 +15,20 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging.v2;
+package org.dmfs.httpessentials.executors.logging;
 
-import org.dmfs.httpessentials.client.HttpRequestExecutor;
-import org.dmfs.httpessentials.executors.logging.LogcatLoggingFacility;
+import org.dmfs.httpessentials.client.HttpRequest;
+import org.dmfs.httpessentials.client.HttpResponse;
+
+import java.net.URI;
 
 
 /**
  * @author Gabor Keszthelyi
  */
-public final class SampleUsage
+public interface HttpLogFilter
 {
-    public static void main(String[] args)
-    {
-        HttpRequestExecutor executor = null;
+    boolean logRequest(URI uri, HttpRequest<?> request);
 
-        HttpRequestExecutor wrappedExecutor = new Logging(executor, new LogcatLoggingFacility());
-    }
-
+    boolean logResponse(HttpResponse response);
 }

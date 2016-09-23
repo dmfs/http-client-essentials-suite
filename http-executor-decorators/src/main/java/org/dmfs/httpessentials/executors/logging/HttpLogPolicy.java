@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging.v2;
+package org.dmfs.httpessentials.executors.logging;
 
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpResponse;
@@ -26,9 +26,32 @@ import java.net.URI;
 /**
  * @author Gabor Keszthelyi
  */
-public interface HttpLogger
+public interface HttpLogPolicy
 {
-    HttpRequest log(URI uri, HttpRequest<?> request);
+    // Decide whether to log, allowing any custom filter, eg for URL, or just generally return true or false
+    boolean logRequest(URI uri, HttpRequest<?> request);
 
-    HttpResponse log(HttpResponse response);
+    boolean logResponse(HttpResponse response);
+
+
+    // How to log:
+
+    boolean logHeaders();
+
+    boolean logAllBody();
+
+    boolean logOnlyTextBody();
+
+    int logBeginningOfTextBody(); // returns number of chars to log, -1 if not applicable
+
+    boolean logErrorsOnly();
+
+    boolean logSensitiveHeaders();
+
+    LogLevel logLevel();
+
+    LogLevel errorLogLevel();
+
+    String tag();
+
 }
