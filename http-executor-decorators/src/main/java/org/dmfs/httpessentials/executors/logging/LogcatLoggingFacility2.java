@@ -17,41 +17,32 @@
 
 package org.dmfs.httpessentials.executors.logging;
 
-import org.dmfs.httpessentials.client.HttpRequest;
-import org.dmfs.httpessentials.client.HttpResponse;
-
-import java.net.URI;
-
-
 /**
  * @author Gabor Keszthelyi
  */
-public interface HttpLogPolicy
+public final class LogcatLoggingFacility2 implements LoggingFacility2
 {
-    // Decide whether to log, allowing any custom filter, eg for URL, or just generally return true or false
-    boolean logRequest(URI uri, HttpRequest<?> request);
-
-    boolean logResponse(HttpResponse response);
+    private final LogLevel mLogLevel; // would be the logcat's one
+    private final String mTag;
 
 
-    // How to log:
+    public LogcatLoggingFacility2(LogLevel logLevel, String tag)
+    {
+        mLogLevel = logLevel;
+        mTag = tag;
+    }
 
-    boolean logHeaders();
 
-    boolean logAllBody();
+    @Override
+    public void log(String message)
+    {
+        // logcat log with mTag and mLogLevel
+    }
 
-    boolean logOnlyTextBody();
 
-    int logBeginningOfTextBody(); // returns number of chars to log, -1 if not applicable
-
-    boolean logErrorsOnly();
-
-    boolean logSensitiveHeaders();
-
-    LogLevel logLevel();
-
-    LogLevel errorLogLevel();
-
-    String tag();
-
+    @Override
+    public void logError(String message, Throwable throwable)
+    {
+        // logcat log with mTag and ERROR level
+    }
 }

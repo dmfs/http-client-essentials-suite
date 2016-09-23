@@ -46,13 +46,11 @@ public final class Logging implements HttpRequestExecutor
         mHttpLogger = httpLogger;
     }
 
-
-    public Logging(HttpRequestExecutor delegateExecutor, LoggingFacility loggingFacility)
+    public Logging(HttpRequestExecutor delegateExecutor, HttpLogComposer logComposer, LoggingFacility loggingFacility)
     {
         mDelegateExecutor = delegateExecutor;
-        mHttpLogger = new DefaultHttpLogger(HttpLogPolicies.ALL_WITH_TEXT_BODY, loggingFacility);
+        mHttpLogger = new DefaultHttpLogger(HttpLogFilters.ALL, logComposer, loggingFacility, "HttpLog");;
     }
-
 
     @Override
     public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException

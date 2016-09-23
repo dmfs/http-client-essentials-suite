@@ -17,24 +17,16 @@
 
 package org.dmfs.httpessentials.executors.logging;
 
-import org.dmfs.httpessentials.client.HttpRequestExecutor;
-
-
 /**
+ * Alternative to {@link LoggingFacility}
+ *
  * @author Gabor Keszthelyi
  */
-public final class SampleUsage
+public interface LoggingFacility2
 {
-    public static void main(String[] args)
-    {
-        HttpRequestExecutor executor = null;
+    void log(String message);
 
-        HttpLogComposer logComposer = null; // new NoHeaders(new NoBody(new All()))
-        HttpLogger httpLogger = new DefaultHttpLogger(HttpLogFilters.ALL, logComposer, new LogcatLoggingFacility(), "HttpLog");
-
-        HttpRequestExecutor wrappedExecutor1 = new Logging(executor, httpLogger);
-
-        HttpRequestExecutor wrappedExecutor2 = new Logging(executor, logComposer, new LogcatLoggingFacility());
-    }
+    // throwable can be null
+    void logError(String message, Throwable throwable);
 
 }

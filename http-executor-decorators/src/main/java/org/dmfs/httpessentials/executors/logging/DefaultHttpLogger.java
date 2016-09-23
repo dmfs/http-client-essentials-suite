@@ -31,53 +31,68 @@ import java.net.URI;
  */
 public final class DefaultHttpLogger implements HttpLogger
 {
-    public static final String NL = "\n";
-    private final HttpLogPolicy mPolicy;
+    private static final String NL = "\n";
+
+    private final HttpLogFilter mFilter;
+    private final HttpLogComposer mComposer;
     private final LoggingFacility mLoggingFacility;
+    private final String mTag;
 
 
-    public DefaultHttpLogger(HttpLogPolicy policy, LoggingFacility loggingFacility)
+    public DefaultHttpLogger(HttpLogFilter filter, HttpLogComposer logComposer, LoggingFacility loggingFacility, String tag)
     {
-        mPolicy = policy;
+        mFilter = filter;
+        mComposer = logComposer;
         mLoggingFacility = loggingFacility;
+        mTag = tag;
     }
 
 
     @Override
     public HttpRequest<?> log(URI uri, HttpRequest<?> request)
     {
-        if (!mPolicy.logRequest(uri, request))
+        if (!mFilter.logRequest(uri, request))
         {
             return request;
         }
 
+        String logMessage = composeRequestMessage(uri, request);
+
+        mLoggingFacility.log(LogLevel.DEBUG, mTag, logMessage);
+
+        BodyLogComposer bodyLogComposer = mComposer.requestBodyComposer();
+        // TODO if bodyLogComposer != null, decorate request adding bodyLogComposer and mLoggingFacility to the stream handler
+        return request;
+    }
+
+
+    private String composeRequestMessage(URI uri, HttpRequest<?> request)
+    {
         StringBuilder message = new StringBuilder();
 
         message.append("Request sent:").append(NL);
-        message.append("URI: ").append(uri).append(NL);
-        message.append("Method: ").append(request.method()).append(NL);
 
-        if (mPolicy.logHeaders())
+        String methodAndUri = mComposer.requestMsg(request.method(), uri);
+        if (methodAndUri != null)
         {
-            message.append("Headers:").append(NL);
-            for (Header<?> header : request.headers())
+            message.append(methodAndUri).append(NL);
+        }
+
+        for (Header<?> header : request.headers())
+        {
+            String headerMsg = mComposer.requestMsg(header);
+            if (headerMsg != null)
             {
-                message.append(" ").append(header.type().name()).append(": ").append(header.value()).append(NL);
+                message.append(headerMsg).append(NL);
             }
         }
 
-        if (mPolicy.logAllBody())
+        String entityMsg = mComposer.requestMsg(request.requestEntity());
+        if (entityMsg != null)
         {
-            HttpRequestEntity requestEntity = request.requestEntity();
-            message.append("Body:").append(NL);
-            message.append(" ").append("ContentType: ").append(requestEntity.contentType()).append(NL);
-            message.append(" ").append("ContentLength: ").append(getContentLength(requestEntity)).append(NL);
-            // TODO body content
+            message.append(entityMsg).append(NL);
         }
-
-        mLoggingFacility.log(mPolicy.logLevel(), mPolicy.tag(), message.toString());
-
-        return request; // TODO decorate
+        return message.toString();
     }
 
 
@@ -97,15 +112,34 @@ public final class DefaultHttpLogger implements HttpLogger
     @Override
     public HttpResponse log(HttpResponse response)
     {
-        if (!mPolicy.logResponse(response))
+        if (!mFilter.logResponse(response))
         {
             return response;
         }
 
-        String responseLog = null; // compose using response and policy
+        String responseLog = composerResponseMessage();
 
-        mLoggingFacility.log(mPolicy.logLevel(), mPolicy.tag(), responseLog);
+        LogLevel logLevel = isError(response) ? LogLevel.ERROR : LogLevel.DEBUG;
+        mLoggingFacility.log(logLevel, mTag, responseLog);
 
-        return response; // TODO decorate
+        BodyLogComposer bodyLogComposer = mComposer.responseBodyComposer();
+        // TODO if bodyLogComposer != null, decorate response adding bodyLogComposer and mLoggingFacility to the stream handler
+        return response;
+    }
+
+
+    private String composerResponseMessage()
+    {
+        StringBuilder message = new StringBuilder();
+        message.append("Response received:").append(NL);
+        // TODO similarly as in composeRequestMessage()
+        // ...
+        return message.toString();
+    }
+
+
+    private boolean isError(HttpResponse response)
+    {
+        return response.status().isClientError() || response.status().isServerError();
     }
 }

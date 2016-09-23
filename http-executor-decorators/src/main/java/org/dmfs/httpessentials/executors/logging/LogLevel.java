@@ -20,12 +20,12 @@ package org.dmfs.httpessentials.executors.logging;
 /**
  * @author Gabor Keszthelyi
  */
-public interface LogLevel
+public enum LogLevel
 {
-    int VERBOSE = 2;
-    int DEBUG = 3;
-    int INFO = 4;
-    int WARN = 5;
-    int ERROR = 6;
+    VERBOSE,
+    DEBUG,
+    INFO,
+    WARN,
+    ERROR;
 
 }

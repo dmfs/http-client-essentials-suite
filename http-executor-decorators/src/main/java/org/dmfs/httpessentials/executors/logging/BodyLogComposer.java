@@ -23,8 +23,14 @@ package org.dmfs.httpessentials.executors.logging;
 public interface BodyLogComposer
 {
     /**
+     * charset of the body, the stream utility can use it for reading
+     */
+    String charset();
+
+    /**
+     * @param aLineInTheBody
+     *         a line in the request or response body
      *
-     * @param aLineInTheBody a line in the request or response body
      * @return the string to print to the log
      */
     String bodyLineMsg(String aLineInTheBody);

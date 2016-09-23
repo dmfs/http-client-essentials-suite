@@ -17,15 +17,31 @@
 
 package org.dmfs.httpessentials.executors.logging;
 
+import org.dmfs.httpessentials.client.HttpRequest;
+import org.dmfs.httpessentials.client.HttpResponse;
+
+import java.net.URI;
+
+
 /**
  * @author Gabor Keszthelyi
  */
-public interface HttpLogPolicies
+public interface HttpLogFilters
 {
-    HttpLogPolicy ALL_WITH_TEXT_BODY = null;
+    HttpLogFilter ALL = new HttpLogFilter()
+    {
+        @Override
+        public boolean logRequest(URI uri, HttpRequest<?> request)
+        {
+            return true;
+        }
 
-    HttpLogPolicy REQUESTS_ONLY = null;
 
-    // more
+        @Override
+        public boolean logResponse(HttpResponse response)
+        {
+            return true;
+        }
+    };
 
 }

@@ -39,7 +39,7 @@ public interface HttpLogComposer
 
     String requestMsg(HttpRequestEntity entity);
 
-    BodyLogComposer requestMsg();
+    BodyLogComposer requestBodyComposer();
 
     String responseMsg(HttpStatus status);
 
@@ -47,6 +47,6 @@ public interface HttpLogComposer
 
     String responseMsg(HttpResponseEntity entity, HttpStatus status);
 
-    BodyLogComposer responseMsg();
+    BodyLogComposer responseBodyComposer();
 
 }
