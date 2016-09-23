@@ -17,15 +17,24 @@
 
 package org.dmfs.httpessentials.executors.logging;
 
+import org.dmfs.httpessentials.executors.logging.v2.LogLevel;
+
+
 /**
  * @author Gabor Keszthelyi
  */
-public interface HttpLogPolicies
+public final class LogcatLoggingFacility implements LoggingFacility
 {
-    HttpLogPolicy ALL_WITH_TEXT_BODY = null;
+    @Override
+    public void log(LogLevel logLevel, String tag, String message)
+    {
+        // ...
+    }
 
-    HttpLogPolicy REQUESTS_ONLY = null;
 
-    // more
-
+    @Override
+    public void log(LogLevel logLevel, String tag, String message, Throwable throwable)
+    {
+        // ...
+    }
 }

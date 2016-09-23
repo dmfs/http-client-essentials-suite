@@ -15,19 +15,17 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
+package org.dmfs.httpessentials.executors.logging.v2;
 
 /**
- * Logger abstraction bearing compatibility with LogCat and slf4j in mind.
- * https://developer.android.com/reference/android/util/Log.html
- * http://www.slf4j.org/api/org/slf4j/Logger.html
- *
  * @author Gabor Keszthelyi
  */
-public interface Logger
+public interface HttpLogPolicies
 {
-    void log(LogLevel logLevel, String tag, String message);
+    HttpLogPolicy ALL_WITH_TEXT_BODY = null;
 
-    void log(LogLevel logLevel, String tag, String message, Throwable throwable);
+    HttpLogPolicy REQUESTS_ONLY = null;
+
+    // more
 
 }

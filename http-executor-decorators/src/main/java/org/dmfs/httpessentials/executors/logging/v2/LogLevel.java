@@ -15,23 +15,17 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
+package org.dmfs.httpessentials.executors.logging.v2;
 
 /**
  * @author Gabor Keszthelyi
  */
-public final class LogcatLogger implements Logger
+public interface LogLevel
 {
-    @Override
-    public void log(LogLevel logLevel, String tag, String message)
-    {
-        // ...
-    }
+    int VERBOSE = 2;
+    int DEBUG = 3;
+    int INFO = 4;
+    int WARN = 5;
+    int ERROR = 6;
 
-
-    @Override
-    public void log(LogLevel logLevel, String tag, String message, Throwable throwable)
-    {
-        // ...
-    }
 }

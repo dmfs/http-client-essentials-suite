@@ -29,7 +29,7 @@ public final class SampleUsage
     {
         HttpRequestExecutor executor = null;
 
-        HttpRequestExecutor wrappedExecutor = new Logging(executor, new LogcatLogger());
+        HttpRequestExecutor wrappedExecutor = new Logging(executor, new LogcatLoggingFacility());
     }
 
 }

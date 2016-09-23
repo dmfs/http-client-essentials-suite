@@ -15,10 +15,13 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
+package org.dmfs.httpessentials.executors.logging.v2;
 
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpResponse;
+import org.dmfs.httpessentials.executors.logging.HttpLogger;
+import org.dmfs.httpessentials.executors.logging.LoggingFacility;
+import org.dmfs.httpessentials.executors.logging.v2.HttpLogPolicy;
 
 import java.net.URI;
 
@@ -29,13 +32,13 @@ import java.net.URI;
 public final class DefaultHttpLogger implements HttpLogger
 {
     private final HttpLogPolicy mPolicy;
-    private final Logger mLogger;
+    private final LoggingFacility mLoggingFacility;
 
 
-    public DefaultHttpLogger(HttpLogPolicy policy, Logger logger)
+    public DefaultHttpLogger(HttpLogPolicy policy, LoggingFacility loggingFacility)
     {
         mPolicy = policy;
-        mLogger = logger;
+        mLoggingFacility = loggingFacility;
     }
 
 
@@ -49,7 +52,7 @@ public final class DefaultHttpLogger implements HttpLogger
 
         String requestLog = null; // compose using uri, request and policy
 
-        mLogger.log(mPolicy.logLevel(), mPolicy.tag(), requestLog);
+        mLoggingFacility.log(mPolicy.logLevel(), mPolicy.tag(), requestLog);
     }
 
 
@@ -63,6 +66,6 @@ public final class DefaultHttpLogger implements HttpLogger
 
         String responseLog = null; // compose using response and policy
 
-        mLogger.log(mPolicy.logLevel(), mPolicy.tag(), responseLog);
+        mLoggingFacility.log(mPolicy.logLevel(), mPolicy.tag(), responseLog);
     }
 }

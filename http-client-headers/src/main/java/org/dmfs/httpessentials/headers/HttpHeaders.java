@@ -35,7 +35,8 @@ import java.net.URI;
  *
  * @author Marten Gajda <marten@dmfs.org>
  */
-public interface HttpHeaders
+public interface
+HttpHeaders
 {
     /**
      * The content-type header that contains the media-type of the response entity.

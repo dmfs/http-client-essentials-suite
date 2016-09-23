@@ -17,41 +17,20 @@
 
 package org.dmfs.httpessentials.executors.logging;
 
-import org.dmfs.httpessentials.client.HttpRequest;
-import org.dmfs.httpessentials.client.HttpResponse;
-
-import java.net.URI;
+import org.dmfs.httpessentials.executors.logging.v2.LogLevel;
 
 
 /**
+ * LoggingFacility abstraction bearing compatibility with LogCat and slf4j in mind.
+ * https://developer.android.com/reference/android/util/Log.html
+ * http://www.slf4j.org/api/org/slf4j/Logger.html
+ *
  * @author Gabor Keszthelyi
  */
-public interface HttpLogPolicy
+public interface LoggingFacility
 {
-    // Decide whether to log, allowing any custom filter, eg for URL, or just generally return true or false
-    boolean logRequest(URI uri, HttpRequest<?> request);
+    void log(LogLevel logLevel, String tag, String message);
 
-    boolean logResponse(HttpResponse response);
-
-
-    // How to log:
-
-    boolean logHeaders();
-
-    boolean logAllBody();
-
-    boolean logOnlyTextBody();
-
-    int logBeginningOfTextBody(); // returns number of chars to log, -1 if not applicable
-
-    boolean logErrorsOnly();
-
-    boolean logSensitiveHeaders();
-
-    LogLevel logLevel();
-
-    LogLevel errorLogLevel();
-
-    String tag();
+    void log(LogLevel logLevel, String tag, String message, Throwable throwable);
 
 }
