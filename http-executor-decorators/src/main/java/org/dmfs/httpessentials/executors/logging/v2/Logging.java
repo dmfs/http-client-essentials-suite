@@ -58,8 +58,7 @@ public final class Logging implements HttpRequestExecutor
     @Override
     public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
     {
-        mHttpLogger.log(uri, request);
-        return mDelegateExecutor.execute(uri, new ResponseDecorated<T>(request, new LoggingResponseDecoration()));
+        return mDelegateExecutor.execute(uri, new ResponseDecorated<T>(mHttpLogger.log(uri, request), new LoggingResponseDecoration()));
     }
 
 
@@ -68,8 +67,7 @@ public final class Logging implements HttpRequestExecutor
         @Override
         public HttpResponse decorated(HttpResponse original)
         {
-            mHttpLogger.log(original);
-            return original;
+            return mHttpLogger.log(original);
         }
     }
 }
