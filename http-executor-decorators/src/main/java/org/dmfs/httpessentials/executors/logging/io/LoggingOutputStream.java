@@ -17,8 +17,8 @@
 
 package org.dmfs.httpessentials.executors.logging.io;
 
-import org.dmfs.httpessentials.executors.logging.BodyLineFormatter;
-import org.dmfs.httpessentials.executors.logging.LogFacility;
+import org.dmfs.httpessentials.executors.logging.formatter.BodyLineFormatter;
+import org.dmfs.httpessentials.executors.logging.logfacility.LogFacility;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

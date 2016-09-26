@@ -18,10 +18,13 @@
 package org.dmfs.httpessentials.executors.logging;
 
 import org.dmfs.httpessentials.client.HttpRequestExecutor;
-import org.dmfs.httpessentials.executors.logging.alternatives.LogLevel;
 import org.dmfs.httpessentials.executors.logging.formatter.DefaultHttpLogFormatter;
 import org.dmfs.httpessentials.executors.logging.formatter.DesignFormatter;
 import org.dmfs.httpessentials.executors.logging.formatter.NoPersonalHeader;
+import org.dmfs.httpessentials.executors.logging.httplogger.DefaultHttpLogger;
+import org.dmfs.httpessentials.executors.logging.httplogger.HttpLogger;
+import org.dmfs.httpessentials.executors.logging.httplogger.UrlFiltered;
+import org.dmfs.httpessentials.executors.logging.logfacility.LogcatLogFacility;
 
 
 /**
@@ -37,13 +40,13 @@ public final class SampleUsage
                 new UrlFiltered(
                         new DefaultHttpLogger(
                                 new NoPersonalHeader(new DesignFormatter(new DefaultHttpLogFormatter())),
-                                new LogcatLogFacility(LogLevel.DEBUG, "tag")),
+                                new LogcatLogFacility(2, "tag")),
                         "http://");
 
         HttpRequestExecutor wrappedExecutor1 = new Logging(originalExecutor, httpLogger);
 
         HttpRequestExecutor wrappedExecutor2 = new Logging(originalExecutor,
-                new DesignFormatter(new DefaultHttpLogFormatter()), new LogcatLogFacility(LogLevel.DEBUG, "tag"));
+                new DesignFormatter(new DefaultHttpLogFormatter()), new LogcatLogFacility(2, "tag"));
     }
 
 }

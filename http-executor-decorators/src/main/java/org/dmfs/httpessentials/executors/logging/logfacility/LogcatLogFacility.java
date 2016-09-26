@@ -15,18 +15,34 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
+package org.dmfs.httpessentials.executors.logging.logfacility;
 
 /**
- * Alternative to {@link org.dmfs.httpessentials.executors.logging.alternatives.LoggingFacility}
- *
  * @author Gabor Keszthelyi
  */
-public interface LogFacility
+public final class LogcatLogFacility implements LogFacility
 {
-    void log(String message);
+    private final int mLogLevel; // logcat's log level constant
+    private final String mTag;
 
-    // throwable can be null
-    void logError(String message, Throwable throwable);
 
+    public LogcatLogFacility(int logLevel, String tag)
+    {
+        mLogLevel = logLevel;
+        mTag = tag;
+    }
+
+
+    @Override
+    public void log(String message)
+    {
+        // logcat log with mTag and mLogLevel
+    }
+
+
+    @Override
+    public void logError(String message, Throwable throwable)
+    {
+        // logcat log with mTag and ERROR level
+    }
 }

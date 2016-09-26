@@ -15,10 +15,11 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
+package org.dmfs.httpessentials.executors.logging.httplogger;
 
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpResponse;
+import org.dmfs.httpessentials.executors.logging.httplogger.HttpLogger;
 
 import java.net.URI;
 
@@ -40,7 +41,7 @@ public final class UrlFiltered implements HttpLogger
 
 
     @Override
-    public HttpRequest log(URI uri, HttpRequest<?> request)
+    public <T> HttpRequest<T> log(URI uri, HttpRequest<T> request)
     {
         if (uri.toString().startsWith(mUrlPrefix))
         {

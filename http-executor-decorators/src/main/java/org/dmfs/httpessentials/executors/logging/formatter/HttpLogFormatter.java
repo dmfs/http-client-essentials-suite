@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
+package org.dmfs.httpessentials.executors.logging.formatter;
 
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.HttpStatus;

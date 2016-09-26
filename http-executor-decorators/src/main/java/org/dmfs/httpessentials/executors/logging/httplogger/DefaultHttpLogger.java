@@ -15,14 +15,18 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
+package org.dmfs.httpessentials.executors.logging.httplogger;
 
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.decoration.Decoration;
+import org.dmfs.httpessentials.executors.logging.formatter.BodyLineFormatter;
+import org.dmfs.httpessentials.executors.logging.formatter.HttpLogFormatter;
+import org.dmfs.httpessentials.executors.logging.httplogger.HttpLogger;
 import org.dmfs.httpessentials.executors.logging.io.DuplicatingInputStream;
 import org.dmfs.httpessentials.executors.logging.io.InputStreamDecorated;
 import org.dmfs.httpessentials.executors.logging.io.LoggingOutputStream;
+import org.dmfs.httpessentials.executors.logging.logfacility.LogFacility;
 import org.dmfs.httpessentials.headers.Header;
 
 import java.io.InputStream;
@@ -48,7 +52,7 @@ public final class DefaultHttpLogger implements HttpLogger
 
 
     @Override
-    public HttpRequest<?> log(URI uri, HttpRequest<?> request)
+    public <T> HttpRequest<T> log(URI uri, HttpRequest<T> request)
     {
         String logMessage = composeRequestMessage(uri, request);
 
@@ -127,6 +131,7 @@ public final class DefaultHttpLogger implements HttpLogger
     private class LoggingStreamDecoration implements Decoration<InputStream>
     {
         private final BodyLineFormatter mBodyLineFormatter;
+
 
         public LoggingStreamDecoration(BodyLineFormatter bodyLineFormatter)
         {

@@ -15,17 +15,20 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging.alternatives;
+package org.dmfs.httpessentials.executors.logging.httplogger;
+
+import org.dmfs.httpessentials.client.HttpRequest;
+import org.dmfs.httpessentials.client.HttpResponse;
+
+import java.net.URI;
+
 
 /**
  * @author Gabor Keszthelyi
  */
-public enum LogLevel
+public interface HttpLogger
 {
-    VERBOSE,
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR;
+    <T> HttpRequest<T> log(URI uri, HttpRequest<T> request);
 
+    HttpResponse log(HttpResponse response);
 }

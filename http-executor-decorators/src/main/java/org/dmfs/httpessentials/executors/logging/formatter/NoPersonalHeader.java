@@ -21,8 +21,6 @@ import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.HttpStatus;
 import org.dmfs.httpessentials.client.HttpRequestEntity;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
-import org.dmfs.httpessentials.executors.logging.BodyLineFormatter;
-import org.dmfs.httpessentials.executors.logging.HttpLogFormatter;
 import org.dmfs.httpessentials.headers.Header;
 import org.dmfs.httpessentials.headers.HeaderType;
 

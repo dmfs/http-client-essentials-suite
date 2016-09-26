@@ -15,37 +15,24 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
-
-import org.dmfs.httpessentials.executors.logging.alternatives.LogLevel;
-
+package org.dmfs.httpessentials.executors.logging.formatter;
 
 /**
  * @author Gabor Keszthelyi
  */
-public final class LogcatLogFacility implements LogFacility
+public interface BodyLineFormatter
 {
-    private final LogLevel mLogLevel; // would be the logcat's one
-    private final String mTag;
+    /**
+     * Charset of the body, the stream utility can use it for reading
+     */
+    String charset();
 
+    /**
+     * @param aLineInTheBody
+     *         a line in the request or response body
+     *
+     * @return the string to print to the log
+     */
+    String bodyLineMsg(String aLineInTheBody);
 
-    public LogcatLogFacility(LogLevel logLevel, String tag)
-    {
-        mLogLevel = logLevel;
-        mTag = tag;
-    }
-
-
-    @Override
-    public void log(String message)
-    {
-        // logcat log with mTag and mLogLevel
-    }
-
-
-    @Override
-    public void logError(String message, Throwable throwable)
-    {
-        // logcat log with mTag and ERROR level
-    }
 }

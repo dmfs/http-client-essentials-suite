@@ -15,20 +15,29 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
-
-import org.dmfs.httpessentials.client.HttpRequest;
-import org.dmfs.httpessentials.client.HttpResponse;
-
-import java.net.URI;
-
+package org.dmfs.httpessentials.executors.logging.logfacility;
 
 /**
+ * LoggingFacility_Alt abstraction bearing compatibility with LogCat and slf4j in mind.
+ * https://developer.android.com/reference/android/util/Log.html
+ * http://www.slf4j.org/api/org/slf4j/Logger.html
+ *
  * @author Gabor Keszthelyi
  */
-public interface HttpLogger
+interface LoggingFacility_Alt
 {
-    HttpRequest log(URI uri, HttpRequest<?> request);
+    void log(LogLevel logLevel, String tag, String message);
 
-    HttpResponse log(HttpResponse response);
+    void log(LogLevel logLevel, String tag, String message, Throwable throwable);
+
+    enum LogLevel
+    {
+        VERBOSE,
+        DEBUG,
+        INFO,
+        WARN,
+        ERROR;
+
+    }
+
 }

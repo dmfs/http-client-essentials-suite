@@ -15,24 +15,18 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
+package org.dmfs.httpessentials.executors.logging.logfacility;
 
 /**
+ * Alternative to {@link org.dmfs.httpessentials.executors.logging.alternatives.LoggingFacility}
+ *
  * @author Gabor Keszthelyi
  */
-public interface BodyLineFormatter
+public interface LogFacility
 {
-    /**
-     * Charset of the body, the stream utility can use it for reading
-     */
-    String charset();
+    void log(String message);
 
-    /**
-     * @param aLineInTheBody
-     *         a line in the request or response body
-     *
-     * @return the string to print to the log
-     */
-    String bodyLineMsg(String aLineInTheBody);
+    // throwable can be null
+    void logError(String message, Throwable throwable);
 
 }
