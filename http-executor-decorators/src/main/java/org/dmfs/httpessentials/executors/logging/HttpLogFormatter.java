@@ -31,21 +31,21 @@ import java.net.URI;
  */
 public interface HttpLogFormatter
 {
-    // return null means not to log
+    // return true means appended something, false not appended
 
-    String requestMsg(HttpMethod method, URI uri);
+    boolean appendRequestMsg(HttpMethod method, URI uri, StringBuilder logMessage);
 
-    String requestMsg(Header header);
+    boolean appendRequestMsg(Header header, StringBuilder logMessage);
 
-    String requestMsg(HttpRequestEntity entity);
+    boolean appendRequestMsg(HttpRequestEntity entity, StringBuilder logMessage);
 
     BodyLineFormatter requestBodyFormatter();
 
-    String responseMsg(HttpStatus status);
+    boolean responseMsg(HttpStatus status, StringBuilder logMessage);
 
-    String responseMsg(Header header, HttpStatus status);
+    boolean responseMsg(Header header, HttpStatus status, StringBuilder logMessage);
 
-    String responseMsg(HttpResponseEntity entity, HttpStatus status);
+    boolean responseMsg(HttpResponseEntity entity, HttpStatus status, StringBuilder logMessage);
 
     BodyLineFormatter responseBodyFormatter();
 

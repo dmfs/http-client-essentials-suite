@@ -18,11 +18,9 @@
 package org.dmfs.httpessentials.executors.logging;
 
 import org.dmfs.httpessentials.client.HttpRequest;
-import org.dmfs.httpessentials.client.HttpRequestEntity;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.headers.Header;
 
-import java.io.IOException;
 import java.net.URI;
 
 
@@ -33,13 +31,13 @@ public final class DefaultHttpLogger implements HttpLogger
 {
     private static final String NL = "\n";
 
-    private final HttpLogFormatter mComposer;
+    private final HttpLogFormatter mFormatter;
     private final LoggingFacility mLoggingFacility;
 
 
     public DefaultHttpLogger(HttpLogFormatter logFormatter, LoggingFacility loggingFacility)
     {
-        mComposer = logFormatter;
+        mFormatter = logFormatter;
         mLoggingFacility = loggingFacility;
     }
 
@@ -51,7 +49,7 @@ public final class DefaultHttpLogger implements HttpLogger
 
         mLoggingFacility.log(logMessage);
 
-        BodyLineFormatter bodyLineFormatter = mComposer.requestBodyFormatter();
+        BodyLineFormatter bodyLineFormatter = mFormatter.requestBodyFormatter();
         // TODO if bodyLineFormatter != null, decorate request adding bodyLineFormatter and mLoggingFacility to the stream handler
         return request;
     }
@@ -61,42 +59,14 @@ public final class DefaultHttpLogger implements HttpLogger
     {
         StringBuilder message = new StringBuilder();
 
-        message.append("Request sent:").append(NL);
-
-        String methodAndUri = mComposer.requestMsg(request.method(), uri);
-        if (methodAndUri != null)
-        {
-            message.append(methodAndUri).append(NL);
-        }
-
+        appendNewLine(mFormatter.appendRequestMsg(request.method(), uri, message), message);
         for (Header<?> header : request.headers())
         {
-            String headerMsg = mComposer.requestMsg(header);
-            if (headerMsg != null)
-            {
-                message.append(headerMsg).append(NL);
-            }
+            appendNewLine(mFormatter.appendRequestMsg(header, message), message);
         }
+        appendNewLine(mFormatter.appendRequestMsg(request.requestEntity(), message), message);
 
-        String entityMsg = mComposer.requestMsg(request.requestEntity());
-        if (entityMsg != null)
-        {
-            message.append(entityMsg).append(NL);
-        }
         return message.toString();
-    }
-
-
-    private long getContentLength(HttpRequestEntity requestEntity)
-    {
-        try
-        {
-            return requestEntity.contentLength();
-        }
-        catch (IOException e)
-        {
-            return -1;
-        }
     }
 
 
@@ -105,9 +75,16 @@ public final class DefaultHttpLogger implements HttpLogger
     {
         String responseLog = composerResponseMessage();
 
-        mLoggingFacility.log(responseLog);
+        if (isError(response))
+        {
+            mLoggingFacility.logError(responseLog, null);
+        }
+        else
+        {
+            mLoggingFacility.log(responseLog);
+        }
 
-        BodyLineFormatter bodyLineFormatter = mComposer.responseBodyFormatter();
+        BodyLineFormatter bodyLineFormatter = mFormatter.responseBodyFormatter();
         // TODO if bodyLineFormatter != null, decorate response adding bodyLineFormatter and mLoggingFacility to the stream handler
         return response;
     }
@@ -116,9 +93,7 @@ public final class DefaultHttpLogger implements HttpLogger
     private String composerResponseMessage()
     {
         StringBuilder message = new StringBuilder();
-        message.append("Response received:").append(NL);
         // TODO similarly as in composeRequestMessage()
-        // ...
         return message.toString();
     }
 
@@ -126,5 +101,14 @@ public final class DefaultHttpLogger implements HttpLogger
     private boolean isError(HttpResponse response)
     {
         return response.status().isClientError() || response.status().isServerError();
+    }
+
+
+    private void appendNewLine(boolean appended, StringBuilder message)
+    {
+        if (appended)
+        {
+            message.append(NL);
+        }
     }
 }
