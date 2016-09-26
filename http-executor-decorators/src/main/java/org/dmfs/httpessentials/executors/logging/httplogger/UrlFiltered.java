@@ -19,7 +19,6 @@ package org.dmfs.httpessentials.executors.logging.httplogger;
 
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpResponse;
-import org.dmfs.httpessentials.executors.logging.httplogger.HttpLogger;
 
 import java.net.URI;
 

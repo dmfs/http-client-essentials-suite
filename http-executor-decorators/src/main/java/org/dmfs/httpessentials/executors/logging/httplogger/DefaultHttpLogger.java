@@ -22,14 +22,16 @@ import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.decoration.Decoration;
 import org.dmfs.httpessentials.executors.logging.formatter.BodyLineFormatter;
 import org.dmfs.httpessentials.executors.logging.formatter.HttpLogFormatter;
-import org.dmfs.httpessentials.executors.logging.httplogger.HttpLogger;
 import org.dmfs.httpessentials.executors.logging.io.DuplicatingInputStream;
+import org.dmfs.httpessentials.executors.logging.io.DuplicatingOutputStream;
 import org.dmfs.httpessentials.executors.logging.io.InputStreamDecorated;
 import org.dmfs.httpessentials.executors.logging.io.LoggingOutputStream;
+import org.dmfs.httpessentials.executors.logging.io.OutputStreamDecorated;
 import org.dmfs.httpessentials.executors.logging.logfacility.LogFacility;
 import org.dmfs.httpessentials.headers.Header;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 
 
@@ -58,8 +60,12 @@ public final class DefaultHttpLogger implements HttpLogger
 
         mLogFacility.log(logMessage);
 
-        BodyLineFormatter bodyLineFormatter = mFormatter.requestBodyFormatter(request.requestEntity());
-        // TODO if bodyLineFormatter != null, decorate request adding bodyLineFormatter and mLogFacility to the stream handler
+        final BodyLineFormatter bodyLineFormatter = mFormatter.requestBodyFormatter(request.requestEntity());
+
+        if (bodyLineFormatter != null)
+        {
+            return new OutputStreamDecorated<>(request, new OutputStreamDecoration(bodyLineFormatter));
+        }
 
         return request;
     }
@@ -143,6 +149,26 @@ public final class DefaultHttpLogger implements HttpLogger
         public InputStream decorated(InputStream original)
         {
             return new DuplicatingInputStream(original,
+                    new LoggingOutputStream(mLogFacility, mBodyLineFormatter));
+        }
+    }
+
+
+    private class OutputStreamDecoration implements Decoration<OutputStream>
+    {
+        private final BodyLineFormatter mBodyLineFormatter;
+
+
+        public OutputStreamDecoration(BodyLineFormatter bodyLineFormatter)
+        {
+            mBodyLineFormatter = bodyLineFormatter;
+        }
+
+
+        @Override
+        public OutputStream decorated(OutputStream original)
+        {
+            return new DuplicatingOutputStream(original,
                     new LoggingOutputStream(mLogFacility, mBodyLineFormatter));
         }
     }
