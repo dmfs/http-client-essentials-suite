@@ -22,16 +22,27 @@ package org.dmfs.httpessentials.executors.logging;
  */
 public final class LogcatLoggingFacility implements LoggingFacility
 {
-    @Override
-    public void log(LogLevel logLevel, String tag, String message)
+    private final LogLevel mLogLevel; // would be the logcat's one
+    private final String mTag;
+
+
+    public LogcatLoggingFacility(LogLevel logLevel, String tag)
     {
-        // ...
+        mLogLevel = logLevel;
+        mTag = tag;
     }
 
 
     @Override
-    public void log(LogLevel logLevel, String tag, String message, Throwable throwable)
+    public void log(String message)
     {
-        // ...
+        // logcat log with mTag and mLogLevel
+    }
+
+
+    @Override
+    public void logError(String message, Throwable throwable)
+    {
+        // logcat log with mTag and ERROR level
     }
 }

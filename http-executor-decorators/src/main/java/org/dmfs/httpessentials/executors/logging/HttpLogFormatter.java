@@ -29,7 +29,7 @@ import java.net.URI;
 /**
  * @author Gabor Keszthelyi
  */
-public interface HttpLogComposer
+public interface HttpLogFormatter
 {
     // return null means not to log
 
@@ -39,7 +39,7 @@ public interface HttpLogComposer
 
     String requestMsg(HttpRequestEntity entity);
 
-    BodyLogComposer requestBodyComposer();
+    BodyLineFormatter requestBodyFormatter();
 
     String responseMsg(HttpStatus status);
 
@@ -47,6 +47,6 @@ public interface HttpLogComposer
 
     String responseMsg(HttpResponseEntity entity, HttpStatus status);
 
-    BodyLogComposer responseBodyComposer();
+    BodyLineFormatter responseBodyFormatter();
 
 }

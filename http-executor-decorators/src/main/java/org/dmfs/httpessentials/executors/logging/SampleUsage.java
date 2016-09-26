@@ -29,12 +29,14 @@ public final class SampleUsage
     {
         HttpRequestExecutor executor = null;
 
-        HttpLogComposer logComposer = null; // new NoHeaders(new NoBody(new All()))
-        HttpLogger httpLogger = new DefaultHttpLogger(HttpLogFilters.ALL, logComposer, new LogcatLoggingFacility(), "HttpLog");
+        HttpLogFormatter logComposer = null; // new NoHeaders(new NoBody(new All()))
+        LogcatLoggingFacility loggingFacility = new LogcatLoggingFacility(LogLevel.DEBUG, "tag");
+
+        HttpLogger httpLogger = new DefaultHttpLogger(logComposer, loggingFacility);
 
         HttpRequestExecutor wrappedExecutor1 = new Logging(executor, httpLogger);
 
-        HttpRequestExecutor wrappedExecutor2 = new Logging(executor, logComposer, new LogcatLoggingFacility());
+        HttpRequestExecutor wrappedExecutor2 = new Logging(executor, logComposer, loggingFacility);
     }
 
 }

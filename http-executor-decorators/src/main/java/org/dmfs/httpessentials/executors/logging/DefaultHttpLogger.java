@@ -33,35 +33,26 @@ public final class DefaultHttpLogger implements HttpLogger
 {
     private static final String NL = "\n";
 
-    private final HttpLogFilter mFilter;
-    private final HttpLogComposer mComposer;
+    private final HttpLogFormatter mComposer;
     private final LoggingFacility mLoggingFacility;
-    private final String mTag;
 
 
-    public DefaultHttpLogger(HttpLogFilter filter, HttpLogComposer logComposer, LoggingFacility loggingFacility, String tag)
+    public DefaultHttpLogger(HttpLogFormatter logFormatter, LoggingFacility loggingFacility)
     {
-        mFilter = filter;
-        mComposer = logComposer;
+        mComposer = logFormatter;
         mLoggingFacility = loggingFacility;
-        mTag = tag;
     }
 
 
     @Override
     public HttpRequest<?> log(URI uri, HttpRequest<?> request)
     {
-        if (!mFilter.logRequest(uri, request))
-        {
-            return request;
-        }
-
         String logMessage = composeRequestMessage(uri, request);
 
-        mLoggingFacility.log(LogLevel.DEBUG, mTag, logMessage);
+        mLoggingFacility.log(logMessage);
 
-        BodyLogComposer bodyLogComposer = mComposer.requestBodyComposer();
-        // TODO if bodyLogComposer != null, decorate request adding bodyLogComposer and mLoggingFacility to the stream handler
+        BodyLineFormatter bodyLineFormatter = mComposer.requestBodyFormatter();
+        // TODO if bodyLineFormatter != null, decorate request adding bodyLineFormatter and mLoggingFacility to the stream handler
         return request;
     }
 
@@ -112,18 +103,12 @@ public final class DefaultHttpLogger implements HttpLogger
     @Override
     public HttpResponse log(HttpResponse response)
     {
-        if (!mFilter.logResponse(response))
-        {
-            return response;
-        }
-
         String responseLog = composerResponseMessage();
 
-        LogLevel logLevel = isError(response) ? LogLevel.ERROR : LogLevel.DEBUG;
-        mLoggingFacility.log(logLevel, mTag, responseLog);
+        mLoggingFacility.log(responseLog);
 
-        BodyLogComposer bodyLogComposer = mComposer.responseBodyComposer();
-        // TODO if bodyLogComposer != null, decorate response adding bodyLogComposer and mLoggingFacility to the stream handler
+        BodyLineFormatter bodyLineFormatter = mComposer.responseBodyFormatter();
+        // TODO if bodyLineFormatter != null, decorate response adding bodyLineFormatter and mLoggingFacility to the stream handler
         return response;
     }
 

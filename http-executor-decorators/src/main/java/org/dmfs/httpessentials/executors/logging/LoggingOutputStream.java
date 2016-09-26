@@ -17,31 +17,35 @@
 
 package org.dmfs.httpessentials.executors.logging;
 
-import org.dmfs.httpessentials.client.HttpRequest;
-import org.dmfs.httpessentials.client.HttpResponse;
-
-import java.net.URI;
+import java.io.IOException;
+import java.io.OutputStream;
 
 
 /**
  * @author Gabor Keszthelyi
  */
-public interface HttpLogFilters
+public final class LoggingOutputStream extends OutputStream
 {
-    HttpLogFilter ALL = new HttpLogFilter()
+
+
+
+    @Override
+    public void write(int b) throws IOException
     {
-        @Override
-        public boolean logRequest(URI uri, HttpRequest<?> request)
-        {
-            return true;
-        }
+
+    }
 
 
-        @Override
-        public boolean logResponse(HttpResponse response)
-        {
-            return true;
-        }
-    };
+    @Override
+    public void close() throws IOException
+    {
+        super.close();
+    }
 
+
+    @Override
+    public void flush() throws IOException
+    {
+        super.flush();
+    }
 }

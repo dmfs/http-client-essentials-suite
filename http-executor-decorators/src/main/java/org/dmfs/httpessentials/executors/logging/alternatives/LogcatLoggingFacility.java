@@ -15,20 +15,27 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
+package org.dmfs.httpessentials.executors.logging.alternatives;
 
-import org.dmfs.httpessentials.client.HttpRequest;
-import org.dmfs.httpessentials.client.HttpResponse;
-
-import java.net.URI;
+import org.dmfs.httpessentials.executors.logging.LogLevel;
+import org.dmfs.httpessentials.executors.logging.alternatives.LoggingFacility;
 
 
 /**
  * @author Gabor Keszthelyi
  */
-public interface HttpLogFilter
+final class LogcatLoggingFacility implements LoggingFacility
 {
-    boolean logRequest(URI uri, HttpRequest<?> request);
+    @Override
+    public void log(LogLevel logLevel, String tag, String message)
+    {
+        // ...
+    }
 
-    boolean logResponse(HttpResponse response);
+
+    @Override
+    public void log(LogLevel logLevel, String tag, String message, Throwable throwable)
+    {
+        // ...
+    }
 }
