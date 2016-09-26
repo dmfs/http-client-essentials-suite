@@ -37,7 +37,7 @@ public class LoggingInputStreamTest
         InputStream inputStream = new ByteArrayInputStream("hello\nthere".getBytes());
 
         final StringBuilder messages = new StringBuilder();
-        LoggingFacility loggingFacility = new LoggingFacility()
+        LogFacility logFacility = new LogFacility()
         {
 
             @Override
@@ -69,7 +69,7 @@ public class LoggingInputStreamTest
                 return "Log: " + aLineInTheBody;
             }
         };
-        InputStream underTest = new LoggingInputStream(inputStream, loggingFacility, bodyLineFormatter);
+        InputStream underTest = new LoggingInputStream(inputStream, logFacility, bodyLineFormatter);
 
         int b;
         while ((b = underTest.read()) != -1)

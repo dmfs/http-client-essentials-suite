@@ -47,10 +47,10 @@ public final class Logging implements HttpRequestExecutor
     }
 
 
-    public Logging(HttpRequestExecutor delegateExecutor, HttpLogFormatter logFormatter, LoggingFacility loggingFacility)
+    public Logging(HttpRequestExecutor delegateExecutor, HttpLogFormatter logFormatter, LogFacility logFacility)
     {
         mDelegateExecutor = delegateExecutor;
-        mHttpLogger = new DefaultHttpLogger(logFormatter, loggingFacility);
+        mHttpLogger = new DefaultHttpLogger(logFormatter, logFacility);
         ;
     }
 

@@ -31,13 +31,13 @@ public final class SampleUsage
         HttpRequestExecutor executor = null;
 
         HttpLogFormatter logComposer = null; // new NoHeaders(new NoBody(new All()))
-        LogcatLoggingFacility loggingFacility = new LogcatLoggingFacility(LogLevel.DEBUG, "tag");
+        LogcatLogFacility logFacility = new LogcatLogFacility(LogLevel.DEBUG, "tag");
 
-        HttpLogger httpLogger = new DefaultHttpLogger(logComposer, loggingFacility);
+        HttpLogger httpLogger = new DefaultHttpLogger(logComposer, logFacility);
 
         HttpRequestExecutor wrappedExecutor1 = new Logging(executor, httpLogger);
 
-        HttpRequestExecutor wrappedExecutor2 = new Logging(executor, logComposer, loggingFacility);
+        HttpRequestExecutor wrappedExecutor2 = new Logging(executor, logComposer, logFacility);
     }
 
 }

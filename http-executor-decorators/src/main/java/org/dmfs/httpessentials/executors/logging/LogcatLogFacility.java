@@ -23,13 +23,13 @@ import org.dmfs.httpessentials.executors.logging.alternatives.LogLevel;
 /**
  * @author Gabor Keszthelyi
  */
-public final class LogcatLoggingFacility implements LoggingFacility
+public final class LogcatLogFacility implements LogFacility
 {
     private final LogLevel mLogLevel; // would be the logcat's one
     private final String mTag;
 
 
-    public LogcatLoggingFacility(LogLevel logLevel, String tag)
+    public LogcatLogFacility(LogLevel logLevel, String tag)
     {
         mLogLevel = logLevel;
         mTag = tag;

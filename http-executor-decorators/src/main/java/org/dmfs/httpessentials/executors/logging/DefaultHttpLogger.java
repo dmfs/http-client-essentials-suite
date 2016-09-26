@@ -37,13 +37,13 @@ public final class DefaultHttpLogger implements HttpLogger
     private static final String NL = "\n";
 
     private final HttpLogFormatter mFormatter;
-    private final LoggingFacility mLoggingFacility;
+    private final LogFacility mLogFacility;
 
 
-    public DefaultHttpLogger(HttpLogFormatter logFormatter, LoggingFacility loggingFacility)
+    public DefaultHttpLogger(HttpLogFormatter logFormatter, LogFacility logFacility)
     {
         mFormatter = logFormatter;
-        mLoggingFacility = loggingFacility;
+        mLogFacility = logFacility;
     }
 
 
@@ -52,10 +52,10 @@ public final class DefaultHttpLogger implements HttpLogger
     {
         String logMessage = composeRequestMessage(uri, request);
 
-        mLoggingFacility.log(logMessage);
+        mLogFacility.log(logMessage);
 
         BodyLineFormatter bodyLineFormatter = mFormatter.requestBodyFormatter();
-        // TODO if bodyLineFormatter != null, decorate request adding bodyLineFormatter and mLoggingFacility to the stream handler
+        // TODO if bodyLineFormatter != null, decorate request adding bodyLineFormatter and mLogFacility to the stream handler
 
         return request;
     }
@@ -83,11 +83,11 @@ public final class DefaultHttpLogger implements HttpLogger
 
         if (isError(response))
         {
-            mLoggingFacility.logError(responseLog, null);
+            mLogFacility.logError(responseLog, null);
         }
         else
         {
-            mLoggingFacility.log(responseLog);
+            mLogFacility.log(responseLog);
         }
 
         BodyLineFormatter bodyLineFormatter = mFormatter.responseBodyFormatter();
@@ -138,7 +138,7 @@ public final class DefaultHttpLogger implements HttpLogger
         public InputStream decorated(InputStream original)
         {
             return new DuplicatingInputStream(original,
-                    new LoggingOutputStream(mLoggingFacility, mBodyLineFormatter));
+                    new LoggingOutputStream(mLogFacility, mBodyLineFormatter));
         }
     }
 }

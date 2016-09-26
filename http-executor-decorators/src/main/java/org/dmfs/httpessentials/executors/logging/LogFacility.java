@@ -22,7 +22,7 @@ package org.dmfs.httpessentials.executors.logging;
  *
  * @author Gabor Keszthelyi
  */
-public interface LoggingFacility
+public interface LogFacility
 {
     void log(String message);
 

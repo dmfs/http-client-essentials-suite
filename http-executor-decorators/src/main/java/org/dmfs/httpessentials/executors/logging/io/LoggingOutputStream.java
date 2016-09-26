@@ -18,7 +18,7 @@
 package org.dmfs.httpessentials.executors.logging.io;
 
 import org.dmfs.httpessentials.executors.logging.BodyLineFormatter;
-import org.dmfs.httpessentials.executors.logging.LoggingFacility;
+import org.dmfs.httpessentials.executors.logging.LogFacility;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -32,14 +32,14 @@ import java.io.UnsupportedEncodingException;
 public final class LoggingOutputStream extends OutputStream
 {
 
-    private final LoggingFacility mLoggingFacility;
+    private final LogFacility mLogFacility;
     private final BodyLineFormatter mBodyLineFormatter;
     private final ByteArrayOutputStream mByteArrayOutputStream;
 
 
-    public LoggingOutputStream(LoggingFacility loggingFacility, BodyLineFormatter bodyLineFormatter)
+    public LoggingOutputStream(LogFacility logFacility, BodyLineFormatter bodyLineFormatter)
     {
-        mLoggingFacility = loggingFacility;
+        mLogFacility = logFacility;
         mBodyLineFormatter = bodyLineFormatter;
         mByteArrayOutputStream = new ByteArrayOutputStream();
     }
@@ -77,7 +77,7 @@ public final class LoggingOutputStream extends OutputStream
     {
         if (mByteArrayOutputStream.size() != 0)
         {
-            mLoggingFacility.log(createLogLine());
+            mLogFacility.log(createLogLine());
             mByteArrayOutputStream.reset();
         }
     }
