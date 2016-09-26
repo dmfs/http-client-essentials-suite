@@ -15,10 +15,9 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
+package org.dmfs.httpessentials.executors.logging.io;
 
 import org.dmfs.httpessentials.executors.logging.formatter.BodyLineFormatter;
-import org.dmfs.httpessentials.executors.logging.io.LoggingInputStream;
 import org.dmfs.httpessentials.executors.logging.logfacility.LogFacility;
 import org.junit.Test;
 
@@ -30,7 +29,8 @@ import java.io.InputStream;
 /**
  * @author Gabor Keszthelyi
  */
-public class LoggingInputStreamTest
+// TODO review, continue
+public class LoggingOutputStreamTest
 {
 
     @Test
@@ -71,7 +71,8 @@ public class LoggingInputStreamTest
                 return "Log: " + aLineInTheBody;
             }
         };
-        InputStream underTest = new LoggingInputStream(inputStream, logFacility, bodyLineFormatter);
+
+        InputStream underTest = new DuplicatingInputStream(inputStream, new LoggingOutputStream(logFacility, bodyLineFormatter));
 
         int b;
         while ((b = underTest.read()) != -1)
