@@ -17,8 +17,13 @@
 
 package org.dmfs.httpessentials.executors.logging.io;
 
+import org.dmfs.httpessentials.executors.logging.BodyLineFormatter;
+import org.dmfs.httpessentials.executors.logging.LoggingFacility;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 
 /**
@@ -27,25 +32,59 @@ import java.io.OutputStream;
 public final class LoggingOutputStream extends OutputStream
 {
 
+    private final LoggingFacility mLoggingFacility;
+    private final BodyLineFormatter mBodyLineFormatter;
+    private final ByteArrayOutputStream mByteArrayOutputStream;
+
+
+    public LoggingOutputStream(LoggingFacility loggingFacility, BodyLineFormatter bodyLineFormatter, ByteArrayOutputStream byteArrayOutputStream)
+    {
+        mLoggingFacility = loggingFacility;
+        mBodyLineFormatter = bodyLineFormatter;
+        mByteArrayOutputStream = byteArrayOutputStream;
+    }
 
 
     @Override
     public void write(int b) throws IOException
     {
-
+        if (b == '\n')
+        {
+            flushLine();
+        }
+        else if (b != -1)
+        {
+            mByteArrayOutputStream.write(b);
+        }
     }
 
 
     @Override
     public void close() throws IOException
     {
-        super.close();
+        flushLine();
     }
 
 
     @Override
     public void flush() throws IOException
     {
-        super.flush();
+        flushLine();
+    }
+
+
+    private void flushLine() throws UnsupportedEncodingException
+    {
+        if (mByteArrayOutputStream.size() != 0)
+        {
+            mLoggingFacility.log(createLogLine());
+            mByteArrayOutputStream.reset();
+        }
+    }
+
+
+    private String createLogLine() throws UnsupportedEncodingException
+    {
+        return mBodyLineFormatter.bodyLineMsg(mByteArrayOutputStream.toString(mBodyLineFormatter.charset()));
     }
 }
