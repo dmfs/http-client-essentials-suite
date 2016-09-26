@@ -18,20 +18,16 @@
 package org.dmfs.httpessentials.executors.logging.alternatives;
 
 /**
+ * LoggingFacility_Alt abstraction bearing compatibility with LogCat and slf4j in mind.
+ * https://developer.android.com/reference/android/util/Log.html
+ * http://www.slf4j.org/api/org/slf4j/Logger.html
+ *
  * @author Gabor Keszthelyi
  */
-final class LogcatLoggingFacility implements LoggingFacility
+interface LoggingFacility_Alt
 {
-    @Override
-    public void log(LogLevel logLevel, String tag, String message)
-    {
-        // ...
-    }
+    void log(LogLevel logLevel, String tag, String message);
 
+    void log(LogLevel logLevel, String tag, String message, Throwable throwable);
 
-    @Override
-    public void log(LogLevel logLevel, String tag, String message, Throwable throwable)
-    {
-        // ...
-    }
 }
