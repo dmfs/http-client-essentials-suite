@@ -39,7 +39,7 @@ public interface HttpLogFormatter
 
     boolean appendRequestMsg(HttpRequestEntity entity, StringBuilder logMessage);
 
-    BodyLineFormatter requestBodyFormatter();
+    BodyLineFormatter requestBodyFormatter(HttpRequestEntity entity);
 
     boolean responseMsg(HttpStatus status, StringBuilder logMessage);
 
@@ -47,6 +47,6 @@ public interface HttpLogFormatter
 
     boolean responseMsg(HttpResponseEntity entity, HttpStatus status, StringBuilder logMessage);
 
-    BodyLineFormatter responseBodyFormatter();
+    BodyLineFormatter responseBodyFormatter(HttpResponseEntity entity);
 
 }

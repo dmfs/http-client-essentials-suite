@@ -51,7 +51,6 @@ public final class Logging implements HttpRequestExecutor
     {
         mDelegateExecutor = delegateExecutor;
         mHttpLogger = new DefaultHttpLogger(logFormatter, logFacility);
-        ;
     }
 
 

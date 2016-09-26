@@ -54,7 +54,7 @@ public final class DefaultHttpLogger implements HttpLogger
 
         mLogFacility.log(logMessage);
 
-        BodyLineFormatter bodyLineFormatter = mFormatter.requestBodyFormatter();
+        BodyLineFormatter bodyLineFormatter = mFormatter.requestBodyFormatter(request.requestEntity());
         // TODO if bodyLineFormatter != null, decorate request adding bodyLineFormatter and mLogFacility to the stream handler
 
         return request;
@@ -90,7 +90,7 @@ public final class DefaultHttpLogger implements HttpLogger
             mLogFacility.log(responseLog);
         }
 
-        BodyLineFormatter bodyLineFormatter = mFormatter.responseBodyFormatter();
+        BodyLineFormatter bodyLineFormatter = mFormatter.responseBodyFormatter(response.responseEntity());
 
         if (bodyLineFormatter != null)
         {
