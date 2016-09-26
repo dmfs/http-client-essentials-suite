@@ -29,6 +29,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * @author Gabor Keszthelyi
  */
+// TODO not needed now, as LogingOutputStream is created, use test for that one and remove this
 public final class LoggingInputStream extends InputStream
 {
     private final InputStream mInputStream;

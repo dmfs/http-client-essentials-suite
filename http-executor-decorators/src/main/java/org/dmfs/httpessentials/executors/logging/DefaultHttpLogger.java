@@ -19,8 +19,13 @@ package org.dmfs.httpessentials.executors.logging;
 
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpResponse;
+import org.dmfs.httpessentials.decoration.Decoration;
+import org.dmfs.httpessentials.executors.logging.io.DuplicatingInputStream;
+import org.dmfs.httpessentials.executors.logging.io.InputStreamDecorated;
+import org.dmfs.httpessentials.executors.logging.io.LoggingOutputStream;
 import org.dmfs.httpessentials.headers.Header;
 
+import java.io.InputStream;
 import java.net.URI;
 
 
@@ -51,6 +56,7 @@ public final class DefaultHttpLogger implements HttpLogger
 
         BodyLineFormatter bodyLineFormatter = mFormatter.requestBodyFormatter();
         // TODO if bodyLineFormatter != null, decorate request adding bodyLineFormatter and mLoggingFacility to the stream handler
+
         return request;
     }
 
@@ -73,7 +79,7 @@ public final class DefaultHttpLogger implements HttpLogger
     @Override
     public HttpResponse log(HttpResponse response)
     {
-        String responseLog = composerResponseMessage();
+        String responseLog = composeResponseMessage();
 
         if (isError(response))
         {
@@ -85,12 +91,17 @@ public final class DefaultHttpLogger implements HttpLogger
         }
 
         BodyLineFormatter bodyLineFormatter = mFormatter.responseBodyFormatter();
-        // TODO if bodyLineFormatter != null, decorate response adding bodyLineFormatter and mLoggingFacility to the stream handler
+
+        if (bodyLineFormatter != null)
+        {
+            return new InputStreamDecorated(response, new LoggingStreamDecoration(bodyLineFormatter));
+        }
+
         return response;
     }
 
 
-    private String composerResponseMessage()
+    private String composeResponseMessage()
     {
         StringBuilder message = new StringBuilder();
         // TODO similarly as in composeRequestMessage()
@@ -109,6 +120,25 @@ public final class DefaultHttpLogger implements HttpLogger
         if (appended)
         {
             message.append(NL);
+        }
+    }
+
+
+    private class LoggingStreamDecoration implements Decoration<InputStream>
+    {
+        private final BodyLineFormatter mBodyLineFormatter;
+
+        public LoggingStreamDecoration(BodyLineFormatter bodyLineFormatter)
+        {
+            mBodyLineFormatter = bodyLineFormatter;
+        }
+
+
+        @Override
+        public InputStream decorated(InputStream original)
+        {
+            return new DuplicatingInputStream(original,
+                    new LoggingOutputStream(mLoggingFacility, mBodyLineFormatter));
         }
     }
 }

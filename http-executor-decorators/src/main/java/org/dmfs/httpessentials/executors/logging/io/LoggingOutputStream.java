@@ -37,11 +37,11 @@ public final class LoggingOutputStream extends OutputStream
     private final ByteArrayOutputStream mByteArrayOutputStream;
 
 
-    public LoggingOutputStream(LoggingFacility loggingFacility, BodyLineFormatter bodyLineFormatter, ByteArrayOutputStream byteArrayOutputStream)
+    public LoggingOutputStream(LoggingFacility loggingFacility, BodyLineFormatter bodyLineFormatter)
     {
         mLoggingFacility = loggingFacility;
         mBodyLineFormatter = bodyLineFormatter;
-        mByteArrayOutputStream = byteArrayOutputStream;
+        mByteArrayOutputStream = new ByteArrayOutputStream();
     }
 
 
