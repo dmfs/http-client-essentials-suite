@@ -15,17 +15,37 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
+package org.dmfs.httpessentials.executors.logging.io;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
 
 /**
  * @author Gabor Keszthelyi
  */
-public enum LogLevel
+public final class LoggingOutputStream extends OutputStream
 {
-    VERBOSE,
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR;
 
+
+
+    @Override
+    public void write(int b) throws IOException
+    {
+
+    }
+
+
+    @Override
+    public void close() throws IOException
+    {
+        super.close();
+    }
+
+
+    @Override
+    public void flush() throws IOException
+    {
+        super.flush();
+    }
 }

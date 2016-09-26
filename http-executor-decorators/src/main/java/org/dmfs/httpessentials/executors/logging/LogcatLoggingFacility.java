@@ -17,6 +17,9 @@
 
 package org.dmfs.httpessentials.executors.logging;
 
+import org.dmfs.httpessentials.executors.logging.alternatives.LogLevel;
+
+
 /**
  * @author Gabor Keszthelyi
  */

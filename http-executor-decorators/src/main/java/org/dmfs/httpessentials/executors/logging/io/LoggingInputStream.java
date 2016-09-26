@@ -15,7 +15,10 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
+package org.dmfs.httpessentials.executors.logging.io;
+
+import org.dmfs.httpessentials.executors.logging.BodyLineFormatter;
+import org.dmfs.httpessentials.executors.logging.LoggingFacility;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

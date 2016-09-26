@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging;
+package org.dmfs.httpessentials.executors.logging.io;
 
 import java.io.IOException;
 import java.io.InputStream;

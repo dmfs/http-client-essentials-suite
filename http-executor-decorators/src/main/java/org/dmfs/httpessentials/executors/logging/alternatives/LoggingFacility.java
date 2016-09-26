@@ -17,9 +17,6 @@
 
 package org.dmfs.httpessentials.executors.logging.alternatives;
 
-import org.dmfs.httpessentials.executors.logging.LogLevel;
-
-
 /**
  * LoggingFacility abstraction bearing compatibility with LogCat and slf4j in mind.
  * https://developer.android.com/reference/android/util/Log.html

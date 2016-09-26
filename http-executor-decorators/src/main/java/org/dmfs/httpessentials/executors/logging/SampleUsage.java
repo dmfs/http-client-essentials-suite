@@ -18,6 +18,7 @@
 package org.dmfs.httpessentials.executors.logging;
 
 import org.dmfs.httpessentials.client.HttpRequestExecutor;
+import org.dmfs.httpessentials.executors.logging.alternatives.LogLevel;
 
 
 /**

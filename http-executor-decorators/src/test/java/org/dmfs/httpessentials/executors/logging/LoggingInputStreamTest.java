@@ -17,6 +17,7 @@
 
 package org.dmfs.httpessentials.executors.logging;
 
+import org.dmfs.httpessentials.executors.logging.io.LoggingInputStream;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
