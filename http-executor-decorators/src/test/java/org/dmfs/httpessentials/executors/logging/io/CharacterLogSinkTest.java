@@ -32,8 +32,8 @@ public class CharacterLogSinkTest
     @Test
     public void test() throws UnsupportedEncodingException
     {
-        String inputCharsetName = "UTF-16BE";
-        String decodingCharsetName = "UTF-16BE";
+        String inputCharsetName = "UTF-16";
+        String decodingCharsetName = "UTF-16";
 
         final StringBuilder messages = new StringBuilder();
         messages.append("--START").append("\n");
