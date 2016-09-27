@@ -33,7 +33,7 @@ public class CharacterLogSinkTest
     public void test() throws UnsupportedEncodingException
     {
         final StringBuilder messages = new StringBuilder();
-        messages.append("START").append("\n");
+        messages.append("--START").append("\n");
 
         LogSink logSink = new CharacterLogSink("UTF-8", new LogFacility()
         {
@@ -49,18 +49,18 @@ public class CharacterLogSinkTest
             {
 
             }
-        });
+        }, 6);
 
-        byte[] bytes = "hello\nthere\n\nwelcome here".getBytes("UTF-8");
+        byte[] bytes = "hello\nthere\n\nhőgyálíűúőö".getBytes("UTF-8");
 
         for (byte b : bytes)
         {
             logSink.sink(b);
             messages.append(b).append("\n");
         }
-        messages.append("flushing:").append("\n");
+        messages.append("--flushing:").append("\n");
         logSink.flush();
-        messages.append("END");
+        messages.append("--END");
 
         System.out.println(messages.toString());
     }

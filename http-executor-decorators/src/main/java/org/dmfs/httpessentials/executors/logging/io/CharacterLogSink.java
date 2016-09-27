@@ -24,6 +24,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
+import java.nio.charset.CodingErrorAction;
 
 
 /**
@@ -51,7 +52,7 @@ public final class CharacterLogSink implements LogSink
 
     public CharacterLogSink(String charsetName, LogFacility logFacility, int charBufferCapacity)
     {
-        mCharsetDecoder = Charset.forName(charsetName).newDecoder();
+        mCharsetDecoder = Charset.forName(charsetName).newDecoder().onUnmappableCharacter(CodingErrorAction.REPLACE);
         mLogFacility = logFacility;
         mByteBuffer = ByteBuffer.allocate(BYTE_BUFFER_CAPACITY);
         mCharBuffer = CharBuffer.allocate(charBufferCapacity);
@@ -69,36 +70,36 @@ public final class CharacterLogSink implements LogSink
     {
         mByteBuffer.put(b);
 
-        mByteBuffer.limit(mByteBuffer.position()); // set limit, so decoder only reads until last byte put
+        int beforeBytePos = mByteBuffer.position();
+        mByteBuffer.limit(beforeBytePos); // set limit, so decoder only reads until last byte put
         mByteBuffer.position(0); // set position to 0, so decoder starts read from there
 
-        int before = mCharBuffer.position();
-        CoderResult coderResult = mCharsetDecoder.decode(mByteBuffer, mCharBuffer,
-                true); // TODO result error handling?
-        int after = mCharBuffer.position();
+        CoderResult coderResult = mCharsetDecoder.decode(mByteBuffer, mCharBuffer, true);
 
-        if (before < after) // char has been added
+        // TODO review and test whether we handle everything here correctly
+        if (coderResult.isUnderflow() || coderResult.isUnmappable()) // char has been added
         {
             mByteBuffer.clear();
-            flushIfNeeded();
+            flushCharsIfNeeded();
         }
         else // char hasn't been added
         {
-            mByteBuffer.limit(mByteBuffer.position() + 1); // increase limit to accommodate next byte
+            mByteBuffer.limit(beforeBytePos + 1);
+            mByteBuffer.position(beforeBytePos);
         }
     }
 
 
-    private void flushIfNeeded()
+    private void flushCharsIfNeeded()
     {
-        if (mCharBuffer.position() == mCharBuffer.limit())
-        {
-            flush();
-        }
-
         if (lastChar() == '\n') // TODO other new lines chars?
         {
             mCharBuffer.position(mCharBuffer.position() - 1);
+            flush();
+        }
+
+        if (mCharBuffer.position() == mCharBuffer.limit())
+        {
             flush();
         }
     }
