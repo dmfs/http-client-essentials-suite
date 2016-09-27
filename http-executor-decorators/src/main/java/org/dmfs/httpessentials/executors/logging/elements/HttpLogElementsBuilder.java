@@ -20,7 +20,7 @@ package org.dmfs.httpessentials.executors.logging.elements;
 /**
  * @author Gabor Keszthelyi
  */
-public final class HttpLogComposerBuilder implements HttpLogElements.Builder
+public final class HttpLogElementsBuilder implements HttpLogElements.Builder
 {
     // TODO
 
