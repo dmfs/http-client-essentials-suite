@@ -30,12 +30,12 @@ import java.net.URI;
  */
 public final class BaseHttpLogger implements HttpLogger
 {
-    private final HttpLogComposer mHttpLogComposer;
+    private final HttpLogElements mHttpLogElements;
 
 
-    public BaseHttpLogger(HttpLogComposer httpLogComposer)
+    public BaseHttpLogger(HttpLogElements httpLogElements)
     {
-        mHttpLogComposer = httpLogComposer;
+        mHttpLogElements = httpLogElements;
     }
 
 
@@ -43,12 +43,12 @@ public final class BaseHttpLogger implements HttpLogger
     public <T> HttpRequest<T> log(URI uri, HttpRequest<T> request)
     {
         StringBuilder logMessage = new StringBuilder();
-        for (RequestLogElement requestLogElement : mHttpLogComposer.requestLogElements())
+        for (RequestLogElement requestLogElement : mHttpLogElements.requestLogElements())
         {
             requestLogElement.log(request, uri, logMessage);
         }
         // logFacility.log(...)
-        LogSink logSink = mHttpLogComposer.entityBodyLogSinkProvider().provide(uri, request);
+        LogSink logSink = mHttpLogElements.entityBodyLogSinkProvider().provide(uri, request);
         // if logSink not null, decorate request using LogSink
         return null;
     }

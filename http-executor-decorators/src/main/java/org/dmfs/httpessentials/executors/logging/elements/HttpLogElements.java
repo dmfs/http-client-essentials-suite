@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author Gabor Keszthelyi
  */
-public interface HttpLogComposer
+public interface HttpLogElements
 {
     List<RequestLogElement> requestLogElements();
 
@@ -39,6 +39,6 @@ public interface HttpLogComposer
 
         Builder add(LogSinkProvider logSinkProvider);
 
-        HttpLogComposer build();
+        HttpLogElements build();
     }
 }

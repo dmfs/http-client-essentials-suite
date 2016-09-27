@@ -20,33 +20,33 @@ package org.dmfs.httpessentials.executors.logging.elements;
 /**
  * @author Gabor Keszthelyi
  */
-public final class HttpLogComposerBuilder implements HttpLogComposer.Builder
+public final class HttpLogComposerBuilder implements HttpLogElements.Builder
 {
     // TODO
 
     @Override
-    public HttpLogComposer.Builder add(RequestLogElement element)
+    public HttpLogElements.Builder add(RequestLogElement element)
     {
         return null;
     }
 
 
     @Override
-    public HttpLogComposer.Builder add(ResponseLogElement element)
+    public HttpLogElements.Builder add(ResponseLogElement element)
     {
         return null;
     }
 
 
     @Override
-    public HttpLogComposer.Builder add(LogSinkProvider logSinkProvider)
+    public HttpLogElements.Builder add(LogSinkProvider logSinkProvider)
     {
         return null;
     }
 
 
     @Override
-    public HttpLogComposer build()
+    public HttpLogElements build()
     {
         return null;
     }

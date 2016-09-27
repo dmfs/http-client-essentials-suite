@@ -34,7 +34,7 @@ public final class SampleUsage
 {
     public void sample()
     {
-        HttpLogComposer httpLogComposer = new HttpLogComposerBuilder()
+        HttpLogElements httpLogElements = new HttpLogComposerBuilder()
                 // Request elements in the order of printing:
                 .add(new MethodAndUri())
                 .add(new Headers(ONLY_NON_PERSONAL))
@@ -48,7 +48,7 @@ public final class SampleUsage
                 .build();
 
         HttpRequestExecutor originalExecutor = null;
-        new Logging(originalExecutor, new BaseHttpLogger(httpLogComposer));
+        new Logging(originalExecutor, new BaseHttpLogger(httpLogElements));
     }
 
 }

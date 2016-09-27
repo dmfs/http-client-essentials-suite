@@ -27,6 +27,5 @@ import java.net.URI;
  */
 public interface RequestLogElement
 {
-
     void log(HttpRequest<?> request, URI uri, StringBuilder log);
 }
