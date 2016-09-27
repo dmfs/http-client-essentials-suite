@@ -32,10 +32,13 @@ public class CharacterLogSinkTest
     @Test
     public void test() throws UnsupportedEncodingException
     {
+        String inputCharsetName = "UTF-16BE";
+        String decodingCharsetName = "UTF-16BE";
+
         final StringBuilder messages = new StringBuilder();
         messages.append("--START").append("\n");
 
-        LogSink logSink = new CharacterLogSink("UTF-8", new LogFacility()
+        LogSink logSink = new CharacterLogSink(decodingCharsetName, new LogFacility()
         {
             @Override
             public void log(String message)
@@ -51,9 +54,9 @@ public class CharacterLogSinkTest
             }
         }, 6);
 
-        byte[] bytes = "hello\nthere\n\nhőgyálíűúőö".getBytes("UTF-8");
+        byte[] inputBytes = "hello\nthere\n\nhőgyálíűúőö".getBytes(inputCharsetName);
 
-        for (byte b : bytes)
+        for (byte b : inputBytes)
         {
             logSink.sink(b);
             messages.append(b).append("\n");
