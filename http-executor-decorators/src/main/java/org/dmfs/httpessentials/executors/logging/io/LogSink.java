@@ -23,6 +23,16 @@ import java.io.UnsupportedEncodingException;
 /**
  * @author Gabor Keszthelyi
  */
+
+/*
+TODO other implementations
+"..we should handle binary entities differently. Options are:
+1) don’t log
+2) log base64 encoded
+3) log quoted printable encoded
+4) log hex encoded
+5) other custom method"
+ */
 public interface LogSink
 {
     void sink(byte b);
