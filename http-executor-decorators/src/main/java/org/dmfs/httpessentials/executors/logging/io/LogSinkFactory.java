@@ -15,23 +15,15 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging.elements.sample;
+package org.dmfs.httpessentials.executors.logging.io;
 
-import org.dmfs.httpessentials.client.HttpRequest;
-import org.dmfs.httpessentials.executors.logging.elements.RequestLogElement;
-import org.dmfs.httpessentials.executors.logging.elements.ResponseLogElement;
-
-import java.net.URI;
+import org.dmfs.httpessentials.types.MediaType;
 
 
 /**
  * @author Gabor Keszthelyi
  */
-public final class MethodAndUri implements RequestLogElement
+public interface LogSinkFactory
 {
-    @Override
-    public void log(HttpRequest<?> request, URI uri, StringBuilder log)
-    {
-
-    }
+    LogSink logSink(MediaType mediaType);
 }

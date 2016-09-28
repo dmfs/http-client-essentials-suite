@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging.elements.sample;
+package org.dmfs.httpessentials.executors.logging.elements.elements;
 
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.executors.logging.elements.RequestLogElement;
-import org.dmfs.httpessentials.executors.logging.elements.ResponseLogElement;
 
 import java.net.URI;
 
@@ -27,18 +26,18 @@ import java.net.URI;
 /**
  * @author Gabor Keszthelyi
  */
-public final class Headers implements RequestLogElement
+public final class RequestHeaders implements RequestLogElement
 {
 
     public static int ONLY_NON_PERSONAL;
 
-    public Headers(int filterType) // or with filter/predicate
+    public RequestHeaders(int filterType) // or with filter/predicate
     {
 
     }
 
 
-    public Headers()
+    public RequestHeaders()
     {
 
     }

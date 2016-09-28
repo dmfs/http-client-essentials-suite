@@ -15,17 +15,16 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging.elements.sample;
+package org.dmfs.httpessentials.executors.logging.elements.elements;
 
 import org.dmfs.httpessentials.client.HttpResponse;
-import org.dmfs.httpessentials.executors.logging.elements.RequestLogElement;
 import org.dmfs.httpessentials.executors.logging.elements.ResponseLogElement;
 
 
 /**
  * @author Gabor Keszthelyi
  */
-public final class Status implements ResponseLogElement
+public final class ResponseHeaders implements ResponseLogElement
 {
     @Override
     public void log(HttpResponse response, StringBuilder log)

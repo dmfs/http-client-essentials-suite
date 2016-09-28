@@ -29,7 +29,7 @@ public interface HttpLogElements
 
     List<ResponseLogElement> responseLogElements();
 
-    LogSinkProvider entityBodyLogSinkProvider();
+    LogSinkProvider contentLogSinkProvider();
 
     interface Builder
     {

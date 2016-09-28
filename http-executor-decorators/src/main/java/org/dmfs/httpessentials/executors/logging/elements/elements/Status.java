@@ -15,39 +15,20 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging.logfacility;
+package org.dmfs.httpessentials.executors.logging.elements.elements;
+
+import org.dmfs.httpessentials.client.HttpResponse;
+import org.dmfs.httpessentials.executors.logging.elements.ResponseLogElement;
+
 
 /**
  * @author Gabor Keszthelyi
  */
-public final class LogcatLogFacility implements LogFacility
+public final class Status implements ResponseLogElement
 {
-    private final int mLogLevel; // logcat's log level constant
-    private final String mTag;
-
-
-    public LogcatLogFacility(int logLevel, String tag)
-    {
-        mLogLevel = logLevel;
-        mTag = tag;
-    }
-
-    public LogcatLogFacility()
-    {
-        this(2, "http-client");
-    }
-
-
     @Override
-    public void log(String message)
+    public void log(HttpResponse response, StringBuilder log)
     {
-        // logcat log with mTag and mLogLevel
-    }
 
-
-    @Override
-    public void logError(String message, Throwable throwable)
-    {
-        // logcat log with mTag and ERROR level
     }
 }

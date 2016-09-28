@@ -21,6 +21,7 @@ import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.executors.logging.httplogger.HttpLogger;
 import org.dmfs.httpessentials.executors.logging.io.LogSink;
+import org.dmfs.httpessentials.executors.logging.logfacility.LogFacility;
 
 import java.net.URI;
 
@@ -28,15 +29,17 @@ import java.net.URI;
 /**
  * @author Gabor Keszthelyi
  */
-public final class BaseHttpLogger implements HttpLogger
+public final class BasicHttpLogger implements HttpLogger
 {
     private final HttpLogElements mHttpLogElements;
 
 
-    public BaseHttpLogger(HttpLogElements httpLogElements)
+    public BasicHttpLogger(HttpLogElements httpLogElements)
     {
         mHttpLogElements = httpLogElements;
     }
+
+
 
 
     @Override
@@ -48,7 +51,7 @@ public final class BaseHttpLogger implements HttpLogger
             requestLogElement.log(request, uri, logMessage);
         }
         // logFacility.log(...)
-        LogSink logSink = mHttpLogElements.entityBodyLogSinkProvider().provide(uri, request);
+        LogSink logSink = mHttpLogElements.contentLogSinkProvider().provide(uri, request);
         // if logSink not null, decorate request using LogSink
         return null;
     }

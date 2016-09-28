@@ -26,10 +26,13 @@ import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
+import org.dmfs.httpessentials.executors.logging.elements.BasicHttpLogger;
+import org.dmfs.httpessentials.executors.logging.elements.DefaultHttpLogElements;
 import org.dmfs.httpessentials.executors.logging.formatter.HttpLogFormatter;
 import org.dmfs.httpessentials.executors.logging.httplogger.DefaultHttpLogger;
 import org.dmfs.httpessentials.executors.logging.httplogger.HttpLogger;
 import org.dmfs.httpessentials.executors.logging.logfacility.LogFacility;
+import org.dmfs.httpessentials.executors.logging.logfacility.LogcatLogFacility;
 
 import java.io.IOException;
 import java.net.URI;
@@ -55,6 +58,13 @@ public final class Logging implements HttpRequestExecutor
     {
         mDelegateExecutor = delegateExecutor;
         mHttpLogger = new DefaultHttpLogger(logFormatter, logFacility);
+    }
+
+
+    public Logging(HttpRequestExecutor originalExecutor, LogFacility logFacility)
+    {
+        mDelegateExecutor = originalExecutor;
+        mHttpLogger = new BasicHttpLogger(new DefaultHttpLogElements(logFacility));
     }
 
 

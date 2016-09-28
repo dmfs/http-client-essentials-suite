@@ -15,32 +15,20 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging.elements;
+package org.dmfs.httpessentials.executors.logging.elements.elements;
 
-import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpResponse;
-import org.dmfs.httpessentials.executors.logging.io.LogSink;
-
-import java.net.URI;
+import org.dmfs.httpessentials.executors.logging.elements.ResponseLogElement;
 
 
 /**
  * @author Gabor Keszthelyi
  */
-public final class TextBody implements LogSinkProvider
+public final class ResponseContentDesc implements ResponseLogElement
 {
     @Override
-    public LogSink provide(URI uri, HttpRequest<?> request)
+    public void log(HttpResponse response, StringBuilder log)
     {
-        // if content type is text, return CharacterLogSink
-        return null;
-    }
-
-
-    @Override
-    public LogSink provide(HttpResponse response)
-    {
-        // if content type is text, return CharacterLogSink
-        return null;
+        // log content type and content length
     }
 }

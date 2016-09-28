@@ -15,39 +15,36 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.logging.logfacility;
+package org.dmfs.httpessentials.executors.logging.io;
+
+import org.dmfs.httpessentials.executors.logging.logfacility.LogFacility;
+import org.dmfs.httpessentials.types.MediaType;
+
 
 /**
  * @author Gabor Keszthelyi
  */
-public final class LogcatLogFacility implements LogFacility
+public final class AllMediaTypeLogSinkFactory implements LogSinkFactory
 {
-    private final int mLogLevel; // logcat's log level constant
-    private final String mTag;
+    private final LogFacility mLogFacility;
 
 
-    public LogcatLogFacility(int logLevel, String tag)
+    public AllMediaTypeLogSinkFactory(LogFacility logFacility)
     {
-        mLogLevel = logLevel;
-        mTag = tag;
-    }
-
-    public LogcatLogFacility()
-    {
-        this(2, "http-client");
+        mLogFacility = logFacility;
     }
 
 
     @Override
-    public void log(String message)
+    public LogSink logSink(MediaType mediaType)
     {
-        // logcat log with mTag and mLogLevel
-    }
+        if (mediaType.mainType().equalsIgnoreCase("text"))
+        {
+            return new CharacterLogSink(mediaType.charset("UTF-8"), mLogFacility, 1024);
+        }
 
+        // TODO other types
 
-    @Override
-    public void logError(String message, Throwable throwable)
-    {
-        // logcat log with mTag and ERROR level
+        return NullLogSink.INSTANCE;
     }
 }
