@@ -17,12 +17,24 @@
 
 package org.dmfs.httpessentials.httpurlconnection;
 
-import org.dmfs.httpessentials.headers.*;
+import org.dmfs.httpessentials.headers.FilteredHeaders;
+import org.dmfs.httpessentials.headers.Header;
+import org.dmfs.httpessentials.headers.HeaderType;
+import org.dmfs.httpessentials.headers.Headers;
+import org.dmfs.httpessentials.headers.ListHeaderType;
+import org.dmfs.httpessentials.headers.SingletonHeaderType;
+import org.dmfs.httpessentials.headers.UpdatedHeaders;
+import org.dmfs.httpessentials.httpurlconnection.utils.iterators.StringEqualsIgnoreCase;
+import org.dmfs.iterators.AbstractConvertedIterator;
+import org.dmfs.iterators.ConvertedIterator;
+import org.dmfs.iterators.FilteredIterator;
+import org.dmfs.iterators.SerialIterableIterator;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -48,9 +60,10 @@ final class HttpUrlConnectionHeaders implements Headers
 
 
     @Override
-    public boolean contains(HeaderType<?> headerType)
+    public boolean contains(final HeaderType<?> headerType)
     {
-        return mConnection.getHeaderFields().containsKey(headerType.name());
+        // getHeaderFields returns a Map which contains header names as returned by the server - though, we need to compare them in a case-insensitive manner
+        return new FilteredIterator<>(mConnection.getHeaderFields().keySet().iterator(), new StringEqualsIgnoreCase(headerType.name())).hasNext();
     }
 
 
@@ -58,7 +71,7 @@ final class HttpUrlConnectionHeaders implements Headers
     public Iterator<Header<?>> iterator()
     {
         /*
-		 * Note, technically we can't support this, because we don't know the type of each header. However we could implement something that returns all headers
+         * Note, technically we can't support this, because we don't know the type of each header. However we could implement something that returns all headers
 		 * as plain string headers. This implementation is postponed until someone actually needs this method.
 		 */
         throw new UnsupportedOperationException("Iterating headers is not supported by HttpUrlConnectionHeaders");
@@ -68,22 +81,44 @@ final class HttpUrlConnectionHeaders implements Headers
     @Override
     public <T> Header<T> header(SingletonHeaderType<T> headerType)
     {
-        return headerType.entityFromString(mConnection.getHeaderField(headerType.name()));
+        Map<String, List<String>> headers = mConnection.getHeaderFields();
+        // getHeaderFields returns a Map which contains header names as returned by the server - though, we need to compare them in a case-insensitive manner
+        return headerType.entityFromString(headers.get(
+                new FilteredIterator<>(headers.keySet().iterator(), new StringEqualsIgnoreCase(headerType.name())).next()).get(0));
     }
 
 
     @Override
-    public <T> Header<List<T>> header(ListHeaderType<T> headerType)
+    public <T> Header<List<T>> header(final ListHeaderType<T> headerType)
     {
-        List<String> headers = mConnection.getHeaderFields().get(headerType.name());
+        final Map<String, List<String>> headers = mConnection.getHeaderFields();
 
-        @SuppressWarnings("unchecked")
-        Header<List<T>> result = headerType.entity((List<T>) Collections.emptyList());
+        Header<List<T>> result = headerType.entity(Collections.<T>emptyList());
 
-        for (String headerString : headers)
+        final Iterator<Header<List<T>>> headerIterator = new ConvertedIterator<>(new SerialIterableIterator<>(
+                new ConvertedIterator<>(new FilteredIterator<>(mConnection.getHeaderFields().keySet().iterator(),
+                        new StringEqualsIgnoreCase(headerType.name())),
+                        new AbstractConvertedIterator.Converter<Iterable<String>, String>()
+                        {
+                            @Override
+                            public Iterable<String> convert(String element)
+                            {
+                                return headers.get(element);
+                            }
+                        })),
+                new AbstractConvertedIterator.Converter<Header<List<T>>, String>()
+                {
+                    @Override
+                    public Header<List<T>> convert(String element)
+                    {
+                        return headerType.entityFromString(element);
+                    }
+                });
+
+        // combine all headers of this type into one
+        while (headerIterator.hasNext())
         {
-            Header<List<T>> header = headerType.entityFromString(headerString);
-            result = headerType.merged(result, header);
+            result = headerType.merged(result, headerIterator.next());
         }
         return result;
     }
