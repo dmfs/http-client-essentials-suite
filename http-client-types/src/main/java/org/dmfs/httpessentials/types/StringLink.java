@@ -30,6 +30,8 @@ import org.dmfs.iterators.FilteredIterator;
 import org.dmfs.iterators.filters.Skip;
 
 import java.net.URI;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
@@ -76,8 +78,8 @@ public final class StringLink implements Link
     @Override
     public <T> Iterator<Parameter<T>> parameters(final ParameterType<T> parameterType)
     {
-        return new ConvertedIterator<Parameter<T>, String>(
-                new FilteredIterator<String>(new FilteredIterator<String>(mParts.iterator(), new Skip<String>(1)),
+        return new ConvertedIterator<>(
+                new FilteredIterator<>(new FilteredIterator<>(mParts.iterator(), new Skip<String>(1)),
                         new IteratorFilter<String>()
                         {
                             @Override
@@ -92,6 +94,7 @@ public final class StringLink implements Link
             @Override
             public Parameter<T> convert(String element)
             {
+                element = element.trim();
                 int equalsIdx = element.indexOf(PARAMETER_VALUE_SEPARATOR);
                 return parameterType.entityFromString(element.substring(equalsIdx + 1));
             }
@@ -135,7 +138,7 @@ public final class StringLink implements Link
     @Override
     public Set<Locale> languages()
     {
-        Set<Locale> result = new HashSet<Locale>(16);
+        Set<Locale> result = new HashSet<>(16);
         Iterator<Parameter<Locale>> locales = parameters(Parameters.HREFLANG);
         while (locales.hasNext())
         {
@@ -162,16 +165,16 @@ public final class StringLink implements Link
     @Override
     public Set<String> relationTypes()
     {
-        // TODO Automatisch generierter Methodenstub
-        return null;
+        String rel = firstParameter(Parameters.REL_RAW, null).value();
+        return rel == null ? Collections.<String>emptySet() : new HashSet<>(Arrays.asList(rel.split("\\s+")));
     }
 
 
     @Override
     public Set<String> reverseRelationTypes()
     {
-        // TODO Automatisch generierter Methodenstub
-        return null;
+        String rev = firstParameter(Parameters.REV_RAW, null).value();
+        return rev == null ? Collections.<String>emptySet() : new HashSet<>(Arrays.asList(rev.split("\\s+")));
     }
 
 }

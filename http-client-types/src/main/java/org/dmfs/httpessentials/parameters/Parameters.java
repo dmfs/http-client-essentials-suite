@@ -19,6 +19,8 @@ package org.dmfs.httpessentials.parameters;
 
 import org.dmfs.httpessentials.converters.LanguageTagConverter;
 import org.dmfs.httpessentials.converters.MediaTypeConverter;
+import org.dmfs.httpessentials.converters.OptionallyQuoted;
+import org.dmfs.httpessentials.converters.Quoted;
 import org.dmfs.httpessentials.converters.QuotedStringConverter;
 import org.dmfs.httpessentials.converters.UriConverter;
 import org.dmfs.httpessentials.types.MediaType;
@@ -34,19 +36,25 @@ import java.util.Locale;
  */
 public final class Parameters
 {
-    public final static ParameterType<String> CHARSET = new BasicParameterType<String>("charset",
-            QuotedStringConverter.INSTANCE);
+    public final static ParameterType<String> CHARSET = new BasicParameterType<>("charset", QuotedStringConverter.INSTANCE);
 
-    public final static ParameterType<String> TITLE = new BasicParameterType<String>("title",
-            QuotedStringConverter.INSTANCE);
+    public final static ParameterType<String> TITLE = new BasicParameterType<>("title", QuotedStringConverter.INSTANCE);
 
-    public final static ParameterType<MediaType> TYPE = new BasicParameterType<MediaType>("type",
-            MediaTypeConverter.INSTANCE);
+    public final static ParameterType<MediaType> TYPE = new BasicParameterType<>("type", new OptionallyQuoted<>(MediaTypeConverter.INSTANCE));
 
-    public final static ParameterType<Locale> HREFLANG = new BasicParameterType<Locale>("hreflang",
-            LanguageTagConverter.INSTANCE);
+    public final static ParameterType<Locale> HREFLANG = new BasicParameterType<>("hreflang", LanguageTagConverter.INSTANCE);
 
-    public final static ParameterType<URI> ANCHOR = new BasicParameterType<URI>("anchor", UriConverter.INSTANCE);
+    public final static ParameterType<URI> ANCHOR = new BasicParameterType<>("anchor", new Quoted<>(UriConverter.INSTANCE));
+
+    /**
+     * {@link ParameterType} to retrieve the raw value of a rel param (i.e. a space delimited list of rel-types).
+     */
+    public final static ParameterType<String> REL_RAW = new BasicParameterType<>("rel", QuotedStringConverter.INSTANCE);
+
+    /**
+     * {@link ParameterType} to retrieve the raw value of a rev param (i.e. a space delimited list of reverse rel-types).
+     */
+    public final static ParameterType<String> REV_RAW = new BasicParameterType<>("rev", QuotedStringConverter.INSTANCE);
 
 
     /**
