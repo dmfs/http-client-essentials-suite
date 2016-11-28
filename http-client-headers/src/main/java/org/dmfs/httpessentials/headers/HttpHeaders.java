@@ -20,9 +20,11 @@ package org.dmfs.httpessentials.headers;
 import org.dmfs.httpessentials.converters.IntegerConverter;
 import org.dmfs.httpessentials.converters.LinkConverter;
 import org.dmfs.httpessentials.converters.MediaTypeConverter;
-import org.dmfs.httpessentials.converters.QuotedStringConverter;
+import org.dmfs.httpessentials.converters.OptionallyQuoted;
+import org.dmfs.httpessentials.converters.PlainStringHeaderConverter;
 import org.dmfs.httpessentials.converters.UriConverter;
 import org.dmfs.httpessentials.converters.UserAgentConverter;
+import org.dmfs.httpessentials.typedentity.EntityConverter;
 import org.dmfs.httpessentials.types.Link;
 import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.httpessentials.types.UserAgent;
@@ -35,8 +37,10 @@ import java.net.URI;
  *
  * @author Marten Gajda <marten@dmfs.org>
  */
-public interface HttpHeaders
+public final class HttpHeaders
 {
+    private final static EntityConverter<String> OPTIONALLY_QUOTED_TEXT = new OptionallyQuoted<>(PlainStringHeaderConverter.INSTANCE);
+
     /**
      * The content-type header that contains the media-type of the response entity.
      */
@@ -58,13 +62,13 @@ public interface HttpHeaders
      * The accept-encoding header that contains the content-encoding of the response entity.
      */
     public final static ListHeaderType<String> ACCEPT_ENCODING = new BasicListHeaderType<String>("accept-encoding",
-            QuotedStringConverter.INSTANCE);
+            OPTIONALLY_QUOTED_TEXT);
 
     /**
      * The content-encoding header that contains the content encoding of the response entity.
      */
     public final static ListHeaderType<String> CONTENT_ENCODING = new BasicListHeaderType<String>("content-encoding",
-            QuotedStringConverter.INSTANCE);
+            OPTIONALLY_QUOTED_TEXT);
 
     /**
      * The location header.
@@ -77,4 +81,12 @@ public interface HttpHeaders
      */
     public final static SingletonHeaderType<UserAgent> USER_AGENT = new BasicSingletonHeaderType<UserAgent>(
             "User-Agent", new UserAgentConverter());
+
+
+    /**
+     * No instances constructor.
+     */
+    private HttpHeaders()
+    {
+    }
 }

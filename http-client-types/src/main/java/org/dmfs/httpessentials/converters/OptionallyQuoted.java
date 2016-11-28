@@ -1,13 +1,13 @@
 /*
- * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,34 +21,38 @@ import org.dmfs.httpessentials.typedentity.EntityConverter;
 
 
 /**
- * {@link EntityConverter} for quoted {@link String}s. {@link #value(String)} also accepts unquoted strings, but {@link #valueString(String)} always returns
- * quoted strings.
+ * {@link EntityConverter} decorator that quotes/unquotes values. {@link #value(String)} also accepts unquoted strings, but {@link #valueString(E)} always
+ * returns quoted strings.
  *
  * @author Marten Gajda <marten@dmfs.org>
- * @deprecated To be removed in 1.0. Use {@link OptionallyQuoted} to decorate a {@link PlainStringHeaderConverter} instance instead.
  */
-@Deprecated
-public final class QuotedStringConverter implements EntityConverter<String>
+public final class OptionallyQuoted<E> implements EntityConverter<E>
 {
-    public final static QuotedStringConverter INSTANCE = new QuotedStringConverter();
+    private final EntityConverter<E> mDelegate;
 
 
-    @Override
-    public String value(String quotedString)
+    public OptionallyQuoted(EntityConverter<E> delegate)
     {
-        String trimmed = quotedString.trim();
-        if (trimmed.length() > 1 && trimmed.charAt(0) == '"' && trimmed.charAt(trimmed.length() - 1) == '"')
-        {
-            return trimmed.substring(1, trimmed.length() - 1).replace("\\\\", "\\").replace("\\\"", "\"");
-        }
-        return trimmed;
+        mDelegate = delegate;
     }
 
 
     @Override
-    public String valueString(String string)
+    public E value(String quotedString)
     {
-        return "\"" + string.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+        String trimmed = quotedString.trim();
+        if (trimmed.length() > 1 && trimmed.charAt(0) == '"' && trimmed.charAt(trimmed.length() - 1) == '"')
+        {
+            return mDelegate.value(trimmed.substring(1, trimmed.length() - 1).replace("\\\\", "\\").replace("\\\"", "\""));
+        }
+        return mDelegate.value(trimmed);
+    }
+
+
+    @Override
+    public String valueString(E value)
+    {
+        return "\"" + mDelegate.valueString(value).replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
     }
 
 }
