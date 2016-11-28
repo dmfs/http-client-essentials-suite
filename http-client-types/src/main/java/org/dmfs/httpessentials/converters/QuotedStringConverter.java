@@ -21,11 +21,13 @@ import org.dmfs.httpessentials.typedentity.EntityConverter;
 
 
 /**
- * {@link EntityConverter} for quoted {@link String}s. {@link #value(String)} also accepts unquoted strings, but {@link
- * #valueString(String)} always returns quoted strings.
+ * {@link EntityConverter} for quoted {@link String}s. {@link #value(String)} also accepts unquoted strings, but {@link #valueString(String)} always returns
+ * quoted strings.
  *
  * @author Marten Gajda <marten@dmfs.org>
+ * @deprecated To be removed in 1.0. Use {@link OptionallyQuoted} to decorate a {@link PlainStringHeaderConverter} instance instead.
  */
+@Deprecated
 public final class QuotedStringConverter implements EntityConverter<String>
 {
     public final static QuotedStringConverter INSTANCE = new QuotedStringConverter();

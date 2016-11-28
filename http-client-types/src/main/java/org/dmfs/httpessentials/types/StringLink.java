@@ -30,10 +30,10 @@ import org.dmfs.iterators.FilteredIterator;
 import org.dmfs.iterators.filters.Skip;
 
 import java.net.URI;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -165,16 +165,14 @@ public final class StringLink implements Link
     @Override
     public Set<String> relationTypes()
     {
-        String rel = firstParameter(Parameters.REL_RAW, null).value();
-        return rel == null ? Collections.<String>emptySet() : new HashSet<>(Arrays.asList(rel.split("\\s+")));
+        return new HashSet<>(firstParameter(Parameters.REL,  Collections.<String>emptyList()).value());
     }
 
 
     @Override
     public Set<String> reverseRelationTypes()
     {
-        String rev = firstParameter(Parameters.REV_RAW, null).value();
-        return rev == null ? Collections.<String>emptySet() : new HashSet<>(Arrays.asList(rev.split("\\s+")));
+        return new HashSet<>(firstParameter(Parameters.REV,  Collections.<String>emptyList()).value());
     }
 
 }
