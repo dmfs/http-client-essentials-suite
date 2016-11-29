@@ -1,13 +1,13 @@
 /*
- * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,13 +22,13 @@ import org.dmfs.httpessentials.typedentity.EntityType;
 
 /**
  * Represents a header type. That is, it binds a header name to a value type.
- * <p/>
+ * <p>
  * Two {@link HeaderType}s are considered equal if they have the same header name.
  *
  * @param <ValueType>
  *         The type of the header value.
  *
- * @author Marten Gajda <marten@dmfs.org>
+ * @author Marten Gajda
  */
 public interface HeaderType<ValueType> extends EntityType<ValueType>
 {
@@ -55,7 +55,7 @@ public interface HeaderType<ValueType> extends EntityType<ValueType>
     /**
      * Factory method to create {@link Header}s of this type from a value.
      *
-     * @param header
+     * @param value
      *         The value of the header, must not be <code>null</code>
      *
      * @return A new {@link Header} instance.

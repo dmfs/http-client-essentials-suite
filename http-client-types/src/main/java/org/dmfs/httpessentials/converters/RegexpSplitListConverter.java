@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * {@link EntityConverter} for header values that consist of a list of values separated by something that can be expressed as a regular expression (without
  * matching any part of a list element).
  *
- * @author Marten Gajda <marten@dmfs.org>
+ * @author Marten Gajda
  */
 public final class RegexpSplitListConverter<T> implements EntityConverter<List<T>>
 {

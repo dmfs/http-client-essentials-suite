@@ -1,13 +1,13 @@
 /*
- * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,7 +34,7 @@ import java.util.Locale;
 /**
  * An implementation of a {@link MediaType} that parses a media type string.
  *
- * @author Marten Gajda <marten@dmfs.org>
+ * @author Marten Gajda
  */
 // TODO: refactor to get rid of the parameter handling code duplication
 public final class StringMediaType implements MediaType
@@ -49,7 +49,7 @@ public final class StringMediaType implements MediaType
     /**
      * Create a new {@link MediaType} from a content type string.
      *
-     * @param contentType
+     * @param mediaType
      *         The content type string to parse.
      */
     public StringMediaType(String mediaType)

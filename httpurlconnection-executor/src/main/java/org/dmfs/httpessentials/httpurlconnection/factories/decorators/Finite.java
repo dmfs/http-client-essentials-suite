@@ -1,13 +1,13 @@
 /*
- * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,10 +25,9 @@ import java.net.URI;
 
 
 /**
- * A {@link HttpUrlConnectionFactory} decorator that sets connection and socket timeouts on the connection (rather than
- * waiting forever).
+ * A {@link HttpUrlConnectionFactory} decorator that sets connection and socket timeouts on the connection (rather than waiting forever).
  *
- * @author Marten Gajda <marten@dmfs.org>
+ * @author Marten Gajda
  */
 public final class Finite implements HttpUrlConnectionFactory
 {
@@ -41,10 +40,9 @@ public final class Finite implements HttpUrlConnectionFactory
 
 
     /**
-     * An {@link HttpUrlConnectionFactory} decorator that sets default connection timeout and socket (read) timeout on
-     * the connections returned by the decorated {@link HttpUrlConnectionFactory}. The default connection timeout is
-     * {@value #DEFAULT_CONNECTION_TIMEOUT} milliseconds and the default socket timeout is {@value
-     * #DEFAULT_SOCKET_TIMEOUT} milliseconds.
+     * An {@link HttpUrlConnectionFactory} decorator that sets default connection timeout and socket (read) timeout on the connections returned by the decorated
+     * {@link HttpUrlConnectionFactory}. The default connection timeout is {@value #DEFAULT_CONNECTION_TIMEOUT} milliseconds and the default socket timeout is
+     * {@value #DEFAULT_SOCKET_TIMEOUT} milliseconds.
      *
      * @param decorated
      *         Another {@link HttpUrlConnectionFactory}.
@@ -56,17 +54,15 @@ public final class Finite implements HttpUrlConnectionFactory
 
 
     /**
-     * An {@link HttpUrlConnectionFactory} decorator that sets connection timeout and socket (read) timeout on the
-     * connections returned by the decorated {@link HttpUrlConnectionFactory}.
+     * An {@link HttpUrlConnectionFactory} decorator that sets connection timeout and socket (read) timeout on the connections returned by the decorated {@link
+     * HttpUrlConnectionFactory}.
      *
      * @param decorated
      *         Another {@link HttpUrlConnectionFactory}.
      * @param connectionTimeout
-     *         The connection timeout in milliseconds. A value {@code <0} will preserve the current setting, a value of
-     *         {@code 0} will set an infinite timeout.
+     *         The connection timeout in milliseconds. A value {@code <0} will preserve the current setting, a value of {@code 0} will set an infinite timeout.
      * @param socketTimeout
-     *         The read timeout in milliseconds. A value {@code <0} will preserve the current setting, a value of {@code
-     *         0} will set an infinite timeout.
+     *         The read timeout in milliseconds. A value {@code <0} will preserve the current setting, a value of {@code 0} will set an infinite timeout.
      */
     public Finite(HttpUrlConnectionFactory decorated, int connectionTimeout, int socketTimeout)
     {

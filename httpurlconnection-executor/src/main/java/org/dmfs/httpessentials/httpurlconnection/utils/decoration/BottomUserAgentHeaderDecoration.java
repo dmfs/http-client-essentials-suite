@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,8 +28,7 @@ import static org.dmfs.httpessentials.headers.HttpHeaders.USER_AGENT;
 
 
 /**
- * A {@link Headers} decoration that appends the given {@link Product} to the end of an existing User-Agent header (or
- * creates it if it doesn't exist.)
+ * A {@link Headers} decoration that appends the given {@link Product} to the end of an existing User-Agent header (or creates it if it doesn't exist.)
  *
  * @author Gabor Keszthelyi
  */

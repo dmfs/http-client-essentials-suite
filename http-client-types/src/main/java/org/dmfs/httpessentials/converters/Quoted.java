@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@ import org.dmfs.httpessentials.typedentity.EntityConverter;
 /**
  * {@link EntityConverter} decorator that quotes/unquotes values. Note: {@link #value(String)} will throw if the passed string is not quoted.
  *
- * @author Marten Gajda <marten@dmfs.org>
+ * @author Marten Gajda
  */
 public final class Quoted<E> implements EntityConverter<E>
 {

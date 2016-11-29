@@ -1,18 +1,18 @@
 /*
- *  Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.dmfs.httpessentials.executors.following.policies;
@@ -50,27 +50,6 @@ public class FollowRedirectPolicyTest
     private URI redirectingLocation;
     @Injectable
     private URI expectedResult;
-
-
-    final class HeaderReadingExpectations extends StrictExpectations
-    {
-        {
-            response.headers().header(HttpHeaders.LOCATION).value();
-            result = newLocation;
-        }
-    }
-
-
-    final class LocationResolvingExpectations extends StrictExpectations
-    {
-        {
-            response.requestUri();
-            result = redirectingLocation;
-
-            redirectingLocation.resolve(newLocation);
-            result = expectedResult;
-        }
-    }
 
 
     @Test
@@ -115,6 +94,27 @@ public class FollowRedirectPolicyTest
 
         // ACT
         new FollowRedirectPolicy(2).location(response, 8);
+    }
+
+
+    final class HeaderReadingExpectations extends StrictExpectations
+    {
+        {
+            response.headers().header(HttpHeaders.LOCATION).value();
+            result = newLocation;
+        }
+    }
+
+
+    final class LocationResolvingExpectations extends StrictExpectations
+    {
+        {
+            response.requestUri();
+            result = redirectingLocation;
+
+            redirectingLocation.resolve(newLocation);
+            result = expectedResult;
+        }
     }
 
 }

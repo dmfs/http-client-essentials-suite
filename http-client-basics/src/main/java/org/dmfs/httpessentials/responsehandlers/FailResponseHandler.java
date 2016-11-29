@@ -1,13 +1,13 @@
 /*
- * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,19 +20,25 @@ package org.dmfs.httpessentials.responsehandlers;
 import org.dmfs.httpessentials.HttpStatus;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseHandler;
-import org.dmfs.httpessentials.exceptions.*;
+import org.dmfs.httpessentials.exceptions.ClientErrorException;
+import org.dmfs.httpessentials.exceptions.NotFoundException;
+import org.dmfs.httpessentials.exceptions.ProtocolError;
+import org.dmfs.httpessentials.exceptions.ProtocolException;
+import org.dmfs.httpessentials.exceptions.ServerErrorException;
+import org.dmfs.httpessentials.exceptions.UnauthorizedException;
+import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
 
 import java.io.IOException;
 
 
 /**
- * An default response handler that doesn't handle the response but throws the most appropriate Exception, based on the
- * response status code. Use {@link #getInstance()} to get an instance.
+ * An default response handler that doesn't handle the response but throws the most appropriate Exception, based on the response status code. Use {@link
+ * #getInstance()} to get an instance.
  *
  * @param <T>
  *         The type of the expected response.
  *
- * @author Marten Gajda <marten@dmfs.org>
+ * @author Marten Gajda
  */
 public final class FailResponseHandler<T> implements HttpResponseHandler<T>
 {

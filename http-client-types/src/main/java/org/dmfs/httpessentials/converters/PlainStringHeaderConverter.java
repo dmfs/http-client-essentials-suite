@@ -1,13 +1,13 @@
 /*
- * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,13 +21,12 @@ import org.dmfs.httpessentials.typedentity.EntityConverter;
 
 
 /**
- * An {@link EntityConverter} for header string values. It returns the header string after trimming any leading or
- * trailing white space characters (since in general they do not belong to the value, see <a
- * href="https://tools.ietf.org/html/rfc7230#section-3.2">RFC 7230, Section 3.2</a>).
- * <p/>
+ * An {@link EntityConverter} for header string values. It returns the header string after trimming any leading or trailing white space characters (since in
+ * general they do not belong to the value, see <a href="https://tools.ietf.org/html/rfc7230#section-3.2">RFC 7230, Section 3.2</a>).
+ * <p>
  * <a href="https://tools.ietf.org/html/rfc2047">RFC 2047</a> is not supported by this implementation.
  *
- * @author Marten Gajda <marten@dmfs.org>
+ * @author Marten Gajda
  */
 public final class PlainStringHeaderConverter implements EntityConverter<String>
 {
@@ -43,9 +42,9 @@ public final class PlainStringHeaderConverter implements EntityConverter<String>
 
     /**
      * {@inheritDoc}
-     * <p/>
-     * The given headerValue must not contain any characters that are not allowed in headers. Basically that means only
-     * characters in the ASCII range 0x20-0xff and the tab character (0x09) are allowed.
+     * <p>
+     * The given headerValue must not contain any characters that are not allowed in headers. Basically that means only characters in the ASCII range 0x20-0xff
+     * and the tab character (0x09) are allowed.
      * <p>
      * <pre>
      *    field-value    = *( field-content / obs-fold )

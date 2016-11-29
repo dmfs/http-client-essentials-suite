@@ -1,13 +1,13 @@
 /*
- * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,7 +26,7 @@ import java.io.OutputStream;
 /**
  * Defines an interface of an HTTP message request body entity.
  *
- * @author Marten Gajda <marten@dmfs.org>
+ * @author Marten Gajda
  */
 public interface HttpRequestEntity
 {
@@ -48,8 +48,7 @@ public interface HttpRequestEntity
     public long contentLength() throws IOException;
 
     /**
-     * Writes the content to the given {@link OutputStream}. Note that the stream is property of the caller and must not
-     * be closed by this method.
+     * Writes the content to the given {@link OutputStream}. Note that the stream is property of the caller and must not be closed by this method.
      *
      * @param out
      *         The {@link OutputStream} to write to.

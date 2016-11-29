@@ -1,13 +1,13 @@
 /*
- * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,15 +22,14 @@ import org.dmfs.httpessentials.status.SimpleHttpStatus;
 
 
 /**
- * Interface of an HTTP status. Instances must be immutable. By convention, all instances MUST return the status code
- * when {@link #hashCode()} is called.
+ * Interface of an HTTP status. Instances must be immutable. By convention, all instances MUST return the status code when {@link #hashCode()} is called.
  *
- * @author Marten Gajda <marten@dmfs.org>
+ * @author Marten Gajda
  */
 public interface HttpStatus
 {
     /*
-	 * Dummy HttpStatus for internal use.
+     * Dummy HttpStatus for internal use.
 	 */
 
     /**
@@ -39,7 +38,7 @@ public interface HttpStatus
     public final static HttpStatus NONE = new NoneHttpStatus();
 
 	/*
-	 * 1xx Informational status codes, see http://tools.ietf.org/html/rfc7231#section-6.2
+     * 1xx Informational status codes, see http://tools.ietf.org/html/rfc7231#section-6.2
 	 */
 
     /**
@@ -53,9 +52,8 @@ public interface HttpStatus
     public final static HttpStatus SWITCHING_PROTOCOLS = new SimpleHttpStatus(101, "Switching Protocols");
 
     /**
-     * HTTP status: <a href="http://tools.ietf.org/html/rfc2518#section-10.1">102 Processing</a> (WebDAV) <p> Note that
-     * this has been removed from the WebDAV specification in RFC 4918, see <a href="http://tools.ietf.org/html/rfc4918#section-21.4">RFC
-     * 4918, section 21.4</a </p>
+     * HTTP status: <a href="http://tools.ietf.org/html/rfc2518#section-10.1">102 Processing</a> (WebDAV) <p> Note that this has been removed from the WebDAV
+     * specification in RFC 4918, see <a href="http://tools.ietf.org/html/rfc4918#section-21.4">RFC 4918, section 21.4</a></p>
      */
     public final static HttpStatus PROCESSING = new SimpleHttpStatus(102, "Processing");
 
@@ -304,8 +302,7 @@ public interface HttpStatus
     public final static HttpStatus HTTP_VERSION_NOT_SUPPORTED = new SimpleHttpStatus(505, "HTTP Version Not Supported");
 
     /**
-     * HTTP status: <a href="http://tools.ietf.org/html/rfc2295#section-8.1">506 Variant Also Negotiates</a>
-     * (experimental)
+     * HTTP status: <a href="http://tools.ietf.org/html/rfc2295#section-8.1">506 Variant Also Negotiates</a> (experimental)
      */
     public final static HttpStatus VARIANT_ALSO_NEGOTIATES = new SimpleHttpStatus(506, "Variant Also Negotiates");
 
@@ -322,8 +319,7 @@ public interface HttpStatus
     public int statusCode();
 
     /**
-     * Returns the reason phrase of this status code. <p> <strong>Note:</strong> the reason phrase doesn't contain the
-     * status code itself. </p>
+     * Returns the reason phrase of this status code. <p> <strong>Note:</strong> the reason phrase doesn't contain the status code itself. </p>
      *
      * @return The reason phrase or <code>null</code> if the status code is unknown.
      */

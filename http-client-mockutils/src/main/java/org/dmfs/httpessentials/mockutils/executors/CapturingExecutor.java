@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,8 +29,8 @@ import java.net.URI;
 
 
 /**
- * Stub {@link HttpRequestExecutor} that captures the last {@link URI} and {@link HttpRequest} arguments it
- * receives in {@link #execute(URI, HttpRequest)}. Captured objects can be accessed via public fields.
+ * Stub {@link HttpRequestExecutor} that captures the last {@link URI} and {@link HttpRequest} arguments it receives in {@link #execute(URI, HttpRequest)}.
+ * Captured objects can be accessed via public fields.
  *
  * @author Gabor Keszthelyi
  */

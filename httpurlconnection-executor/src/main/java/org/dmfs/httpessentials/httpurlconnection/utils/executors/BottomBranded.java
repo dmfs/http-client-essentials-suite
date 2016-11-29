@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,8 +32,8 @@ import java.net.URI;
 
 
 /**
- * {@link HttpRequestExecutor} decorator that adds the given {@link Product} to the end of User-Agent header of the
- * request (creates the header if it doesn't exist).
+ * {@link HttpRequestExecutor} decorator that adds the given {@link Product} to the end of User-Agent header of the request (creates the header if it doesn't
+ * exist).
  *
  * @author Gabor Keszthelyi
  */

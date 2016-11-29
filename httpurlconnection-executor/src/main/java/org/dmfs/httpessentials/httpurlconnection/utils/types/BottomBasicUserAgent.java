@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,12 +28,11 @@ import java.util.Iterator;
 
 
 /**
- * A special {@link UserAgent} that appends the {@link Product} provided in the constructor to the end of the products
- * (and header value string), instead of appending to the beginning as {@link BasicUserAgent} does.
+ * A special {@link UserAgent} that appends the {@link Product} provided in the constructor to the end of the products (and header value string), instead of
+ * appending to the beginning as {@link BasicUserAgent} does.
  * <p>
- * It can be used in the actual {@link HttpRequestExecutor} implementations (i.e. the ones that provide the underlying
- * http layer using an actual low level http library) to add their name and the platform description to the user-agent
- * header.
+ * It can be used in the actual {@link HttpRequestExecutor} implementations (i.e. the ones that provide the underlying http layer using an actual low level http
+ * library) to add their name and the platform description to the user-agent header.
  *
  * @author Gabor Keszthelyi
  */

@@ -1,13 +1,13 @@
 /*
- * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,11 +23,10 @@ import org.dmfs.httpessentials.methods.SafeMethod;
 
 
 /**
- * Represents an HTTP method and provides static members for HTTP methods defined in <a
- * href="https://tools.ietf.org/html/rfc7231#section-4.3">RFC 7231, section 4.3</a> and <a
- * href="http://tools.ietf.org/html/rfc5789">RFC 5789</a>
+ * Represents an HTTP method and provides static members for HTTP methods defined in <a href="https://tools.ietf.org/html/rfc7231#section-4.3">RFC 7231, section
+ * 4.3</a> and <a href="http://tools.ietf.org/html/rfc5789">RFC 5789</a>
  *
- * @author Marten Gajda <marten@dmfs.org>
+ * @author Marten Gajda
  * @see <a href="https://tools.ietf.org/html/rfc7231#section-4">RFC 7231, section 4</a>
  */
 public interface HttpMethod
@@ -104,16 +103,16 @@ public interface HttpMethod
     public String verb();
 
     /**
-     * Returns if this request method is safe, which means that the request is not intended and not expected to change
-     * any state on the server. In effect the semantics are to be considered <em>read-only</em>.
+     * Returns if this request method is safe, which means that the request is not intended and not expected to change any state on the server. In effect the
+     * semantics are to be considered <em>read-only</em>.
      *
      * @see <a href="https://tools.ietf.org/html/rfc7231#section-4.2.1">RFC 7231, Section 4.2.1</a>
      */
     public boolean isSafe();
 
     /**
-     * Returns if this request method is idempotent, which means that sending multiple identical requests with that
-     * method has the same effect as sending one single request to the server.
+     * Returns if this request method is idempotent, which means that sending multiple identical requests with that method has the same effect as sending one
+     * single request to the server.
      *
      * @see <a href="https://tools.ietf.org/html/rfc7231#section-4.2.2">RFC 7231, Section 4.2.2</a>
      */
@@ -121,9 +120,9 @@ public interface HttpMethod
 
     /**
      * Returns whether this {@link HttpMethod} allows to send a message body.
-     * <p/>
-     * Note that RFC 7231 does not explicitly forbid a message payload for some methods (in particular these are {@link
-     * #GET}, {@link #HEAD}, {@link #DELETE} and {@link #CONNECT}). Instead is says something like this:
+     * <p>
+     * Note that RFC 7231 does not explicitly forbid a message payload for some methods (in particular these are {@link #GET}, {@link #HEAD}, {@link #DELETE}
+     * and {@link #CONNECT}). Instead is says something like this:
      * <p>
      * <pre>
      * A payload within a XXX request message has no defined semantics;
@@ -131,8 +130,7 @@ public interface HttpMethod
      * implementations to reject the request.
      * </pre>
      * <p>
-     * The predefined methods in {@link HttpMethod} interpret this rather strict and return <code>false</code> for such
-     * methods.
+     * The predefined methods in {@link HttpMethod} interpret this rather strict and return <code>false</code> for such methods.
      *
      * @return <code>true</code> if this method supports a message body, <code>false</code> otherwise.
      */

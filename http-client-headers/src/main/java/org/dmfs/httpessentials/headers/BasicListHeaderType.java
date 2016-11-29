@@ -1,13 +1,13 @@
 /*
- * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,7 +30,7 @@ import java.util.List;
  * @param <ValueType>
  *         The type of the header value.
  *
- * @author Marten Gajda <marten@dmfs.org>
+ * @author Marten Gajda
  */
 public final class BasicListHeaderType<ValueType> implements ListHeaderType<ValueType>
 {
@@ -39,13 +39,12 @@ public final class BasicListHeaderType<ValueType> implements ListHeaderType<Valu
 
 
     /**
-     * Creates a {@link HeaderType} for the given header name. Header values are converted using the provided {@link
-     * HeaderValueConverter}.
+     * Creates a {@link HeaderType} for the given header name. Header values are converted using the provided {@link EntityConverter}.
      *
      * @param headerName
      *         The name of the header.
      * @param valueConverter
-     *         A {@link HeaderValueConverter} to convert header values from/to string.
+     *         A {@link EntityConverter} to convert header values from/to string.
      */
     public BasicListHeaderType(String headerName, EntityConverter<ValueType> valueConverter)
     {

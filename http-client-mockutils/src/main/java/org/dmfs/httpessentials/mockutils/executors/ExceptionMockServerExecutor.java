@@ -1,13 +1,13 @@
 /*
- * Copyright (C) 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,7 @@ import java.net.URI;
 /**
  * A simple mock server {@link HttpRequestExecutor} that always throws an exception when executing a request.
  *
- * @author Marten Gajda <marten@dmfs.org>
+ * @author Marten Gajda
  */
 public class ExceptionMockServerExecutor implements HttpRequestExecutor
 {
@@ -40,9 +40,8 @@ public class ExceptionMockServerExecutor implements HttpRequestExecutor
 
 
     /**
-     * Creates an {@link HttpRequestExecutor} that always throws the given Exception. Note that only {@link
-     * IOException}s, {@link ProtocolError}s, {@link ProtocolException}s and their subclasses are supported. Every other
-     * {@link Exception} will result in a {@link RuntimeException}.
+     * Creates an {@link HttpRequestExecutor} that always throws the given Exception. Note that only {@link IOException}s, {@link ProtocolError}s, {@link
+     * ProtocolException}s and their subclasses are supported. Every other {@link Exception} will result in a {@link RuntimeException}.
      *
      * @param exception
      *         The {@link Exception} to throw when executing a request.

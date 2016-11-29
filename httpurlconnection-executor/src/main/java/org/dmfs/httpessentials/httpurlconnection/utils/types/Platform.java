@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,11 +21,10 @@ import org.dmfs.httpessentials.types.Product;
 
 
 /**
- * A {@link Product} representing the platform/system (e.g.: "Dalvik/2.1.0 (Linux; U; Android 6.0.1; Nexus 5
- * Build/ABC123)").
+ * A {@link Product} representing the platform/system (e.g.: "Dalvik/2.1.0 (Linux; U; Android 6.0.1; Nexus 5 Build/ABC123)").
  * <p>
- * Uses the value of <code>System.getProperty("http.agent")</code> (or if that's not present, it assembles a description
- * from <code>java</code> and <code>os</code> properties.
+ * Uses the value of <code>System.getProperty("http.agent")</code> (or if that's not present, it assembles a description from <code>java</code> and
+ * <code>os</code> properties.
  *
  * @author Gabor Keszthelyi
  */

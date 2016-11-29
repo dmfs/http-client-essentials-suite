@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Marten Gajda <marten@dmfs.org>
+ * Copyright 2016 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,11 @@ package org.dmfs.httpessentials.responsehandlers;
 import org.dmfs.httpessentials.HttpStatus;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
-import org.dmfs.httpessentials.exceptions.*;
+import org.dmfs.httpessentials.exceptions.ClientErrorException;
+import org.dmfs.httpessentials.exceptions.NotFoundException;
+import org.dmfs.httpessentials.exceptions.ServerErrorException;
+import org.dmfs.httpessentials.exceptions.UnauthorizedException;
+import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
 import org.dmfs.httpessentials.headers.Headers;
 import org.dmfs.httpessentials.status.SimpleHttpStatus;
 import org.dmfs.httpessentials.types.MediaType;
@@ -31,7 +35,10 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 /**
