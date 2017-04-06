@@ -23,7 +23,6 @@ import org.dmfs.httpessentials.types.Link;
 import org.dmfs.httpessentials.types.StructuredMediaType;
 import org.junit.Test;
 
-import java.net.HttpURLConnection;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +31,6 @@ import java.util.Map;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 
 /**
@@ -46,10 +43,7 @@ public class HttpUrlConnectionHeadersTest
     {
         Map<String, List<String>> headers = new HashMap<>();
 
-        HttpURLConnection connection = mock(HttpURLConnection.class);
-        when(connection.getHeaderFields()).thenReturn(headers);
-
-        Headers testHeaders = new HttpUrlConnectionHeaders(connection);
+        Headers testHeaders = new HttpUrlConnectionHeaders(headers);
 
         assertFalse(testHeaders.contains(HttpHeaders.LINK));
     }
@@ -61,10 +55,7 @@ public class HttpUrlConnectionHeadersTest
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("content-type", Arrays.asList("application/octetstream"));
 
-        HttpURLConnection connection = mock(HttpURLConnection.class);
-        when(connection.getHeaderFields()).thenReturn(headers);
-
-        Headers testHeaders = new HttpUrlConnectionHeaders(connection);
+        Headers testHeaders = new HttpUrlConnectionHeaders(headers);
 
         assertFalse(testHeaders.contains(HttpHeaders.LINK));
     }
@@ -77,10 +68,7 @@ public class HttpUrlConnectionHeadersTest
         headers.put("content-type", Arrays.asList("application/octet-stream"));
         headers.put("link", Arrays.asList("<test5>; rel=\"relation5\",<test6>; rel=\"relation6\"", "<test7>; rel=\"relation7\",<test8>; rel=\"relation8\""));
 
-        HttpURLConnection connection = mock(HttpURLConnection.class);
-        when(connection.getHeaderFields()).thenReturn(headers);
-
-        Headers testHeaders = new HttpUrlConnectionHeaders(connection);
+        Headers testHeaders = new HttpUrlConnectionHeaders(headers);
 
         assertTrue(testHeaders.contains(HttpHeaders.LINK));
     }
@@ -93,10 +81,7 @@ public class HttpUrlConnectionHeadersTest
         headers.put("content-type", Arrays.asList("application/octet-stream"));
         headers.put("LINK", Arrays.asList("<test5>; rel=\"relation5\",<test6>; rel=\"relation6\"", "<test7>; rel=\"relation7\",<test8>; rel=\"relation8\""));
 
-        HttpURLConnection connection = mock(HttpURLConnection.class);
-        when(connection.getHeaderFields()).thenReturn(headers);
-
-        Headers testHeaders = new HttpUrlConnectionHeaders(connection);
+        Headers testHeaders = new HttpUrlConnectionHeaders(headers);
 
         assertTrue(testHeaders.contains(HttpHeaders.LINK));
     }
@@ -109,10 +94,7 @@ public class HttpUrlConnectionHeadersTest
         headers.put("content-type", Arrays.asList("application/octet-stream"));
         headers.put("Link", Arrays.asList("<test5>; rel=\"relation5\",<test6>; rel=\"relation6\"", "<test7>; rel=\"relation7\",<test8>; rel=\"relation8\""));
 
-        HttpURLConnection connection = mock(HttpURLConnection.class);
-        when(connection.getHeaderFields()).thenReturn(headers);
-
-        Headers testHeaders = new HttpUrlConnectionHeaders(connection);
+        Headers testHeaders = new HttpUrlConnectionHeaders(headers);
 
         assertTrue(testHeaders.contains(HttpHeaders.LINK));
     }
@@ -126,10 +108,7 @@ public class HttpUrlConnectionHeadersTest
         headers.put("link", Arrays.asList("<test5>; rel=\"relation5\",<test6>; rel=\"relation6\"", "<test7>; rel=\"relation7\",<test8>; rel=\"relation8\""));
         headers.put("Link", Arrays.asList("<test1>; rel=\"relation1\",<test2>; rel=\"relation2\"", "<test3>; rel=\"relation3\",<test4>; rel=\"relation4\""));
 
-        HttpURLConnection connection = mock(HttpURLConnection.class);
-        when(connection.getHeaderFields()).thenReturn(headers);
-
-        Headers testHeaders = new HttpUrlConnectionHeaders(connection);
+        Headers testHeaders = new HttpUrlConnectionHeaders(headers);
 
         assertTrue(testHeaders.contains(HttpHeaders.LINK));
     }
@@ -141,10 +120,7 @@ public class HttpUrlConnectionHeadersTest
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("content-type", Arrays.asList("application/octetstream"));
 
-        HttpURLConnection connection = mock(HttpURLConnection.class);
-        when(connection.getHeaderFields()).thenReturn(headers);
-
-        Headers testHeaders = new HttpUrlConnectionHeaders(connection);
+        Headers testHeaders = new HttpUrlConnectionHeaders(headers);
         assertEquals(new StructuredMediaType("application", "octetstream"), testHeaders.header(HttpHeaders.CONTENT_TYPE).value());
     }
 
@@ -155,10 +131,7 @@ public class HttpUrlConnectionHeadersTest
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("CONTENT-TYPE", Arrays.asList("application/octetstream"));
 
-        HttpURLConnection connection = mock(HttpURLConnection.class);
-        when(connection.getHeaderFields()).thenReturn(headers);
-
-        Headers testHeaders = new HttpUrlConnectionHeaders(connection);
+        Headers testHeaders = new HttpUrlConnectionHeaders(headers);
         assertEquals(new StructuredMediaType("application", "octetstream"), testHeaders.header(HttpHeaders.CONTENT_TYPE).value());
     }
 
@@ -169,10 +142,7 @@ public class HttpUrlConnectionHeadersTest
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("Content-Type", Arrays.asList("application/octetstream"));
 
-        HttpURLConnection connection = mock(HttpURLConnection.class);
-        when(connection.getHeaderFields()).thenReturn(headers);
-
-        Headers testHeaders = new HttpUrlConnectionHeaders(connection);
+        Headers testHeaders = new HttpUrlConnectionHeaders(headers);
         assertEquals(new StructuredMediaType("application", "octetstream"), testHeaders.header(HttpHeaders.CONTENT_TYPE).value());
     }
 
@@ -184,10 +154,7 @@ public class HttpUrlConnectionHeadersTest
         headers.put("content-type", Arrays.asList("application/octet-stream"));
         headers.put("Link", Arrays.asList("<test1>; rel=\"relation1\",<test2>; rel=\"relation2\"", "<test3>; rel=\"relation3\",<test4>; rel=\"relation4\""));
 
-        HttpURLConnection connection = mock(HttpURLConnection.class);
-        when(connection.getHeaderFields()).thenReturn(headers);
-
-        Headers testHeaders = new HttpUrlConnectionHeaders(connection);
+        Headers testHeaders = new HttpUrlConnectionHeaders(headers);
 
         List<Link> links = testHeaders.header(HttpHeaders.LINK).value();
 

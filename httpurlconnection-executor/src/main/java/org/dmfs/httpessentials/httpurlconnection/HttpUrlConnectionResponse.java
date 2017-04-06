@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -38,6 +40,7 @@ final class HttpUrlConnectionResponse implements HttpResponse
 {
     private final URI mRequestUri;
     private final HttpURLConnection mConnection;
+    private final Headers mHeaders;
 
 
     /**
@@ -47,10 +50,11 @@ final class HttpUrlConnectionResponse implements HttpResponse
      *         The URL the connection was directed to.
      * @param connection
      */
-    public HttpUrlConnectionResponse(URI resquestUri, HttpURLConnection connection)
+    public HttpUrlConnectionResponse(URI resquestUri, HttpURLConnection connection, Map<String, List<String>> headers)
     {
-        this.mRequestUri = resquestUri;
-        this.mConnection = connection;
+        mRequestUri = resquestUri;
+        mConnection = connection;
+        mHeaders = new HttpUrlConnectionHeaders(headers);
     }
 
 
@@ -71,7 +75,7 @@ final class HttpUrlConnectionResponse implements HttpResponse
     @Override
     public Headers headers()
     {
-        return new HttpUrlConnectionHeaders(mConnection);
+        return mHeaders;
     }
 
 

@@ -34,6 +34,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -121,6 +123,10 @@ public final class PlainHttpUrlConnectionExecutor implements HttpRequestExecutor
             connection.setRequestProperty(HttpHeaders.CONTENT_TYPE.name(),
                     HttpHeaders.CONTENT_TYPE.valueString(request.requestEntity().contentType()));
         }
+
+        // call connect explicitly to make sure the connection has been established before we return the response
+        connection.connect();
+
         // send the request entity if applicable
         if (request.method().supportsRequestPayload())
         {
@@ -134,7 +140,14 @@ public final class PlainHttpUrlConnectionExecutor implements HttpRequestExecutor
                 out.close();
             }
         }
+        // fetch headers eagerly because they might be null in case of an error but we can't throw an IOException afterwards
+        // TODO: consider allowing Response.headers() to throw an IOException
+        Map<String, List<String>> headers = connection.getHeaderFields();
+        if (headers == null)
+        {
+            throw new IOException("Can't read headers");
+        }
         // return the response
-        return new HttpUrlConnectionResponse(uri, connection);
+        return new HttpUrlConnectionResponse(uri, connection, headers);
     }
 }
