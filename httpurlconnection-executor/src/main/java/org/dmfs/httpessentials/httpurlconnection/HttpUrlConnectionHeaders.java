@@ -44,26 +44,26 @@ import java.util.Map;
  */
 final class HttpUrlConnectionHeaders implements Headers
 {
-    private final HttpURLConnection mConnection;
+    private final Map<String, List<String>> mHeaders;
 
 
     /**
      * Provides {@link Headers} for the given {@link HttpURLConnection}.
      *
-     * @param connection
-     *         The {@link HttpURLConnection}.
+     * @param headers
+     *         A {@link Map} with all the headers of the response.
      */
-    public HttpUrlConnectionHeaders(HttpURLConnection connection)
+    public HttpUrlConnectionHeaders(Map<String, List<String>> headers)
     {
-        mConnection = connection;
+        mHeaders = headers;
     }
 
 
     @Override
     public boolean contains(final HeaderType<?> headerType)
     {
-        // getHeaderFields returns a Map which contains header names as returned by the server - though, we need to compare them in a case-insensitive manner
-        return new FilteredIterator<>(mConnection.getHeaderFields().keySet().iterator(), new StringEqualsIgnoreCase(headerType.name())).hasNext();
+        // the Map contains header names as returned by the server - though, we need to compare them in a case-insensitive manner
+        return new FilteredIterator<>(mHeaders.keySet().iterator(), new StringEqualsIgnoreCase(headerType.name())).hasNext();
     }
 
 
@@ -81,29 +81,26 @@ final class HttpUrlConnectionHeaders implements Headers
     @Override
     public <T> Header<T> header(SingletonHeaderType<T> headerType)
     {
-        Map<String, List<String>> headers = mConnection.getHeaderFields();
-        // getHeaderFields returns a Map which contains header names as returned by the server - though, we need to compare them in a case-insensitive manner
-        return headerType.entityFromString(headers.get(
-                new FilteredIterator<>(headers.keySet().iterator(), new StringEqualsIgnoreCase(headerType.name())).next()).get(0));
+        // the Map which header names as returned by the server - though, we need to compare them in a case-insensitive manner
+        return headerType.entityFromString(mHeaders.get(
+                new FilteredIterator<>(mHeaders.keySet().iterator(), new StringEqualsIgnoreCase(headerType.name())).next()).get(0));
     }
 
 
     @Override
     public <T> Header<List<T>> header(final ListHeaderType<T> headerType)
     {
-        final Map<String, List<String>> headers = mConnection.getHeaderFields();
-
         Header<List<T>> result = headerType.entity(Collections.<T>emptyList());
 
         final Iterator<Header<List<T>>> headerIterator = new ConvertedIterator<>(new SerialIterableIterator<>(
-                new ConvertedIterator<>(new FilteredIterator<>(mConnection.getHeaderFields().keySet().iterator(),
+                new ConvertedIterator<>(new FilteredIterator<>(mHeaders.keySet().iterator(),
                         new StringEqualsIgnoreCase(headerType.name())),
                         new AbstractConvertedIterator.Converter<Iterable<String>, String>()
                         {
                             @Override
                             public Iterable<String> convert(String element)
                             {
-                                return headers.get(element);
+                                return mHeaders.get(element);
                             }
                         })),
                 new AbstractConvertedIterator.Converter<Header<List<T>>, String>()
