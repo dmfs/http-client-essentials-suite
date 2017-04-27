@@ -22,41 +22,53 @@ import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.TooManyRedirectsException;
 import org.dmfs.httpessentials.executors.following.RedirectPolicy;
-import org.dmfs.httpessentials.headers.HttpHeaders;
 
 import java.net.URI;
 
 import static org.dmfs.httpessentials.HttpStatus.FOUND;
-import static org.dmfs.httpessentials.HttpStatus.MOVED_PERMANENTLY;
-import static org.dmfs.httpessentials.HttpStatus.PERMANENT_REDIRECT;
 import static org.dmfs.httpessentials.HttpStatus.SEE_OTHER;
 import static org.dmfs.httpessentials.HttpStatus.TEMPORARY_REDIRECT;
 
 
 /**
- * A {@link RedirectPolicy} that never allows following redirects (always throws {@link RedirectionException}.
+ * A {@link RedirectPolicy} to follow temporary redirects only. Permanent redirects will not be handled with this policy in charge and the request will be
+ * forwarded to the next instance.
+ * <p>
+ * Example use case:
+ * <pre>{@code
+ * // follows up to 5 temporary and secure redirects
+ * new Following(executor, new Temporary(new Secure(new FollowRedirectPolicy())));
+ * }</pre>
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
-public final class NeverFollowRedirectPolicy implements RedirectPolicy
+public final class Temporary implements RedirectPolicy
 {
+    private final RedirectPolicy mDecoratedPolicy;
+
+
+    public Temporary(RedirectPolicy decoratedPolicy)
+    {
+        mDecoratedPolicy = decoratedPolicy;
+    }
+
 
     @Override
     public boolean affects(HttpResponse response)
     {
         HttpStatus status = response.status();
-        return MOVED_PERMANENTLY.equals(status)
-                || FOUND.equals(status)
-                || SEE_OTHER.equals(status)
-                || TEMPORARY_REDIRECT.equals(status)
-                || PERMANENT_REDIRECT.equals(status);
+        // we handle only temporary redirects
+        return (FOUND.equals(status)
+                || SEE_OTHER.equals(status) // TODO: is this considered "temporary"?
+                || TEMPORARY_REDIRECT.equals(status))
+                && mDecoratedPolicy.affects(response);
     }
 
 
     @Override
     public URI location(HttpResponse response, int redirectNumber) throws RedirectionException, TooManyRedirectsException
     {
-        URI newLocation = response.headers().header(HttpHeaders.LOCATION).value();
-        throw new RedirectionException(response.status(), response.requestUri(), newLocation);
+        return mDecoratedPolicy.location(response, redirectNumber);
     }
+
 }

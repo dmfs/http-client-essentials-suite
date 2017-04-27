@@ -18,7 +18,6 @@
 package org.dmfs.httpessentials.executors.following;
 
 import org.dmfs.httpessentials.HttpMethod;
-import org.dmfs.httpessentials.HttpStatus;
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpRequestEntity;
 import org.dmfs.httpessentials.client.HttpRequestExecutor;
@@ -33,12 +32,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.dmfs.httpessentials.HttpStatus.FOUND;
-import static org.dmfs.httpessentials.HttpStatus.MOVED_PERMANENTLY;
-import static org.dmfs.httpessentials.HttpStatus.PERMANENT_REDIRECT;
-import static org.dmfs.httpessentials.HttpStatus.SEE_OTHER;
-import static org.dmfs.httpessentials.HttpStatus.TEMPORARY_REDIRECT;
 
 
 /**
@@ -66,16 +59,6 @@ public final class Following implements HttpRequestExecutor
     public <T> T execute(URI uri, final HttpRequest<T> request) throws ProtocolException, ProtocolError, IOException
     {
         return mDecoratedExecutor.execute(uri, new FollowingRequest<T>(request, uri));
-    }
-
-
-    private boolean isManageableRedirect(HttpStatus status)
-    {
-        return MOVED_PERMANENTLY.equals(status)
-                || FOUND.equals(status)
-                || SEE_OTHER.equals(status)
-                || TEMPORARY_REDIRECT.equals(status)
-                || PERMANENT_REDIRECT.equals(status);
     }
 
 
@@ -126,7 +109,7 @@ public final class Following implements HttpRequestExecutor
         @Override
         public HttpResponseHandler<T> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
         {
-            if (isManageableRedirect(response.status()))
+            if (response.status().isRedirect() && mRedirectPolicy.affects(response))
             {
                 return new RedirectResponseHandler();
             }
