@@ -17,7 +17,6 @@
 
 package org.dmfs.httpessentials.executors.following;
 
-import org.dmfs.httpessentials.HttpStatus;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.TooManyRedirectsException;
@@ -35,17 +34,29 @@ import java.net.URI;
 public interface RedirectPolicy
 {
 
+    /**
+     * Determines whether this {@link RedirectPolicy} affects the given {@link HttpResponse}. The result of this is undefined if the response has a status code
+     * that is not in the rage of redirection status codes.
+     *
+     * @param response
+     *         An {@link HttpResponse} with any redirection status code (i.e. 3xx).
+     *
+     * @return {@code true} if this {@link RedirectPolicy} affects the given response, {@code false} otherwise.
+     */
+    boolean affects(HttpResponse response);
+
     /***
      * Called when a redirect response (see status codes below) is received. Returns the URI to follow or throws {@link RedirectionException} (which results in
      * not following the redirection).
      *
+     * Note, the behavior of this method is undefined if {@link #affects(HttpResponse)} returns {@code false} for the same {@link HttpResponse}.
+     *
      * @param response
-     *         Response with status code {@link HttpStatus#MOVED_PERMANENTLY}, {@link HttpStatus#FOUND}, {@link HttpStatus#SEE_OTHER}, {@link
-     *         HttpStatus#TEMPORARY_REDIRECT} or {@link HttpStatus#PERMANENT_REDIRECT}.
+     *         Response with any redirection status code (i.e. 3xx)
      * @param redirectNumber
      *         the number of this redirect in the call
      *
-     * @return the new location to follow (absolute uri)
+     * @return the new location to follow (absolute uri).
      *
      * @throws RedirectionException
      *         if policy decides to not to follow the redirect.

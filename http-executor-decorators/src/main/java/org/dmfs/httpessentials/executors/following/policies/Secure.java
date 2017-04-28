@@ -27,6 +27,8 @@ import java.net.URI;
 
 /**
  * A {@link RedirectPolicy} decorator that allows following redirects for only https addresses. (Source and destination both need to be https urls.)
+ * <p>
+ * Any insecure redirect will throw a {@link RedirectionException}.
  *
  * @author Gabor Keszthelyi
  */
@@ -41,6 +43,13 @@ public final class Secure implements RedirectPolicy
     public Secure(RedirectPolicy decoratedPolicy)
     {
         mDecoratedPolicy = decoratedPolicy;
+    }
+
+
+    @Override
+    public boolean affects(HttpResponse response)
+    {
+        return mDecoratedPolicy.affects(response);
     }
 
 

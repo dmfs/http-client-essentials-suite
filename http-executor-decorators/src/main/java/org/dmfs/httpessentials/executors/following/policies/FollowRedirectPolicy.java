@@ -17,6 +17,7 @@
 
 package org.dmfs.httpessentials.executors.following.policies;
 
+import org.dmfs.httpessentials.HttpStatus;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.TooManyRedirectsException;
@@ -24,6 +25,12 @@ import org.dmfs.httpessentials.executors.following.RedirectPolicy;
 import org.dmfs.httpessentials.headers.HttpHeaders;
 
 import java.net.URI;
+
+import static org.dmfs.httpessentials.HttpStatus.FOUND;
+import static org.dmfs.httpessentials.HttpStatus.MOVED_PERMANENTLY;
+import static org.dmfs.httpessentials.HttpStatus.PERMANENT_REDIRECT;
+import static org.dmfs.httpessentials.HttpStatus.SEE_OTHER;
+import static org.dmfs.httpessentials.HttpStatus.TEMPORARY_REDIRECT;
 
 
 /**
@@ -33,13 +40,38 @@ import java.net.URI;
  */
 public final class FollowRedirectPolicy implements RedirectPolicy
 {
+    /**
+     * The default maximum redirects per request.
+     */
+    public static final int DEFAULT_MAX_REDIRECTS = 5;
 
     private final int mMaxNumberOfRedirects;
+
+
+    /**
+     * Creates a {@link FollowRedirectPolicy} with the default redirect limit of {@value DEFAULT_MAX_REDIRECTS}.
+     */
+    public FollowRedirectPolicy()
+    {
+        this(DEFAULT_MAX_REDIRECTS);
+    }
 
 
     public FollowRedirectPolicy(int maxNumberOfRedirects)
     {
         mMaxNumberOfRedirects = maxNumberOfRedirects;
+    }
+
+
+    @Override
+    public boolean affects(HttpResponse response)
+    {
+        HttpStatus status = response.status();
+        return MOVED_PERMANENTLY.equals(status)
+                || FOUND.equals(status)
+                || SEE_OTHER.equals(status)
+                || TEMPORARY_REDIRECT.equals(status)
+                || PERMANENT_REDIRECT.equals(status);
     }
 
 
