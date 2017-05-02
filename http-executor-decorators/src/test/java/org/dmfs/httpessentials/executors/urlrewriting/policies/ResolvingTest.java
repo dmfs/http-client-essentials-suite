@@ -17,6 +17,7 @@
 
 package org.dmfs.httpessentials.executors.urlrewriting.policies;
 
+import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.executors.urlrewriting.RewritePolicy;
 import org.junit.Test;
 
@@ -24,7 +25,6 @@ import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
@@ -36,25 +36,25 @@ public class ResolvingTest
     @Test
     public void testRewrittenRelative() throws Exception
     {
+        HttpRequest mockRequest = mock(HttpRequest.class);
         RewritePolicy mockPolicy = mock(RewritePolicy.class);
-        when(mockPolicy.rewritten(URI.create("http://example.com/test"))).thenReturn(URI.create("http://example.com/result"));
+        when(mockPolicy.rewritten(URI.create("http://example.com/test"), mockRequest)).thenReturn(URI.create("https://example.org/result"));
 
         // test that it returns whatever the delegate returns
-        assertEquals(URI.create("http://example.com/result"), new Resolving(mockPolicy, URI.create("http://example.com")).rewritten(URI.create("/test")));
-        verify(mockPolicy).rewritten(URI.create("http://example.com/test"));
+        assertEquals(URI.create("https://example.org/result"),
+                new Resolving(mockPolicy, URI.create("http://example.com")).rewritten(URI.create("/test"), mockRequest));
     }
 
 
     @Test
     public void testRewrittenAbsolute() throws Exception
     {
+        HttpRequest mockRequest = mock(HttpRequest.class);
         RewritePolicy mockPolicy = mock(RewritePolicy.class);
-        when(mockPolicy.rewritten(URI.create("http://example.org"))).thenReturn(URI.create("http://example.com/result"));
+        when(mockPolicy.rewritten(URI.create("http://example.org"), mockRequest)).thenReturn(URI.create("https://example.net/result"));
 
         // test that it returns whatever the delegate returns
-        assertEquals(URI.create("http://example.com/result"),
-                new Resolving(mockPolicy, URI.create("http://example.com")).rewritten(URI.create("http://example.org")));
-        // check that the correct URI was passed
-        verify(mockPolicy).rewritten(URI.create("http://example.org"));
+        assertEquals(URI.create("https://example.net/result"),
+                new Resolving(mockPolicy, URI.create("http://example.com")).rewritten(URI.create("http://example.org"), mockRequest));
     }
 }

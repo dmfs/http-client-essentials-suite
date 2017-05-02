@@ -17,11 +17,13 @@
 
 package org.dmfs.httpessentials.executors.urlrewriting.policies;
 
+import org.dmfs.httpessentials.client.HttpRequest;
 import org.junit.Test;
 
 import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 
 /**
@@ -32,10 +34,12 @@ public class PassThroughPolicyTest
     @Test
     public void testRewritten() throws Exception
     {
+        HttpRequest mockRequest = mock(HttpRequest.class);
+
         // we should always get in return what we put in
-        assertEquals(URI.create("http://example.com"), new PassThroughPolicy().rewritten(URI.create("http://example.com")));
-        assertEquals(URI.create("http:example.com"), new PassThroughPolicy().rewritten(URI.create("http:example.com")));
-        assertEquals(URI.create("example.com"), new PassThroughPolicy().rewritten(URI.create("example.com")));
+        assertEquals(URI.create("http://example.com"), new PassThroughPolicy().rewritten(URI.create("http://example.com"), mockRequest));
+        assertEquals(URI.create("http:example.com"), new PassThroughPolicy().rewritten(URI.create("http:example.com"), mockRequest));
+        assertEquals(URI.create("example.com"), new PassThroughPolicy().rewritten(URI.create("example.com"), mockRequest));
     }
 
 }

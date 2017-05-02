@@ -57,6 +57,6 @@ public final class UrlRewriting implements HttpRequestExecutor
     @Override
     public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
     {
-        return mDelegate.execute(mRewritePolicy.rewritten(uri), request);
+        return mDelegate.execute(mRewritePolicy.rewritten(uri, request), request);
     }
 }

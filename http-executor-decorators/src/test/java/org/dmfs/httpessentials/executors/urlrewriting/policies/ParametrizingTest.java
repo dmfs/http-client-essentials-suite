@@ -17,6 +17,7 @@
 
 package org.dmfs.httpessentials.executors.urlrewriting.policies;
 
+import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.executors.urlrewriting.RewritePolicy;
 import org.dmfs.rfc3986.parameters.ParameterType;
 import org.dmfs.rfc3986.parameters.parametertypes.BasicParameterType;
@@ -27,7 +28,6 @@ import java.net.URI;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
@@ -43,70 +43,66 @@ public class ParametrizingTest
     @Test
     public void testAddSoleParam() throws Exception
     {
+        HttpRequest mockRequest = mock(HttpRequest.class);
         RewritePolicy mockPolicy = mock(RewritePolicy.class);
-        when(mockPolicy.rewritten(URI.create("http://example.com/test?abc=123"))).thenReturn(URI.create("http://example.com/result"));
+        when(mockPolicy.rewritten(URI.create("http://example.com/test?abc=123"), mockRequest)).thenReturn(URI.create("https://example.org/result"));
 
         // test that it returns whatever the delegate returns
-        assertEquals(URI.create("http://example.com/result"),
-                new Parametrizing(mockPolicy, TEST_PARAM.parameter("123")).rewritten(URI.create("http://example.com/test")));
-        // check that the delegate was called as expected
-        verify(mockPolicy).rewritten(URI.create("http://example.com/test?abc=123"));
+        assertEquals(URI.create("https://example.org/result"),
+                new Parametrizing(mockPolicy, TEST_PARAM.parameter("123")).rewritten(URI.create("http://example.com/test"), mockRequest));
     }
 
 
     @Test
     public void testAddParam() throws Exception
     {
+        HttpRequest mockRequest = mock(HttpRequest.class);
         RewritePolicy mockPolicy = mock(RewritePolicy.class);
-        when(mockPolicy.rewritten(URI.create("http://example.com/test?xyz=987&abc=123"))).thenReturn(URI.create("http://example.com/result"));
+        when(mockPolicy.rewritten(URI.create("http://example.com/test?xyz=987&abc=123"), mockRequest)).thenReturn(URI.create("https://example.org/result"));
 
         // test that it returns whatever the delegate returns
-        assertEquals(URI.create("http://example.com/result"),
-                new Parametrizing(mockPolicy, TEST_PARAM.parameter("123")).rewritten(URI.create("http://example.com/test?xyz=987")));
-        // check that the delegate was called as expected
-        verify(mockPolicy).rewritten(URI.create("http://example.com/test?xyz=987&abc=123"));
+        assertEquals(URI.create("https://example.org/result"),
+                new Parametrizing(mockPolicy, TEST_PARAM.parameter("123")).rewritten(URI.create("http://example.com/test?xyz=987"), mockRequest));
     }
 
 
     @Test
     public void testReplaceSoleParam() throws Exception
     {
+        HttpRequest mockRequest = mock(HttpRequest.class);
         RewritePolicy mockPolicy = mock(RewritePolicy.class);
-        when(mockPolicy.rewritten(URI.create("http://example.com/test?abc=123"))).thenReturn(URI.create("http://example.com/result"));
+        when(mockPolicy.rewritten(URI.create("http://example.com/test?abc=123"), mockRequest)).thenReturn(URI.create("https://example.org/result"));
 
         // test that it returns whatever the delegate returns
-        assertEquals(URI.create("http://example.com/result"),
-                new Parametrizing(mockPolicy, TEST_PARAM.parameter("123")).rewritten(URI.create("http://example.com/test?abc=456")));
-        // check that the delegate was called as expected
-        verify(mockPolicy).rewritten(URI.create("http://example.com/test?abc=123"));
+        assertEquals(URI.create("https://example.org/result"),
+                new Parametrizing(mockPolicy, TEST_PARAM.parameter("123")).rewritten(URI.create("http://example.com/test?abc=456"), mockRequest));
     }
 
 
     @Test
     public void testReplaceParam() throws Exception
     {
+        HttpRequest mockRequest = mock(HttpRequest.class);
         RewritePolicy mockPolicy = mock(RewritePolicy.class);
-        when(mockPolicy.rewritten(URI.create("http://example.com/test?xyz=987&abc=123"))).thenReturn(URI.create("http://example.com/result"));
+        when(mockPolicy.rewritten(URI.create("http://example.com/test?xyz=987&abc=123"), mockRequest)).thenReturn(URI.create("https://example.org/result"));
 
         // test that it returns whatever the delegate returns
-        assertEquals(URI.create("http://example.com/result"),
-                new Parametrizing(mockPolicy, TEST_PARAM.parameter("123")).rewritten(URI.create("http://example.com/test?abc=456&xyz=987")));
-        // check that the delegate was called as expected
-        verify(mockPolicy).rewritten(URI.create("http://example.com/test?xyz=987&abc=123"));
+        assertEquals(URI.create("https://example.org/result"),
+                new Parametrizing(mockPolicy, TEST_PARAM.parameter("123")).rewritten(URI.create("http://example.com/test?abc=456&xyz=987"), mockRequest));
     }
 
 
     @Test
     public void testMixedUpdate() throws Exception
     {
+        HttpRequest mockRequest = mock(HttpRequest.class);
         RewritePolicy mockPolicy = mock(RewritePolicy.class);
-        when(mockPolicy.rewritten(URI.create("http://example.com/test?xyz=987&abc=123&def=444"))).thenReturn(URI.create("http://example.com/result"));
+        when(mockPolicy.rewritten(URI.create("http://example.com/test?xyz=987&abc=123&def=444"), mockRequest)).thenReturn(
+                URI.create("https://example.org/result"));
 
         // test that it returns whatever the delegate returns
-        assertEquals(URI.create("http://example.com/result"),
+        assertEquals(URI.create("https://example.org/result"),
                 new Parametrizing(mockPolicy, TEST_PARAM.parameter("123"), TEST_PARAM2.parameter("444")).rewritten(
-                        URI.create("http://example.com/test?abc=456&xyz=987")));
-        // check that the delegate was called as expected
-        verify(mockPolicy).rewritten(URI.create("http://example.com/test?xyz=987&abc=123&def=444"));
+                        URI.create("http://example.com/test?abc=456&xyz=987"), mockRequest));
     }
 }

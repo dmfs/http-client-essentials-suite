@@ -17,6 +17,7 @@
 
 package org.dmfs.httpessentials.executors.urlrewriting.policies;
 
+import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.executors.urlrewriting.RewritePolicy;
 
 import java.net.URI;
@@ -43,8 +44,8 @@ public final class Resolving implements RewritePolicy
 
 
     @Override
-    public URI rewritten(URI location)
+    public URI rewritten(URI location, HttpRequest<?> request)
     {
-        return mDelegate.rewritten(mBaseUrl.resolve(location));
+        return mDelegate.rewritten(mBaseUrl.resolve(location), request);
     }
 }

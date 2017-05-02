@@ -17,6 +17,7 @@
 
 package org.dmfs.httpessentials.executors.urlrewriting.policies;
 
+import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.executors.urlrewriting.RewritePolicy;
 import org.dmfs.rfc3986.Uri;
 import org.dmfs.rfc3986.encoding.Precoded;
@@ -56,7 +57,7 @@ public final class Parametrizing implements RewritePolicy
 
 
     @Override
-    public URI rewritten(URI location)
+    public URI rewritten(URI location, HttpRequest<?> request)
     {
         // Note: this will look simpler when we switched to uri-toolkit
 
@@ -68,7 +69,7 @@ public final class Parametrizing implements RewritePolicy
 
         // Replace parameters of old Uri before forwarding the result to the delegate
         return mDelegate.rewritten(
-                URI.create(new Text(new Resolved(uri, new RelativeUri(new SimpleQuery(new XWwwFormUrlEncoded(parameters))))).toString())
-        );
+                URI.create(new Text(new Resolved(uri, new RelativeUri(new SimpleQuery(new XWwwFormUrlEncoded(parameters))))).toString()),
+                request);
     }
 }
