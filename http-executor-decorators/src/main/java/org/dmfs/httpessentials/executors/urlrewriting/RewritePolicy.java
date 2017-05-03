@@ -17,6 +17,8 @@
 
 package org.dmfs.httpessentials.executors.urlrewriting;
 
+import org.dmfs.httpessentials.client.HttpRequest;
+
 import java.net.URI;
 
 
@@ -32,8 +34,11 @@ public interface RewritePolicy
      *
      * @param location
      *         The original request location.
+     * @param request
+     *         The request that is about to be sent to the given URI. {@link RewritePolicy} can use this to take request headers and method into consideration
+     *         for rewrites
      *
      * @return The actual request location.
      */
-    URI rewritten(URI location);
+    URI rewritten(URI location, HttpRequest<?> request);
 }
