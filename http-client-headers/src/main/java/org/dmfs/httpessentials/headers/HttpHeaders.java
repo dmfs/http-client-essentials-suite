@@ -17,8 +17,8 @@
 
 package org.dmfs.httpessentials.headers;
 
-import org.dmfs.httpessentials.converters.IntegerConverter;
 import org.dmfs.httpessentials.converters.LinkConverter;
+import org.dmfs.httpessentials.converters.LongConverter;
 import org.dmfs.httpessentials.converters.MediaTypeConverter;
 import org.dmfs.httpessentials.converters.OptionallyQuoted;
 import org.dmfs.httpessentials.converters.PlainStringHeaderConverter;
@@ -47,8 +47,9 @@ public final class HttpHeaders
     /**
      * The content-length header that contains the number of bytes of the response entity.
      */
-    public final static SingletonHeaderType<Integer> CONTENT_LENGTH = new BasicSingletonHeaderType<Integer>(
-            "content-length", IntegerConverter.INSTANCE);
+    public final static SingletonHeaderType<Long> CONTENT_LENGTH = new BasicSingletonHeaderType<Long>(
+            "content-length", LongConverter.INSTANCE);
+
     /**
      * The Link header that contains links to documents related to the response.
      */

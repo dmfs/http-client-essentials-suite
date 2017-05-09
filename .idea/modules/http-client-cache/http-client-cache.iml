@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":http-client-cache" external.linked.project.path="$MODULE_DIR$/../../../http-client-cache" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="org.dmfs" external.system.module.version="0.11-1-g63a4995" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../http-client-cache">
+      <excludeFolder url="file://$MODULE_DIR$/../../../http-client-cache/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../http-client-cache/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

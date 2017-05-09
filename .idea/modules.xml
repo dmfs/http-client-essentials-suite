@@ -5,6 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-basics/http-client-basics.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-basics/http-client-basics.iml" group="http-client-basics" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-basics/http-client-basics_main.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-basics/http-client-basics_main.iml" group="http-client-basics" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-basics/http-client-basics_test.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-basics/http-client-basics_test.iml" group="http-client-basics" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-cache/http-client-cache.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-cache/http-client-cache.iml" group="http-client-cache" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-cache/http-client-cache_main.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-cache/http-client-cache_main.iml" group="http-client-cache" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-cache/http-client-cache_test.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-cache/http-client-cache_test.iml" group="http-client-cache" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-essentials/http-client-essentials.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-essentials/http-client-essentials.iml" group="http-client-essentials" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-essentials-suite.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-essentials-suite.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/http-client-essentials-suite_main.iml" filepath="$PROJECT_DIR$/.idea/modules/http-client-essentials-suite_main.iml" group="http-client-essentials-suite" />

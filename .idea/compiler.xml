@@ -18,6 +18,8 @@
       <module name="http-client-essentials-suite-http-executor-decorators_test" target="1.7" />
       <module name="http-client-essentials-suite-httpurlconnection-executor_main" target="1.7" />
       <module name="http-client-essentials-suite-httpurlconnection-executor_test" target="1.7" />
+      <module name="http-client-cache_main" target="1.7" />
+      <module name="http-client-cache_test" target="1.7" />
       <module name="http-client-essentials-suite_main" target="1.7" />
       <module name="http-client-essentials-suite_test" target="1.7" />
       <module name="http-client-essentials_main" target="1.7" />

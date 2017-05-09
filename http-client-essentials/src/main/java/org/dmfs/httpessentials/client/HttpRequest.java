@@ -56,7 +56,7 @@ public interface HttpRequest<T>
      *
      * @return An {@link HttpRequestEntity} object, never <code>null</code>.
      */
-    public HttpRequestEntity requestEntity();
+    public HttpRequestEntity requestEntity() throws IOException;
 
     /**
      * Returns a handler for the response. If the response can not be handled an exception is thrown.
