@@ -63,7 +63,7 @@ public final class EntityDecorated<T> implements HttpRequest<T>
 
 
     @Override
-    public HttpRequestEntity requestEntity()
+    public HttpRequestEntity requestEntity() throws IOException
     {
         return mRequestEntityDecoration.decorated(mOriginalRequest.requestEntity());
     }

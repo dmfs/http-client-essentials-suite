@@ -100,7 +100,7 @@ public final class Following implements HttpRequestExecutor
 
 
         @Override
-        public HttpRequestEntity requestEntity()
+        public HttpRequestEntity requestEntity() throws IOException
         {
             return mOriginalRequest.requestEntity();
         }

@@ -14,7 +14,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="http-client-essentials_main" />
     <orderEntry type="module" module-name="http-client-types_main" />
-    <orderEntry type="module" module-name="http-client-headers_main" />
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
@@ -24,6 +23,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="http-client-headers_main" />
     <orderEntry type="module" module-name="http-client-basics_main" />
     <orderEntry type="library" name="Gradle: org.dmfs:iterators:1.4" level="project" />
     <orderEntry type="module-library">
