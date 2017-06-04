@@ -21,10 +21,10 @@ import org.dmfs.httpessentials.parameters.Parameter;
 import org.dmfs.httpessentials.parameters.ParameterType;
 import org.dmfs.httpessentials.parameters.Parametrized;
 import org.dmfs.iterables.CsvIterable;
-import org.dmfs.iterators.AbstractConvertedIterator;
-import org.dmfs.iterators.AbstractFilteredIterator;
-import org.dmfs.iterators.ConvertedIterator;
-import org.dmfs.iterators.FilteredIterator;
+import org.dmfs.iterators.Filter;
+import org.dmfs.iterators.Function;
+import org.dmfs.iterators.decorators.Filtered;
+import org.dmfs.iterators.decorators.Mapped;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -67,18 +67,18 @@ public final class UrlFormEncodedKeyValues implements Parametrized
     @Override
     public <T> Iterator<Parameter<T>> parameters(final ParameterType<T> parameterType)
     {
-        return new ConvertedIterator<>(
-                new FilteredIterator<>(
-                        new ConvertedIterator<>(mParts.iterator(),
-                                new AbstractConvertedIterator.Converter<Map.Entry<String, String>, String>()
+        return new Mapped<>(
+                new Filtered<>(
+                        new Mapped<>(mParts.iterator(),
+                                new Function<String, Map.Entry<String, String>>()
                                 {
                                     @Override
-                                    public Map.Entry<String, String> convert(final String element)
+                                    public Map.Entry<String, String> apply(final String element)
                                     {
                                         return new KeyValueStringEntry(element, element.indexOf(VALUE_SEPARATOR));
                                     }
                                 }),
-                        new AbstractFilteredIterator.IteratorFilter<Map.Entry<String, String>>()
+                        new Filter<Map.Entry<String, String>>()
                         {
                             @Override
                             public boolean iterate(final Map.Entry<String, String> element)
@@ -86,10 +86,10 @@ public final class UrlFormEncodedKeyValues implements Parametrized
                                 return parameterType.name().equals(element.getKey());
                             }
                         }),
-                new AbstractConvertedIterator.Converter<Parameter<T>, Map.Entry<String, String>>()
+                new Function<Map.Entry<String, String>, Parameter<T>>()
                 {
                     @Override
-                    public Parameter<T> convert(final Map.Entry<String, String> element)
+                    public Parameter<T> apply(final Map.Entry<String, String> element)
                     {
                         return parameterType.entityFromString(element.getValue());
                     }

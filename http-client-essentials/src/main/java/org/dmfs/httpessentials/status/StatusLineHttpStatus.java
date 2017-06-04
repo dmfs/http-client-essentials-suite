@@ -39,7 +39,7 @@ public final class StatusLineHttpStatus implements HttpStatus
      * Creates an HttpStatus object from a given status line
      *
      * @param statusLine
-     *            The status line.
+     *         The status line.
      */
     public StatusLineHttpStatus(final String statusLine)
     {

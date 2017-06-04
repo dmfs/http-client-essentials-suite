@@ -17,15 +17,15 @@
 
 package org.dmfs.httpessentials.httpurlconnection.utils.iterators;
 
-import org.dmfs.iterators.AbstractFilteredIterator;
+import org.dmfs.iterators.Filter;
 
 
 /**
- * An {@link AbstractFilteredIterator.IteratorFilter} that tests for equality in a case agnostic way.
+ * A {@link Filter} that tests for equality in a case agnostic way.
  *
  * @author Marten Gajda
  */
-public final class StringEqualsIgnoreCase implements AbstractFilteredIterator.IteratorFilter<String>
+public final class StringEqualsIgnoreCase implements Filter<String>
 {
     private final String mTestValue;
 
