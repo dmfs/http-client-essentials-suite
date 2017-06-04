@@ -22,11 +22,11 @@ import org.dmfs.httpessentials.parameters.ParameterType;
 import org.dmfs.httpessentials.parameters.Parameters;
 import org.dmfs.iterables.CachingIterable;
 import org.dmfs.iterables.CsvIterable;
-import org.dmfs.iterators.AbstractConvertedIterator.Converter;
-import org.dmfs.iterators.AbstractFilteredIterator.IteratorFilter;
-import org.dmfs.iterators.ConvertedIterator;
 import org.dmfs.iterators.CsvIterator;
-import org.dmfs.iterators.FilteredIterator;
+import org.dmfs.iterators.Filter;
+import org.dmfs.iterators.Function;
+import org.dmfs.iterators.decorators.Filtered;
+import org.dmfs.iterators.decorators.Mapped;
 import org.dmfs.iterators.filters.Skip;
 
 import java.net.URI;
@@ -77,9 +77,9 @@ public final class StringLink implements Link
     @Override
     public <T> Iterator<Parameter<T>> parameters(final ParameterType<T> parameterType)
     {
-        return new ConvertedIterator<>(
-                new FilteredIterator<>(new FilteredIterator<>(mParts.iterator(), new Skip<String>(1)),
-                        new IteratorFilter<String>()
+        return new Mapped<>(
+                new Filtered<>(new Filtered<>(mParts.iterator(), new Skip<String>(1)),
+                        new Filter<String>()
                         {
                             @Override
                             public boolean iterate(String element)
@@ -88,10 +88,10 @@ public final class StringLink implements Link
                                 int equalsIdx = param.indexOf(PARAMETER_VALUE_SEPARATOR);
                                 return parameterType.name().equalsIgnoreCase(param.substring(0, equalsIdx));
                             }
-                        }), new Converter<Parameter<T>, String>()
+                        }), new Function<String, Parameter<T>>()
         {
             @Override
-            public Parameter<T> convert(String element)
+            public Parameter<T> apply(String element)
             {
                 element = element.trim();
                 int equalsIdx = element.indexOf(PARAMETER_VALUE_SEPARATOR);

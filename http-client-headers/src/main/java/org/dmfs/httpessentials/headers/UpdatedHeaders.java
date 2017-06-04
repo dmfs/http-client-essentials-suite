@@ -17,10 +17,10 @@
 
 package org.dmfs.httpessentials.headers;
 
-import org.dmfs.iterators.AbstractFilteredIterator.IteratorFilter;
-import org.dmfs.iterators.FilteredIterator;
-import org.dmfs.iterators.SerialIterator;
+import org.dmfs.iterators.Filter;
 import org.dmfs.iterators.SingletonIterator;
+import org.dmfs.iterators.decorators.Filtered;
+import org.dmfs.iterators.decorators.Serialized;
 
 import java.util.Iterator;
 import java.util.List;
@@ -55,8 +55,8 @@ public final class UpdatedHeaders implements Headers
     @Override
     public Iterator<Header<?>> iterator()
     {
-        return new SerialIterator<Header<?>>(
-                new FilteredIterator<Header<?>>(mHeaders.iterator(), new IteratorFilter<Header<?>>()
+        return new Serialized<>(
+                new Filtered<>(mHeaders.iterator(), new Filter<Header<?>>()
                 {
                     @Override
                     public boolean iterate(Header<?> element)

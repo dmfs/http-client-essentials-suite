@@ -58,7 +58,7 @@ public interface HttpStatus
     public final static HttpStatus PROCESSING = new SimpleHttpStatus(102, "Processing");
 
 	/*
-	 * 2xx Successful status codes, see: http://tools.ietf.org/html/rfc7231#section-6.3
+     * 2xx Successful status codes, see: http://tools.ietf.org/html/rfc7231#section-6.3
 	 */
 
     /**

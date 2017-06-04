@@ -25,10 +25,10 @@ import org.dmfs.httpessentials.headers.ListHeaderType;
 import org.dmfs.httpessentials.headers.SingletonHeaderType;
 import org.dmfs.httpessentials.headers.UpdatedHeaders;
 import org.dmfs.httpessentials.httpurlconnection.utils.iterators.StringEqualsIgnoreCase;
-import org.dmfs.iterators.AbstractConvertedIterator;
-import org.dmfs.iterators.ConvertedIterator;
-import org.dmfs.iterators.FilteredIterator;
-import org.dmfs.iterators.SerialIterableIterator;
+import org.dmfs.iterators.Function;
+import org.dmfs.iterators.decorators.Filtered;
+import org.dmfs.iterators.decorators.Flattened;
+import org.dmfs.iterators.decorators.Mapped;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
@@ -63,7 +63,7 @@ final class HttpUrlConnectionHeaders implements Headers
     public boolean contains(final HeaderType<?> headerType)
     {
         // the Map contains header names as returned by the server - though, we need to compare them in a case-insensitive manner
-        return new FilteredIterator<>(mHeaders.keySet().iterator(), new StringEqualsIgnoreCase(headerType.name())).hasNext();
+        return new Filtered<>(mHeaders.keySet().iterator(), new StringEqualsIgnoreCase(headerType.name())).hasNext();
     }
 
 
@@ -83,7 +83,7 @@ final class HttpUrlConnectionHeaders implements Headers
     {
         // the Map which header names as returned by the server - though, we need to compare them in a case-insensitive manner
         return headerType.entityFromString(mHeaders.get(
-                new FilteredIterator<>(mHeaders.keySet().iterator(), new StringEqualsIgnoreCase(headerType.name())).next()).get(0));
+                new Filtered<>(mHeaders.keySet().iterator(), new StringEqualsIgnoreCase(headerType.name())).next()).get(0));
     }
 
 
@@ -92,21 +92,21 @@ final class HttpUrlConnectionHeaders implements Headers
     {
         Header<List<T>> result = headerType.entity(Collections.<T>emptyList());
 
-        final Iterator<Header<List<T>>> headerIterator = new ConvertedIterator<>(new SerialIterableIterator<>(
-                new ConvertedIterator<>(new FilteredIterator<>(mHeaders.keySet().iterator(),
+        final Iterator<Header<List<T>>> headerIterator = new Mapped<>(new Flattened<>(
+                new Mapped<>(new Filtered<>(mHeaders.keySet().iterator(),
                         new StringEqualsIgnoreCase(headerType.name())),
-                        new AbstractConvertedIterator.Converter<Iterable<String>, String>()
+                        new Function<String, Iterable<String>>()
                         {
                             @Override
-                            public Iterable<String> convert(String element)
+                            public Iterable<String> apply(String element)
                             {
                                 return mHeaders.get(element);
                             }
                         })),
-                new AbstractConvertedIterator.Converter<Header<List<T>>, String>()
+                new Function<String, Header<List<T>>>()
                 {
                     @Override
-                    public Header<List<T>> convert(String element)
+                    public Header<List<T>> apply(String element)
                     {
                         return headerType.entityFromString(element);
                     }

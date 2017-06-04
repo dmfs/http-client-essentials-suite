@@ -20,11 +20,11 @@ package org.dmfs.httpessentials.types;
 import org.dmfs.httpessentials.parameters.Parameter;
 import org.dmfs.httpessentials.parameters.ParameterType;
 import org.dmfs.httpessentials.parameters.Parameters;
-import org.dmfs.iterators.AbstractConvertedIterator.Converter;
-import org.dmfs.iterators.AbstractFilteredIterator.IteratorFilter;
 import org.dmfs.iterators.ArrayIterator;
-import org.dmfs.iterators.ConvertedIterator;
-import org.dmfs.iterators.FilteredIterator;
+import org.dmfs.iterators.Filter;
+import org.dmfs.iterators.Function;
+import org.dmfs.iterators.decorators.Filtered;
+import org.dmfs.iterators.decorators.Mapped;
 
 import java.util.Iterator;
 import java.util.Locale;
@@ -143,25 +143,25 @@ public final class StructuredMediaType implements MediaType
     @Override
     public <T> Iterator<Parameter<T>> parameters(final ParameterType<T> parameterType)
     {
-        return new ConvertedIterator<Parameter<T>, Parameter<?>>(
-                new FilteredIterator<Parameter<?>>(new ArrayIterator<Parameter<?>>(mParameters),
-                        new IteratorFilter<Parameter<?>>()
+        return new Mapped<>(
+                new Filtered<>(new ArrayIterator<>(mParameters),
+                        new Filter<Parameter<?>>()
                         {
                             @Override
                             public boolean iterate(Parameter<?> element)
                             {
                                 return parameterType.equals(element.type());
                             }
-                        }), new Converter<Parameter<T>, Parameter<?>>()
-        {
-
-            @SuppressWarnings("unchecked")
-            @Override
-            public Parameter<T> convert(Parameter<?> element)
-            {
-                return (Parameter<T>) element;
-            }
-        });
+                        }),
+                new Function<Parameter<?>, Parameter<T>>()
+                {
+                    @SuppressWarnings("unchecked")
+                    @Override
+                    public Parameter<T> apply(Parameter<?> element)
+                    {
+                        return (Parameter<T>) element;
+                    }
+                });
     }
 
 
