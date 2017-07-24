@@ -140,6 +140,8 @@ public final class PlainHttpUrlConnectionExecutor implements HttpRequestExecutor
                 out.close();
             }
         }
+        // read response code right away because we can't throw an appropriate exception later on if something happens
+        connection.getResponseCode();
         // fetch headers eagerly because they might be null in case of an error but we can't throw an IOException afterwards
         // TODO: consider allowing Response.headers() to throw an IOException
         Map<String, List<String>> headers = connection.getHeaderFields();
