@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":http-client-headers:main" external.linked.project.path="$MODULE_DIR$/../../../http-client-headers" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="org.dmfs" external.system.module.type="sourceSet" external.system.module.version="0.12" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":http-client-headers:main" external.linked.project.path="$MODULE_DIR$/../../../http-client-headers" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="org.dmfs" external.system.module.type="sourceSet" external.system.module.version="0.12.1" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
-    <output url="file://$MODULE_DIR$/../../../http-client-headers/build/classes/main" />
+    <output url="file://$MODULE_DIR$/../../../http-client-headers/build/classes/java/main" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../http-client-headers/src/main">
       <sourceFolder url="file://$MODULE_DIR$/../../../http-client-headers/src/main/java" isTestSource="false" />
@@ -9,8 +9,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="http-client-essentials_main" />
     <orderEntry type="module" module-name="http-client-types_main" />
+    <orderEntry type="module" module-name="http-client-essentials_main" />
     <orderEntry type="library" name="Gradle: org.dmfs:iterators:1.4" level="project" />
   </component>
 </module>
