@@ -25,7 +25,7 @@ repositories {
 }
 
 buildConfig {
-    packageName = 'org.dmfs.httpessentials.httpurlconnection'
+    packageName = 'org.dmfs.httpessentials.okhttp'
 }
 
 tasks.withType(Jar) {
@@ -35,11 +35,15 @@ tasks.withType(Jar) {
 }
 
 dependencies {
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile project(':http-client-essentials')
     compile project(':http-client-types')
     compile project(':http-client-headers')
     compile project(':http-client-basics')
+    // TODO: this is imported for the BottomBranded decorator, it should be moved to a common dependency
+    compile project(':httpurlconnection-executor')
     testCompile 'junit:junit:' + JUNIT_VERSION
     testCompile project(':http-client-mockutils')
     testCompile 'org.mockito:mockito-all:1.9.5'
+    testCompile 'org.dmfs:jems-testing:' + JEMS_VERSION
 }
