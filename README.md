@@ -47,6 +47,6 @@ Other differences are:
 
 ## License
 
-Copyright (c) Marten Gajda 2016, licensed under Apache2.
+Copyright (c) Marten Gajda 2017, licensed under Apache2.
 
 
