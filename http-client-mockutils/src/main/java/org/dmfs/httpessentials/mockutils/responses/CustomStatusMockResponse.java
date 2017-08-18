@@ -22,6 +22,7 @@ import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.headers.Headers;
 
+import java.io.IOException;
 import java.net.URI;
 
 
@@ -52,14 +53,14 @@ public class CustomStatusMockResponse implements HttpResponse
 
 
     @Override
-    public Headers headers()
+    public Headers headers() throws IOException
     {
         return mDecorated.headers();
     }
 
 
     @Override
-    public HttpResponseEntity responseEntity()
+    public HttpResponseEntity responseEntity() throws IOException
     {
         return mDecorated.responseEntity();
     }

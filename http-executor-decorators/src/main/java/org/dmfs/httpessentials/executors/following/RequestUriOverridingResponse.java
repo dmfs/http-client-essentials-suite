@@ -22,6 +22,7 @@ import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.headers.Headers;
 
+import java.io.IOException;
 import java.net.URI;
 
 
@@ -45,21 +46,21 @@ final class RequestUriOverridingResponse implements HttpResponse
 
 
     @Override
-    public HttpStatus status()
+    public HttpStatus status() throws IOException
     {
         return mResponse.status();
     }
 
 
     @Override
-    public Headers headers()
+    public Headers headers() throws IOException
     {
         return mResponse.headers();
     }
 
 
     @Override
-    public HttpResponseEntity responseEntity()
+    public HttpResponseEntity responseEntity() throws IOException
     {
         return mResponse.responseEntity();
     }

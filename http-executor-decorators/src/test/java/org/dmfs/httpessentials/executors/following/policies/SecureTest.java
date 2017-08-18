@@ -28,6 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
 import java.net.URI;
 
 import static org.junit.Assert.assertSame;
@@ -62,7 +63,7 @@ public class SecureTest
 
 
     @Test
-    public void testLocation_whenBothUrisAreHttps_shouldReturnDecoratedResult() throws RedirectionException
+    public void testLocation_whenBothUrisAreHttps_shouldReturnDecoratedResult() throws RedirectionException, IOException
     {
         // ARRANGE
         new StrictExpectations()
@@ -89,7 +90,7 @@ public class SecureTest
 
 
     @Test(expected = RedirectionException.class)
-    public void testLocation_whenRequestUriIsNotHttps_shouldThrowException(@Mocked RedirectionException e) throws RedirectionException
+    public void testLocation_whenRequestUriIsNotHttps_shouldThrowException(@Mocked RedirectionException e) throws RedirectionException, IOException
     {
         // ARRANGE
         new StrictExpectations()
@@ -113,7 +114,7 @@ public class SecureTest
 
 
     @Test(expected = RedirectionException.class)
-    public void testLocation_whenNewLocationIsNotHttps_shouldThrowException(@Mocked RedirectionException e) throws RedirectionException
+    public void testLocation_whenNewLocationIsNotHttps_shouldThrowException(@Mocked RedirectionException e) throws RedirectionException, IOException
     {
         // ARRANGE
         new StrictExpectations()
@@ -140,7 +141,7 @@ public class SecureTest
 
 
     @Test(expected = RedirectionException.class)
-    public void testLocation_whenBothAreNotHttps_shouldThrowException(@Mocked RedirectionException e) throws RedirectionException
+    public void testLocation_whenBothAreNotHttps_shouldThrowException(@Mocked RedirectionException e) throws RedirectionException, IOException
     {
         // ARRANGE
         new StrictExpectations()

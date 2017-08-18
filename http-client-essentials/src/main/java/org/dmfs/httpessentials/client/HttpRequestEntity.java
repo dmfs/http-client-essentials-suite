@@ -36,7 +36,7 @@ public interface HttpRequestEntity
      *
      * @return The content type or <code>null</code> if no content type is applicable (like when the entity is empty).
      */
-    public MediaType contentType();
+    MediaType contentType();
 
     /**
      * Returns the length of the content or <code>-1</code> if it's not known.
@@ -45,7 +45,7 @@ public interface HttpRequestEntity
      *
      * @throws IOException
      */
-    public long contentLength() throws IOException;
+    long contentLength() throws IOException;
 
     /**
      * Writes the content to the given {@link OutputStream}. Note that the stream is property of the caller and must not be closed by this method.
@@ -55,5 +55,5 @@ public interface HttpRequestEntity
      *
      * @throws IOException
      */
-    public void writeContent(OutputStream out) throws IOException;
+    void writeContent(OutputStream out) throws IOException;
 }
