@@ -27,6 +27,7 @@ import org.dmfs.httpessentials.headers.HttpHeaders;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
 import java.net.URI;
 
 
@@ -49,7 +50,7 @@ public class NeverFollowRedirectPolicyTest
 
 
     @Test(expected = RedirectionException.class)
-    public void testLocation_shouldAlwaysThrowException(@Mocked RedirectionException e) throws RedirectionException
+    public void testLocation_shouldAlwaysThrowException(@Mocked RedirectionException e) throws RedirectionException, IOException
     {
         // ARRANGE
         new StrictExpectations()

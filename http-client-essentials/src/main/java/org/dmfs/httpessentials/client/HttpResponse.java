@@ -20,6 +20,7 @@ package org.dmfs.httpessentials.client;
 import org.dmfs.httpessentials.HttpStatus;
 import org.dmfs.httpessentials.headers.Headers;
 
+import java.io.IOException;
 import java.net.URI;
 
 
@@ -35,23 +36,31 @@ public interface HttpResponse
      *
      * @return The status.
      *
+     * @throws IOException
+     *         If an IO error occurred.
      * @see HttpStatus
      */
-    public HttpStatus status();
+    HttpStatus status() throws IOException;
 
     /**
      * Returns the response headers.
      *
      * @return A {@link Headers}.
+     *
+     * @throws IOException
+     *         If an IO error occurred.
      */
-    public Headers headers();
+    Headers headers() throws IOException;
 
     /**
      * Returns an {@link HttpResponseEntity} representing the data in the response.
      *
      * @return An {@link HttpResponseEntity}.
+     *
+     * @throws IOException
+     *         If an IO error occurred.
      */
-    public HttpResponseEntity responseEntity();
+    HttpResponseEntity responseEntity() throws IOException;
 
     /**
      * Returns the {@link URI} the request was originally sent to.
@@ -60,7 +69,7 @@ public interface HttpResponse
      *
      * @see #responseUri()
      */
-    public URI requestUri();
+    URI requestUri();
 
     /**
      * Returns the {@link URI} of the server instance that actually handled the request. If no redirects have been followed this equals the URI passed to the
@@ -70,5 +79,5 @@ public interface HttpResponse
      *
      * @see #requestUri()
      */
-    public URI responseUri();
+    URI responseUri();
 }

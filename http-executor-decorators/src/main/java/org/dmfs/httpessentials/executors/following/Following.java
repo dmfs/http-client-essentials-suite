@@ -93,14 +93,14 @@ public final class Following implements HttpRequestExecutor
 
 
         @Override
-        public Headers headers()
+        public Headers headers() throws IOException
         {
             return mOriginalRequest.headers();
         }
 
 
         @Override
-        public HttpRequestEntity requestEntity()
+        public HttpRequestEntity requestEntity() throws IOException
         {
             return mOriginalRequest.requestEntity();
         }

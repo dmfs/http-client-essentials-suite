@@ -56,14 +56,14 @@ public final class HeaderDecorated<T> implements HttpRequest<T>
 
 
     @Override
-    public Headers headers()
+    public Headers headers() throws IOException
     {
         return mHeadersDecoration.decorated(mOriginalRequest.headers());
     }
 
 
     @Override
-    public HttpRequestEntity requestEntity()
+    public HttpRequestEntity requestEntity() throws IOException
     {
         return mOriginalRequest.requestEntity();
     }

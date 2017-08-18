@@ -21,6 +21,7 @@ import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.TooManyRedirectsException;
 
+import java.io.IOException;
 import java.net.URI;
 
 
@@ -43,7 +44,7 @@ public interface RedirectPolicy
      *
      * @return {@code true} if this {@link RedirectPolicy} affects the given response, {@code false} otherwise.
      */
-    boolean affects(HttpResponse response);
+    boolean affects(HttpResponse response) throws IOException;
 
     /***
      * Called when a redirect response (see status codes below) is received. Returns the URI to follow or throws {@link RedirectionException} (which results in
@@ -63,6 +64,6 @@ public interface RedirectPolicy
      * @throws TooManyRedirectsException
      *         if policy decides this would be too many redirects
      */
-    URI location(HttpResponse response, int redirectNumber) throws RedirectionException, TooManyRedirectsException;
+    URI location(HttpResponse response, int redirectNumber) throws RedirectionException, TooManyRedirectsException, IOException;
 
 }

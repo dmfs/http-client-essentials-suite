@@ -24,6 +24,7 @@ import org.dmfs.httpessentials.exceptions.TooManyRedirectsException;
 import org.dmfs.httpessentials.executors.following.RedirectPolicy;
 import org.dmfs.httpessentials.headers.HttpHeaders;
 
+import java.io.IOException;
 import java.net.URI;
 
 import static org.dmfs.httpessentials.HttpStatus.FOUND;
@@ -64,7 +65,7 @@ public final class FollowRedirectPolicy implements RedirectPolicy
 
 
     @Override
-    public boolean affects(HttpResponse response)
+    public boolean affects(HttpResponse response) throws IOException
     {
         HttpStatus status = response.status();
         return MOVED_PERMANENTLY.equals(status)
@@ -76,7 +77,7 @@ public final class FollowRedirectPolicy implements RedirectPolicy
 
 
     @Override
-    public URI location(HttpResponse response, int redirectNumber) throws RedirectionException
+    public URI location(HttpResponse response, int redirectNumber) throws RedirectionException, IOException
     {
         URI newLocation = response.headers().header(HttpHeaders.LOCATION).value();
         if (redirectNumber > mMaxNumberOfRedirects)

@@ -22,6 +22,7 @@ import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.TooManyRedirectsException;
 import org.dmfs.httpessentials.executors.following.RedirectPolicy;
 
+import java.io.IOException;
 import java.net.URI;
 
 
@@ -47,14 +48,14 @@ public final class Secure implements RedirectPolicy
 
 
     @Override
-    public boolean affects(HttpResponse response)
+    public boolean affects(HttpResponse response) throws IOException
     {
         return mDecoratedPolicy.affects(response);
     }
 
 
     @Override
-    public URI location(HttpResponse response, int redirectNumber) throws RedirectionException, TooManyRedirectsException
+    public URI location(HttpResponse response, int redirectNumber) throws RedirectionException, TooManyRedirectsException, IOException
     {
         URI redirectingLocation = response.requestUri();
         URI newLocation = mDecoratedPolicy.location(response, redirectNumber);
