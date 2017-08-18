@@ -19,6 +19,8 @@ package org.dmfs.httpessentials.entities;
 
 import org.dmfs.httpessentials.client.HttpRequestEntity;
 import org.dmfs.httpessentials.types.MediaType;
+import org.dmfs.optional.Absent;
+import org.dmfs.optional.Optional;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -34,25 +36,17 @@ public final class EmptyHttpRequestEntity implements HttpRequestEntity
     public final static HttpRequestEntity INSTANCE = new EmptyHttpRequestEntity();
 
 
-    /**
-     * Private constructor, there is no need to instantiate this class another time.
-     */
-    private EmptyHttpRequestEntity()
+    @Override
+    public Optional<MediaType> contentType()
     {
+        return Absent.absent();
     }
 
 
     @Override
-    public MediaType contentType()
+    public Optional<Long> contentLength()
     {
-        return null;
-    }
-
-
-    @Override
-    public long contentLength() throws IOException
-    {
-        return -1;
+        return Absent.absent();
     }
 
 

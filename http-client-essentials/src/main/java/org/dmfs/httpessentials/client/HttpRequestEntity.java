@@ -18,6 +18,7 @@
 package org.dmfs.httpessentials.client;
 
 import org.dmfs.httpessentials.types.MediaType;
+import org.dmfs.optional.Optional;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -32,20 +33,20 @@ public interface HttpRequestEntity
 {
 
     /**
-     * Returns the {@link MediaType} of the entity if known.
+     * Returns the {@link MediaType} of the entity, if known.
      *
-     * @return The content type or <code>null</code> if no content type is applicable (like when the entity is empty).
+     * @return The {@link Optional} content {@link MediaType}.
      */
-    public MediaType contentType();
+    Optional<MediaType> contentType();
 
     /**
-     * Returns the length of the content or <code>-1</code> if it's not known.
+     * Returns the length of the content, if known.
      *
-     * @return The content length or <code>-1</code> .
+     * @return The {@link Optional} content length.
      *
      * @throws IOException
      */
-    public long contentLength() throws IOException;
+    Optional<Long> contentLength();
 
     /**
      * Writes the content to the given {@link OutputStream}. Note that the stream is property of the caller and must not be closed by this method.

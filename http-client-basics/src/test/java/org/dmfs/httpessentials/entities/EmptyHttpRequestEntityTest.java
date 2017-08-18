@@ -22,8 +22,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.dmfs.optional.hamcrest.AbsentMatcher.isAbsent;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 
@@ -34,7 +34,7 @@ public class EmptyHttpRequestEntityTest
     public void testContentType()
     {
         // the entity should not return a content-type, since there is no content
-        assertNull(EmptyHttpRequestEntity.INSTANCE.contentType());
+        assertThat(EmptyHttpRequestEntity.INSTANCE.contentType(), isAbsent());
     }
 
 
@@ -42,7 +42,7 @@ public class EmptyHttpRequestEntityTest
     public void testContentLength() throws IOException
     {
         // there is no content, so it can't have any length, not even 0
-        assertEquals(-1, EmptyHttpRequestEntity.INSTANCE.contentLength());
+        assertThat(EmptyHttpRequestEntity.INSTANCE.contentLength(), isAbsent());
     }
 
 

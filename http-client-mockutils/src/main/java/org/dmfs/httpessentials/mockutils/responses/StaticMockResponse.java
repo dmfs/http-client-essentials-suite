@@ -42,11 +42,11 @@ public class StaticMockResponse implements HttpResponse
     public StaticMockResponse(HttpStatus responseStatus, Headers responseHeaders, HttpResponseEntity responseEntity) throws IOException
     {
         mResponseStatus = responseStatus;
-        if (responseEntity.contentType() != null)
+        if (responseEntity.contentType().isPresent())
         {
             // add content-type header if there is any content-type
             mResponseHeaders = responseHeaders.withHeader(
-                    HttpHeaders.CONTENT_TYPE.entity(responseEntity.contentType()));
+                    HttpHeaders.CONTENT_TYPE.entity(responseEntity.contentType().value()));
         }
         else
         {
