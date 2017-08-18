@@ -19,6 +19,8 @@ package org.dmfs.httpessentials.mockutils.entities;
 
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.types.MediaType;
+import org.dmfs.optional.Optional;
+import org.dmfs.optional.Present;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,8 +35,8 @@ import java.io.InputStream;
  */
 public final class FileMockResponseEntity implements HttpResponseEntity
 {
-    private final MediaType mContentType;
-    private final long mContentLenth;
+    private final Optional<MediaType> mContentType;
+    private final Optional<Long> mContentLenth;
     private final File mContent;
 
 
@@ -64,6 +66,12 @@ public final class FileMockResponseEntity implements HttpResponseEntity
      */
     public FileMockResponseEntity(MediaType contentType, long contentLength, File content)
     {
+        this(new Present<>(contentType), new Present<>(contentLength), content);
+    }
+
+
+    public FileMockResponseEntity(Optional<MediaType> contentType, Optional<Long> contentLength, File content)
+    {
         mContentType = contentType;
         mContentLenth = contentLength;
         mContent = content;
@@ -71,14 +79,14 @@ public final class FileMockResponseEntity implements HttpResponseEntity
 
 
     @Override
-    public MediaType contentType()
+    public Optional<MediaType> contentType()
     {
         return mContentType;
     }
 
 
     @Override
-    public long contentLength() throws IOException
+    public Optional<Long> contentLength()
     {
         return mContentLenth;
     }

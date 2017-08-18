@@ -18,6 +18,7 @@
 package org.dmfs.httpessentials.client;
 
 import org.dmfs.httpessentials.types.MediaType;
+import org.dmfs.optional.Optional;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,28 +33,33 @@ public interface HttpResponseEntity
 {
 
     /**
-     * Returns the {@link MediaType} of the entity.
+     * Returns the {@link MediaType} of the entity, if known.
      *
-     * @return The content type.
-     */
-    public MediaType contentType() throws IOException;
-
-    /**
-     * Returns the length of the content or <code>-1</code> if the length is not known.
-     *
-     * @return The content length or <code>-1</code> .
+     * @return The {@link Optional} content {@link MediaType}.
      *
      * @throws IOException
+     *         If an IO error occurred.
      */
-    public long contentLength() throws IOException;
+    Optional<MediaType> contentType();
+
+    /**
+     * Returns the length of the content, if known.
+     *
+     * @return The {@link Optional} content length.
+     *
+     * @throws IOException
+     *         If an IO error occurred.
+     */
+    Optional<Long> contentLength();
 
     /**
      * Returns the content {@link InputStream} of the entity. If you don't consume the entire content, make sure you always close the {@link InputStream}.
      *
-     * @return An {@link InputStream}, never null.
+     * @return An {@link InputStream}.
      *
      * @throws IOException
+     *         If an IO error occurred.
      */
-    public InputStream contentStream() throws IOException;
+    InputStream contentStream() throws IOException;
 
 }

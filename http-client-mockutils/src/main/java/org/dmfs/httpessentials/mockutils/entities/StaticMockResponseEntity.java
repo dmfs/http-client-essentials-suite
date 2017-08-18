@@ -19,6 +19,8 @@ package org.dmfs.httpessentials.mockutils.entities;
 
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.types.MediaType;
+import org.dmfs.optional.Optional;
+import org.dmfs.optional.Present;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -33,8 +35,8 @@ import java.io.UnsupportedEncodingException;
  */
 public final class StaticMockResponseEntity implements HttpResponseEntity
 {
-    private final MediaType mContentType;
-    private final int mContentLenth;
+    private final Optional<MediaType> mContentType;
+    private final Optional<Long> mContentLength;
     private final byte[] mContent;
 
 
@@ -62,13 +64,13 @@ public final class StaticMockResponseEntity implements HttpResponseEntity
      * @param contentType
      *         The {@link MediaType} of the content.
      * @param contentLength
-     *         The content-length to report to the client or -1 if the content-length should be reported as "unknown".
+     *         The content-length to report to the client.
      * @param content
      *         A {@link String} representing the content.
      *
      * @throws UnsupportedEncodingException
      */
-    public StaticMockResponseEntity(MediaType contentType, int contentLength, String content) throws UnsupportedEncodingException
+    public StaticMockResponseEntity(MediaType contentType, long contentLength, String content) throws UnsupportedEncodingException
     {
         this(contentType, contentLength, content.getBytes(contentType.charset("UTF-8")));
     }
@@ -94,29 +96,35 @@ public final class StaticMockResponseEntity implements HttpResponseEntity
      * @param contentType
      *         The {@link MediaType} of the content.
      * @param contentLength
-     *         The content-length to report to the client or -1 if the content-length should be reported as "unknown".
+     *         The content-length to report to the client.
      * @param content
      *         The content.
      */
-    public StaticMockResponseEntity(MediaType contentType, int contentLength, byte[] content)
+    public StaticMockResponseEntity(MediaType contentType, long contentLength, byte[] content)
+    {
+        this(new Present<>(contentType), new Present<>(contentLength), content);
+    }
+
+
+    public StaticMockResponseEntity(Optional<MediaType> contentType, Optional<Long> contentLength, byte[] content)
     {
         mContentType = contentType;
-        mContentLenth = contentLength;
+        mContentLength = contentLength;
         mContent = content;
     }
 
 
     @Override
-    public MediaType contentType()
+    public Optional<MediaType> contentType()
     {
         return mContentType;
     }
 
 
     @Override
-    public long contentLength() throws IOException
+    public Optional<Long> contentLength()
     {
-        return mContentLenth;
+        return mContentLength;
     }
 
 

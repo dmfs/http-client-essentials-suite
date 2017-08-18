@@ -28,6 +28,10 @@ import org.dmfs.httpessentials.headers.HttpHeaders;
 import org.dmfs.httpessentials.headers.SingletonHeaders;
 import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.httpessentials.types.StructuredMediaType;
+import org.dmfs.optional.Absent;
+import org.dmfs.optional.NullSafe;
+import org.dmfs.optional.Optional;
+import org.dmfs.optional.Present;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -232,9 +236,9 @@ public class StringResponseHandlerTest
             {
 
                 @Override
-                public MediaType contentType() throws IOException
+                public Optional<MediaType> contentType()
                 {
-                    return mResponseMediaType;
+                    return new NullSafe<>(mResponseMediaType);
                 }
 
 
@@ -246,9 +250,9 @@ public class StringResponseHandlerTest
 
 
                 @Override
-                public long contentLength() throws IOException
+                public Optional<Long> contentLength()
                 {
-                    return mContentLength;
+                    return mContentLength < 0 ? Absent.<Long>absent() : new Present<Long>((long) mContentLength);
                 }
             };
         }

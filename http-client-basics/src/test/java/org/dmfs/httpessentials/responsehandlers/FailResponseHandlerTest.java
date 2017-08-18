@@ -28,6 +28,8 @@ import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
 import org.dmfs.httpessentials.headers.Headers;
 import org.dmfs.httpessentials.status.SimpleHttpStatus;
 import org.dmfs.httpessentials.types.MediaType;
+import org.dmfs.optional.Absent;
+import org.dmfs.optional.Optional;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -130,18 +132,18 @@ public class FailResponseHandlerTest
             return new HttpResponseEntity()
             {
                 @Override
-                public MediaType contentType() throws IOException
+                public Optional<MediaType> contentType()
                 {
                     fail("Trivial Response should not depend on the actual response entity");
-                    return null;
+                    return Absent.absent();
                 }
 
 
                 @Override
-                public long contentLength() throws IOException
+                public Optional<Long> contentLength()
                 {
                     fail("Trivial Response should not depend on the actual response content length");
-                    return 0;
+                    return Absent.absent();
                 }
 
 

@@ -20,6 +20,9 @@ package org.dmfs.httpessentials.httpurlconnection;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.httpessentials.types.StringMediaType;
+import org.dmfs.optional.Absent;
+import org.dmfs.optional.Optional;
+import org.dmfs.optional.Present;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,16 +47,18 @@ final class HttpUrlConnectionResponseEntity implements HttpResponseEntity
 
 
     @Override
-    public MediaType contentType() throws IOException
+    public Optional<MediaType> contentType()
     {
-        return new StringMediaType(mConnection.getContentType());
+        String mediaType = mConnection.getContentType();
+        return mediaType == null ? Absent.<MediaType>absent() : new Present<MediaType>(new StringMediaType(mediaType));
     }
 
 
     @Override
-    public long contentLength() throws IOException
+    public Optional<Long> contentLength()
     {
-        return mConnection.getContentLength();
+        long length = mConnection.getContentLengthLong();
+        return length < 0 ? Absent.<Long>absent() : new Present<>(length);
     }
 
 

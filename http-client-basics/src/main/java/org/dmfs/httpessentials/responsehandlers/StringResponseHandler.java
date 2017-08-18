@@ -23,6 +23,8 @@ import org.dmfs.httpessentials.client.HttpResponseHandler;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.types.MediaType;
+import org.dmfs.httpessentials.types.StructuredMediaType;
+import org.dmfs.optional.Optional;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -37,11 +39,13 @@ import java.io.Reader;
  */
 public final class StringResponseHandler implements HttpResponseHandler<String>
 {
+
     public final static String UTF8_CHARSET = "UTF-8";
 
     private final static int BUFFER_SIZE = 16 * 1024;
 
     private final String mDefaultCharset;
+    private final MediaType mDefaultMediaType;
 
 
     /**
@@ -58,7 +62,17 @@ public final class StringResponseHandler implements HttpResponseHandler<String>
      */
     public StringResponseHandler(String defaultCharset)
     {
+        this(defaultCharset, new StructuredMediaType("plain", "text", defaultCharset));
+    }
+
+
+    /**
+     * A {@link StringResponseHandler} that falls back to the given charset and {@link MediaType} if there is no charset given in the response.
+     */
+    public StringResponseHandler(String defaultCharset, MediaType defaultMediaType)
+    {
         mDefaultCharset = defaultCharset;
+        mDefaultMediaType = defaultMediaType;
     }
 
 
@@ -67,14 +81,12 @@ public final class StringResponseHandler implements HttpResponseHandler<String>
     {
         HttpResponseEntity entity = response.responseEntity();
 
-        MediaType contentType = entity.contentType();
+        Optional<MediaType> contentType = entity.contentType();
 
-        StringBuilder builder = new StringBuilder(
-                entity.contentLength() > 0 ? (int) entity.contentLength() : BUFFER_SIZE);
+        StringBuilder builder = new StringBuilder((int) (long) entity.contentLength().value((long) BUFFER_SIZE));
 
         // note: we already read the content in larger chunks so there should be no need for a BufferedReader
-        Reader reader = new InputStreamReader(entity.contentStream(),
-                contentType != null ? contentType.charset(mDefaultCharset) : mDefaultCharset);
+        Reader reader = new InputStreamReader(entity.contentStream(), contentType.value(mDefaultMediaType).charset(mDefaultCharset));
         try
         {
             int read;

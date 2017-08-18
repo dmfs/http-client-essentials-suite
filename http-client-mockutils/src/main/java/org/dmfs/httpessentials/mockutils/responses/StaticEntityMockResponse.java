@@ -27,7 +27,6 @@ import org.dmfs.httpessentials.headers.HttpHeaders;
 import org.dmfs.httpessentials.headers.SingletonHeaderType;
 import org.dmfs.httpessentials.typedentity.EntityConverter;
 
-import java.io.IOException;
 import java.net.URI;
 
 
@@ -82,23 +81,16 @@ public class StaticEntityMockResponse implements HttpResponse
     @Override
     public Headers headers()
     {
-        try
+        Headers result = EmptyHeaders.INSTANCE;
+        if (mEntity.contentType().isPresent())
         {
-            Headers result = EmptyHeaders.INSTANCE;
-            if (mEntity.contentType() != null)
-            {
-                result = result.withHeader(HttpHeaders.CONTENT_TYPE.entity(mEntity.contentType()));
-            }
-            if (mEntity.contentLength() >= 0)
-            {
-                result = result.withHeader(CONTENT_LENGTH.entity(mEntity.contentLength()));
-            }
-            return result;
+            result = result.withHeader(HttpHeaders.CONTENT_TYPE.entity(mEntity.contentType().value()));
         }
-        catch (IOException e)
+        if (mEntity.contentLength().isPresent())
         {
-            throw new RuntimeException("Can't retrieve content-type", e);
+            result = result.withHeader(CONTENT_LENGTH.entity(mEntity.contentLength().value()));
         }
+        return result;
     }
 
 

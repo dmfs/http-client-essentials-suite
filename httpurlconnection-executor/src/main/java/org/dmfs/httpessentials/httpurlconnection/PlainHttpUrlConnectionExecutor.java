@@ -118,10 +118,10 @@ public final class PlainHttpUrlConnectionExecutor implements HttpRequestExecutor
             connection.setRequestProperty(header.type().name(), header.toString());
         }
         // also set the content-type header if we have any content-type
-        if (request.requestEntity().contentType() != null)
+        if (request.requestEntity().contentType().isPresent())
         {
             connection.setRequestProperty(HttpHeaders.CONTENT_TYPE.name(),
-                    HttpHeaders.CONTENT_TYPE.valueString(request.requestEntity().contentType()));
+                    HttpHeaders.CONTENT_TYPE.valueString(request.requestEntity().contentType().value()));
         }
 
         // call connect explicitly to make sure the connection has been established before we return the response
