@@ -68,13 +68,6 @@ public final class SimpleHttpStatus implements HttpStatus
 
 
     @Override
-    public String httpStatusLine(final int httpVersionMajor, final int httpVersionMinor)
-    {
-        return String.format("HTTP/%s.%s %d %s", httpVersionMajor, httpVersionMinor, statusCode, reasonPhrase);
-    }
-
-
-    @Override
     public boolean isInformational()
     {
         return statusCode >= 100 && statusCode < 200;

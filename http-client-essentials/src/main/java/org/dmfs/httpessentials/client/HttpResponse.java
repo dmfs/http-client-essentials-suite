@@ -37,21 +37,21 @@ public interface HttpResponse
      *
      * @see HttpStatus
      */
-    public HttpStatus status();
+    HttpStatus status();
 
     /**
      * Returns the response headers.
      *
      * @return A {@link Headers}.
      */
-    public Headers headers();
+    Headers headers();
 
     /**
      * Returns an {@link HttpResponseEntity} representing the data in the response.
      *
      * @return An {@link HttpResponseEntity}.
      */
-    public HttpResponseEntity responseEntity();
+    HttpResponseEntity responseEntity();
 
     /**
      * Returns the {@link URI} the request was originally sent to.
@@ -60,7 +60,7 @@ public interface HttpResponse
      *
      * @see #responseUri()
      */
-    public URI requestUri();
+    URI requestUri();
 
     /**
      * Returns the {@link URI} of the server instance that actually handled the request. If no redirects have been followed this equals the URI passed to the
@@ -70,5 +70,5 @@ public interface HttpResponse
      *
      * @see #requestUri()
      */
-    public URI responseUri();
+    URI responseUri();
 }

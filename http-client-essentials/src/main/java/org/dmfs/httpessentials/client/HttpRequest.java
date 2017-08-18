@@ -42,21 +42,21 @@ public interface HttpRequest<T>
      *
      * @return The {@link HttpMethod} this request uses.
      */
-    public HttpMethod method();
+    HttpMethod method();
 
     /**
      * Returns a {@link Headers} containing the {@link Header}s to send with the request.
      *
      * @return A {@link Headers}, never <code>null</code>.
      */
-    public Headers headers();
+    Headers headers();
 
     /**
      * Returns an {@link HttpRequestEntity} that contains the body of this request.
      *
      * @return An {@link HttpRequestEntity} object, never <code>null</code>.
      */
-    public HttpRequestEntity requestEntity();
+    HttpRequestEntity requestEntity();
 
     /**
      * Returns a handler for the response. If the response can not be handled an exception is thrown.
@@ -72,5 +72,5 @@ public interface HttpRequest<T>
      * @throws ProtocolException
      *         If the response is invalid or malformed and can not be handled properly.
      */
-    public HttpResponseHandler<T> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException;
+    HttpResponseHandler<T> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException;
 }

@@ -44,6 +44,6 @@ public interface HttpRequestExecutor
      *
      * @return The result, i.e. the handled server response.
      */
-    public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException;
+    <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException;
 
 }

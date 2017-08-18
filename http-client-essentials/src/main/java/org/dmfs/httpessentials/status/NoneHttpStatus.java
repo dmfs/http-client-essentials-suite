@@ -51,13 +51,6 @@ public final class NoneHttpStatus implements HttpStatus
 
 
     @Override
-    public String httpStatusLine(final int httpVersionMajor, final int httpVersionMinor)
-    {
-        throw new UnsupportedOperationException("Can't generate status line for NoneHttpStatus");
-    }
-
-
-    @Override
     public boolean isInformational()
     {
         return false;

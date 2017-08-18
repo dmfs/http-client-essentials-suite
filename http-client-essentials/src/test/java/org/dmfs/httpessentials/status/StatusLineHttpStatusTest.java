@@ -53,20 +53,6 @@ public class StatusLineHttpStatusTest
 
 
     @Test
-    public void testHttpStatusLine()
-    {
-        assertEquals("HTTP/2.0 355 Some Reason",
-                new StatusLineHttpStatus("HTTP/1.1 355 Some Reason").httpStatusLine(2, 0));
-        assertEquals("HTTP/2.1 355 Some Reason",
-                new StatusLineHttpStatus("HTTP/1.1 355 Some Reason").httpStatusLine(2, 1));
-        assertEquals("HTTP/1.1 355 Some Reason",
-                new StatusLineHttpStatus("HTTP/1.1 355 Some Reason").httpStatusLine(1, 1));
-        assertEquals("HTTP/1.0 355 Some Reason",
-                new StatusLineHttpStatus("HTTP/1.1 355 Some Reason").httpStatusLine(1, 0));
-    }
-
-
-    @Test
     public void testIsInformational()
     {
         assertTrue(new StatusLineHttpStatus("HTTP/1.1 155 Some Reason").isInformational());

@@ -43,21 +43,21 @@ public interface MediaType extends Parametrized
      *
      * @return The content type.
      */
-    public String type();
+    String type();
 
     /**
      * Returns the main type.
      *
      * @return The main type.
      */
-    public String mainType();
+    String mainType();
 
     /**
      * Returns the sub-type of this content type.
      *
      * @return The sub-type.
      */
-    public String subType();
+    String subType();
 
     /**
      * Returns the value of the charset parameter of this content type.
@@ -67,5 +67,5 @@ public interface MediaType extends Parametrized
      *
      * @return The charset of <code>defaultCharset</code>
      */
-    public String charset(String defaultCharset);
+    String charset(String defaultCharset);
 }
