@@ -50,13 +50,6 @@ public class SimpleHttpStatusTest
 
 
     @Test
-    public void testHttpStatusLine()
-    {
-        assertEquals("HTTP/2.0 355 some Reason", new SimpleHttpStatus(355, "some Reason").httpStatusLine(2, 0));
-    }
-
-
-    @Test
     public void testIsInformational()
     {
         assertTrue(new SimpleHttpStatus(112, "some Reason").isInformational());

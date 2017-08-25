@@ -97,19 +97,6 @@ public final class StatusLineHttpStatus implements HttpStatus
 
 
     @Override
-    public String httpStatusLine(final int httpVersionMajor, final int httpVersionMinor)
-    {
-        if (httpVersionMajor == mStatusLine.charAt(0x05) - '0' && httpVersionMinor == mStatusLine.charAt(0x07) - '0')
-        {
-            // version numbers match, so just return the original line
-            return mStatusLine;
-        }
-
-        return String.format("HTTP/%s.%s %d %s", httpVersionMajor, httpVersionMinor, statusCode(), reason());
-    }
-
-
-    @Override
     public boolean isInformational()
     {
         return mStatusLine.charAt(0x09) == '1';

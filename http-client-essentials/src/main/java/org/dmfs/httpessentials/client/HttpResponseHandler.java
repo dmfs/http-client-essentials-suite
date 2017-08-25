@@ -45,5 +45,5 @@ public interface HttpResponseHandler<T>
      * @throws ProtocolError
      * @throws ProtocolException
      */
-    public T handleResponse(HttpResponse response) throws IOException, ProtocolError, ProtocolException;
+    T handleResponse(HttpResponse response) throws IOException, ProtocolError, ProtocolException;
 }
