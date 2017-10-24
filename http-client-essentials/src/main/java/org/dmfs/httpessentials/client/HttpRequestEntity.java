@@ -43,8 +43,6 @@ public interface HttpRequestEntity
      * Returns the length of the content, if known.
      *
      * @return The {@link Optional} content length.
-     *
-     * @throws IOException
      */
     Optional<Long> contentLength();
 

@@ -36,9 +36,6 @@ public interface HttpResponseEntity
      * Returns the {@link MediaType} of the entity, if known.
      *
      * @return The {@link Optional} content {@link MediaType}.
-     *
-     * @throws IOException
-     *         If an IO error occurred.
      */
     Optional<MediaType> contentType();
 
@@ -46,9 +43,6 @@ public interface HttpResponseEntity
      * Returns the length of the content, if known.
      *
      * @return The {@link Optional} content length.
-     *
-     * @throws IOException
-     *         If an IO error occurred.
      */
     Optional<Long> contentLength();
 
