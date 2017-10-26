@@ -17,7 +17,7 @@
 
 package org.dmfs.httpessentials.apache4;
 
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.client.HttpClient;
 import org.apache.http.util.VersionInfo;
 import org.dmfs.httpessentials.types.Product;
 
@@ -40,6 +40,6 @@ final class ApacheProduct implements Product
     public void appendTo(StringBuilder sb)
     {
         sb.append(VersionInfo.getUserAgent("Apache-HttpClient",
-                "org.apache.http.client", DefaultHttpClient.class));
+                "org.apache.http.client", HttpClient.class));
     }
 }
