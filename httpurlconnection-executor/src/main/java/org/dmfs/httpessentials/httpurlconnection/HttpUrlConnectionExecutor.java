@@ -23,8 +23,8 @@ import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
-import org.dmfs.httpessentials.httpurlconnection.utils.executors.BottomBranded;
-import org.dmfs.httpessentials.httpurlconnection.utils.types.Platform;
+import org.dmfs.httpessentials.executors.common.decorators.BottomBranded;
+import org.dmfs.httpessentials.executors.common.types.Platform;
 import org.dmfs.httpessentials.types.VersionedProduct;
 
 import java.io.IOException;
@@ -57,8 +57,9 @@ public final class HttpUrlConnectionExecutor implements HttpRequestExecutor
     private HttpUrlConnectionExecutor(HttpRequestExecutor executor)
     {
         mExecutor = new BottomBranded(
-                new BottomBranded(executor, Platform.INSTANCE),
-                new VersionedProduct(BuildConfig.NAME, BuildConfig.VERSION));
+                new VersionedProduct(BuildConfig.NAME, BuildConfig.VERSION),
+                new BottomBranded(Platform.INSTANCE, executor)
+        );
     }
 
 

@@ -30,6 +30,8 @@
       <module name="http-client-mockutils_test" target="1.7" />
       <module name="http-client-types_main" target="1.7" />
       <module name="http-client-types_test" target="1.7" />
+      <module name="http-executor-commons_main" target="1.7" />
+      <module name="http-executor-commons_test" target="1.7" />
       <module name="http-executor-decorators_main" target="1.7" />
       <module name="http-executor-decorators_test" target="1.7" />
       <module name="httpurlconnection-executor_main" target="1.7" />

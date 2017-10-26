@@ -20,6 +20,7 @@ package org.dmfs.httpessentials.httpurlconnection.utils.executors;
 import org.dmfs.httpessentials.client.HttpRequestExecutor;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
+import org.dmfs.httpessentials.executors.common.decorators.BottomBranded;
 import org.dmfs.httpessentials.headers.Header;
 import org.dmfs.httpessentials.mockutils.executors.CapturingExecutor;
 import org.dmfs.httpessentials.mockutils.requests.EmptyRequest;
@@ -47,7 +48,7 @@ public class BottomBrandedTest
     {
         // ARRANGE
         CapturingExecutor capturingExecutor = new CapturingExecutor();
-        BottomBranded wrappedExecutor = new BottomBranded(capturingExecutor, new SimpleProduct("bottom-product"));
+        BottomBranded wrappedExecutor = new BottomBranded(new SimpleProduct("bottom-product"), capturingExecutor);
 
         // ACT
         wrappedExecutor.execute(null, new EmptyRequest<String>());
@@ -63,7 +64,7 @@ public class BottomBrandedTest
     {
         // ARRANGE
         CapturingExecutor capturingExecutor = new CapturingExecutor();
-        HttpRequestExecutor wrappedExecutor = new BottomBranded(capturingExecutor, new SimpleProduct("bottom-product"));
+        HttpRequestExecutor wrappedExecutor = new BottomBranded(new SimpleProduct("bottom-product"), capturingExecutor);
 
         UserAgent userAgent = new SingletonUserAgent(new SimpleProduct("product1")).withProduct(
                 new SimpleProduct("product2"));
@@ -83,9 +84,9 @@ public class BottomBrandedTest
     {
         // ARRANGE
         CapturingExecutor capturingExecutor = new CapturingExecutor();
-        HttpRequestExecutor platformWrapped = new BottomBranded(capturingExecutor, new SimpleProduct("platform"));
-        HttpRequestExecutor urlConnectionWrapped = new BottomBranded(platformWrapped,
-                new SimpleProduct("url-connection"));
+        HttpRequestExecutor platformWrapped = new BottomBranded(new SimpleProduct("platform"), capturingExecutor);
+        HttpRequestExecutor urlConnectionWrapped = new BottomBranded(new SimpleProduct("url-connection"), platformWrapped
+        );
 
         UserAgent userAgent = new SingletonUserAgent(new SimpleProduct("product1")).withProduct(
                 new SimpleProduct("product2"));

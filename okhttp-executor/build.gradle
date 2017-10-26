@@ -40,10 +40,10 @@ dependencies {
     compile project(':http-client-types')
     compile project(':http-client-headers')
     compile project(':http-client-basics')
-    // TODO: this is imported for the BottomBranded decorator, it should be moved to a common dependency
-    compile project(':httpurlconnection-executor')
+    compile project(':http-executor-commons')
     testCompile 'junit:junit:' + JUNIT_VERSION
     testCompile project(':http-client-mockutils')
-    testCompile 'org.mockito:mockito-all:1.9.5'
+    testCompile 'org.mockito:mockito-core:' + MOCKITO_VERSION
     testCompile 'org.dmfs:jems-testing:' + JEMS_VERSION
+    testCompile 'org.hamcrest:hamcrest-all:' + HAMCREST_VERSION
 }

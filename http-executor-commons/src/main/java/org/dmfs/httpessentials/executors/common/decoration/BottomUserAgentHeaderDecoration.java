@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.httpurlconnection.utils.decoration;
+package org.dmfs.httpessentials.executors.common.decoration;
 
 import org.dmfs.httpessentials.decoration.Decoration;
+import org.dmfs.httpessentials.executors.common.types.BottomBasicUserAgent;
 import org.dmfs.httpessentials.headers.Headers;
-import org.dmfs.httpessentials.httpurlconnection.utils.types.BottomBasicUserAgent;
 import org.dmfs.httpessentials.types.Product;
 import org.dmfs.httpessentials.types.SingletonUserAgent;
 import org.dmfs.httpessentials.types.UserAgent;

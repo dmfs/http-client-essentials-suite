@@ -21,7 +21,6 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
 import org.dmfs.httpessentials.client.HttpRequestEntity;
-import org.dmfs.httpessentials.okhttp.utils.BufferedSinkOutputStream;
 
 import java.io.IOException;
 
@@ -43,6 +42,13 @@ final class OkHttpRequestBody extends RequestBody
 
 
     @Override
+    public long contentLength() throws IOException
+    {
+        return mRequestEntity.contentLength().value(-1L);
+    }
+
+
+    @Override
     public MediaType contentType()
     {
         return MediaType.parse(mRequestEntity.contentType().toString());
@@ -52,7 +58,7 @@ final class OkHttpRequestBody extends RequestBody
     @Override
     public void writeTo(final BufferedSink sink) throws IOException
     {
-        mRequestEntity.writeContent(new BufferedSinkOutputStream(sink));
+        mRequestEntity.writeContent(sink.outputStream());
     }
 
 }

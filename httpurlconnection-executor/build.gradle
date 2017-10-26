@@ -39,7 +39,8 @@ dependencies {
     compile project(':http-client-types')
     compile project(':http-client-headers')
     compile project(':http-client-basics')
+    compile project(':http-executor-commons')
     testCompile 'junit:junit:' + JUNIT_VERSION
     testCompile project(':http-client-mockutils')
-    testCompile 'org.mockito:mockito-all:1.9.5'
+    testCompile 'org.mockito:mockito-core:' + MOCKITO_VERSION
 }

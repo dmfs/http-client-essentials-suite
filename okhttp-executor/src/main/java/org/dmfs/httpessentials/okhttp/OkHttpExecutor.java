@@ -18,33 +18,23 @@
 package org.dmfs.httpessentials.okhttp;
 
 import okhttp3.OkHttpClient;
-import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpRequestExecutor;
-import org.dmfs.httpessentials.exceptions.ProtocolError;
-import org.dmfs.httpessentials.exceptions.ProtocolException;
-import org.dmfs.httpessentials.exceptions.RedirectionException;
-import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
-import org.dmfs.httpessentials.httpurlconnection.utils.executors.BottomBranded;
-import org.dmfs.httpessentials.httpurlconnection.utils.types.Platform;
+import org.dmfs.httpessentials.executors.common.DelegatingHttpRequestExecutor;
+import org.dmfs.httpessentials.executors.common.decorators.BottomBranded;
+import org.dmfs.httpessentials.executors.common.types.Platform;
 import org.dmfs.httpessentials.okhttp.okhttpclient.BaseOkHttpClient;
 import org.dmfs.httpessentials.okhttp.utils.OkHttpProduct;
 import org.dmfs.httpessentials.types.VersionedProduct;
 import org.dmfs.jems.single.Single;
 
-import java.io.IOException;
-import java.net.URI;
-
 
 /**
- * A {@link HttpRequestExecutor} based on OkHttp.
+ * An {@link HttpRequestExecutor} based on OkHttp.
  *
  * @author Marten Gajda
  */
-public final class OkHttpExecutor implements HttpRequestExecutor
+public final class OkHttpExecutor extends DelegatingHttpRequestExecutor
 {
-    private final HttpRequestExecutor mDelegate;
-
-
     public OkHttpExecutor()
     {
         this(new BaseOkHttpClient());
@@ -59,17 +49,12 @@ public final class OkHttpExecutor implements HttpRequestExecutor
 
     private OkHttpExecutor(HttpRequestExecutor executor)
     {
-        mDelegate = new BottomBranded(
+        super(new BottomBranded(
+                new VersionedProduct(BuildConfig.NAME, BuildConfig.VERSION),
                 new BottomBranded(
-                        new BottomBranded(executor, Platform.INSTANCE),
-                        new OkHttpProduct()),
-                new VersionedProduct(BuildConfig.NAME, BuildConfig.VERSION));
-    }
-
-
-    @Override
-    public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
-    {
-        return mDelegate.execute(uri, request);
+                        new OkHttpProduct(),
+                        new BottomBranded(Platform.INSTANCE, executor)
+                )
+        ));
     }
 }

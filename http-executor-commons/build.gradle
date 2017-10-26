@@ -20,7 +20,6 @@ dependencies {
     compile "org.dmfs:rfc3986-uri:0.7"
 
     testCompile 'junit:junit:' + JUNIT_VERSION
-    testCompile 'org.jmockit:jmockit:1.26'
     testCompile project(':http-client-mockutils')
-    testCompile 'org.mockito:mockito-core:'+MOCKITO_VERSION
+    testCompile 'org.mockito:mockito-all:' + MOCKITO_VERSION
 }

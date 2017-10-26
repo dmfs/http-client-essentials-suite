@@ -22,13 +22,16 @@ import org.dmfs.jems.single.Single;
 
 
 /**
- * @author marten
+ * A {@link Single} basic {@link OkHttpClient}. No configuration if performed, other than disabling following redirects.
+ *
+ * @author Marten Gajda
  */
 public final class BaseOkHttpClient implements Single<OkHttpClient>
 {
     @Override
     public OkHttpClient value()
     {
-        return new OkHttpClient();
+        // note we disable following redirects explicitly
+        return new OkHttpClient.Builder().followRedirects(false).followSslRedirects(false).build();
     }
 }

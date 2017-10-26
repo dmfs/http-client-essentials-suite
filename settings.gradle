@@ -8,4 +8,5 @@ include 'httpurlconnection-executor'
 include 'http-executor-decorators'
 include 'android-apache-executor'
 include 'okhttp-executor'
+include 'http-executor-commons'
 
