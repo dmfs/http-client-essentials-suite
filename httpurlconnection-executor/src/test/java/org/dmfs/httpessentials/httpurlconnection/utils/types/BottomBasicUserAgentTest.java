@@ -17,6 +17,7 @@
 
 package org.dmfs.httpessentials.httpurlconnection.utils.types;
 
+import org.dmfs.httpessentials.executors.common.types.BottomBasicUserAgent;
 import org.dmfs.httpessentials.types.Product;
 import org.dmfs.httpessentials.types.SimpleProduct;
 import org.dmfs.httpessentials.types.SingletonUserAgent;

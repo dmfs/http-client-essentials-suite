@@ -30,10 +30,14 @@
       <module name="http-client-mockutils_test" target="1.7" />
       <module name="http-client-types_main" target="1.7" />
       <module name="http-client-types_test" target="1.7" />
+      <module name="http-executor-commons_main" target="1.7" />
+      <module name="http-executor-commons_test" target="1.7" />
       <module name="http-executor-decorators_main" target="1.7" />
       <module name="http-executor-decorators_test" target="1.7" />
       <module name="httpurlconnection-executor_main" target="1.7" />
       <module name="httpurlconnection-executor_test" target="1.7" />
+      <module name="okhttp-executor_main" target="1.7" />
+      <module name="okhttp-executor_test" target="1.7" />
       <module name="workspace-http-client-essentials-suite_main" target="1.7" />
       <module name="workspace-http-client-essentials-suite_test" target="1.7" />
     </bytecodeTargetLevel>

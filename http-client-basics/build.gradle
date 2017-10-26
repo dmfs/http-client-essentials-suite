@@ -13,10 +13,10 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile 'org.dmfs:jems-testing:' + JEMS_VERSION
     compile 'org.dmfs:optional:' + JEMS_VERSION
     compile project(':http-client-essentials')
     compile project(':http-client-types')
     compile project(':http-client-headers')
+    testCompile 'junit:junit:' + JUNIT_VERSION
+    testCompile 'org.dmfs:jems-testing:' + JEMS_VERSION
 }

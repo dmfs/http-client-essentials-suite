@@ -25,7 +25,7 @@ repositories {
 }
 
 buildConfig {
-    packageName = 'org.dmfs.httpessentials.httpurlconnection'
+    packageName = 'org.dmfs.httpessentials.okhttp'
 }
 
 tasks.withType(Jar) {
@@ -35,6 +35,7 @@ tasks.withType(Jar) {
 }
 
 dependencies {
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile project(':http-client-essentials')
     compile project(':http-client-types')
     compile project(':http-client-headers')
@@ -43,4 +44,6 @@ dependencies {
     testCompile 'junit:junit:' + JUNIT_VERSION
     testCompile project(':http-client-mockutils')
     testCompile 'org.mockito:mockito-core:' + MOCKITO_VERSION
+    testCompile 'org.dmfs:jems-testing:' + JEMS_VERSION
+    testCompile 'org.hamcrest:hamcrest-all:' + HAMCREST_VERSION
 }

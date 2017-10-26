@@ -15,6 +15,11 @@ repositories {
 dependencies {
     compile project(':http-client-essentials')
     compile project(':http-client-types')
-    compile 'org.dmfs:iterators:' + JEMS_VERSION
+    compile project(':http-client-headers')
+    compile project(':http-client-basics')
+    compile "org.dmfs:rfc3986-uri:0.7"
+
     testCompile 'junit:junit:' + JUNIT_VERSION
+    testCompile project(':http-client-mockutils')
+    testCompile 'org.mockito:mockito-all:' + MOCKITO_VERSION
 }

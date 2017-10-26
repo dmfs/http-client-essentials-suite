@@ -15,45 +15,57 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.httpurlconnection.utils.executors;
+package org.dmfs.httpessentials.okhttp;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpRequestExecutor;
-import org.dmfs.httpessentials.decoration.HeaderDecorated;
+import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
-import org.dmfs.httpessentials.httpurlconnection.utils.decoration.BottomUserAgentHeaderDecoration;
-import org.dmfs.httpessentials.types.Product;
+import org.dmfs.httpessentials.headers.Header;
+import org.dmfs.jems.single.Single;
 
 import java.io.IOException;
 import java.net.URI;
 
 
 /**
- * {@link HttpRequestExecutor} decorator that adds the given {@link Product} to the end of User-Agent header of the request (creates the header if it doesn't
- * exist).
+ * An {@link HttpRequestExecutor} based on OkHttp.
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
-public final class BottomBranded implements HttpRequestExecutor
+public final class PlainOkHttpExecutor implements HttpRequestExecutor
 {
-    private final HttpRequestExecutor mExecutor;
-    private final Product mBottomProduct;
+
+    private final Single<OkHttpClient> mOkHttpClient;
 
 
-    public BottomBranded(HttpRequestExecutor executor, Product bottomProduct)
+    public PlainOkHttpExecutor(Single<OkHttpClient> okHttpClient)
     {
-        mExecutor = executor;
-        mBottomProduct = bottomProduct;
+        mOkHttpClient = okHttpClient;
     }
 
 
     @Override
     public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
     {
-        return mExecutor.execute(uri,
-                new HeaderDecorated<T>(request, new BottomUserAgentHeaderDecoration(mBottomProduct)));
+        Request.Builder requestBuilder = new Request.Builder();
+        requestBuilder.url(uri.toURL());
+        HttpMethod method = request.method();
+
+        for (Header<?> header : request.headers())
+        {
+            requestBuilder.addHeader(header.type().name(), header.toString());
+        }
+
+        requestBuilder.method(method.verb(), method.supportsRequestPayload() ? new OkHttpRequestBody(request.requestEntity()) : null);
+
+        HttpResponse httpResponse = new OkHttpResponse(mOkHttpClient.value().newCall(requestBuilder.build()).execute(), uri);
+        return request.responseHandler(httpResponse).handleResponse(httpResponse);
     }
 }
