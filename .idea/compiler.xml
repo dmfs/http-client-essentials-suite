@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="android-apache-executor_main" target="1.7" />
-      <module name="android-apache-executor_test" target="1.7" />
+      <module name="apache4-executor_main" target="1.7" />
+      <module name="apache4-executor_test" target="1.7" />
       <module name="http-client-basics_main" target="1.7" />
       <module name="http-client-basics_test" target="1.7" />
       <module name="http-client-essentials-suite-http-client-basics_main" target="1.7" />

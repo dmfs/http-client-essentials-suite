@@ -6,7 +6,7 @@ include 'http-client-mockutils'
 include 'http-client-basics'
 include 'httpurlconnection-executor'
 include 'http-executor-decorators'
-include 'android-apache-executor'
+include 'apache4-executor'
 include 'okhttp-executor'
 include 'http-executor-commons'
 

@@ -15,12 +15,14 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.android.apache;
+package org.dmfs.httpessentials.apache4;
 
+import org.apache.http.StatusLine;
 import org.dmfs.httpessentials.HttpStatus;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.headers.Headers;
+import org.dmfs.httpessentials.status.SimpleHttpStatus;
 
 import java.net.URI;
 
@@ -46,7 +48,8 @@ final class EssentialsResponse implements HttpResponse
     @Override
     public HttpStatus status()
     {
-        return new ApacheHttpStatus(mResponse.getStatusLine());
+        StatusLine statusLine = mResponse.getStatusLine();
+        return new SimpleHttpStatus(statusLine.getStatusCode(), statusLine.getReasonPhrase());
     }
 
 

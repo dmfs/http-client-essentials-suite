@@ -15,12 +15,13 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.android.apache;
+package org.dmfs.httpessentials.apache4;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.message.BasicHeader;
 import org.dmfs.httpessentials.client.HttpRequest;
+import org.dmfs.httpessentials.headers.HttpHeaders;
 import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.iterators.Function;
 import org.dmfs.optional.decorators.Mapped;
@@ -28,6 +29,7 @@ import org.dmfs.optional.decorators.Mapped;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 
 /**
@@ -86,7 +88,15 @@ final class ApacheHttpEntity implements HttpEntity
     @Override
     public Header getContentEncoding()
     {
-        return null;
+        if (!mRequest.headers().contains(HttpHeaders.CONTENT_ENCODING))
+        {
+            return null;
+        }
+        org.dmfs.httpessentials.headers.Header<List<String>> contentEncoding = mRequest.headers().header(HttpHeaders.CONTENT_ENCODING);
+
+        return contentEncoding.value().isEmpty()
+                ? null
+                : new BasicHeader("content-encoding", contentEncoding.toString());
     }
 
 
