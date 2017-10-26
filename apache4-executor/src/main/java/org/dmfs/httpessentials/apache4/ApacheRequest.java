@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.android.apache;
+package org.dmfs.httpessentials.apache4;
 
 import org.apache.http.client.methods.HttpRequestBase;
 import org.dmfs.httpessentials.client.HttpRequest;
@@ -53,4 +53,5 @@ final class ApacheRequest<T> extends HttpRequestBase
     {
         return mUri;
     }
+
 }

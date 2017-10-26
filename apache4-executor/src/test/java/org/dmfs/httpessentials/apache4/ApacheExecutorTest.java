@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.android.apache;
+package org.dmfs.httpessentials.apache4;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.CoreProtocolPNames;
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpRequestEntity;
@@ -53,7 +52,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 
 /**
- * Test ApacheExecutor
+ * Test PlainApacheExecutor
  * <p>
  * For now we just run few simple tests against http://httpbin.org
  *
@@ -102,10 +101,7 @@ public class ApacheExecutorTest
     @Test
     public void testPost() throws Exception
     {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        // httpbin can't handle Expect-Continue, so turn it off
-        httpClient.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
-        HttpRequestExecutor executor = new ApacheExecutor(new ValueSingle<HttpClient>(httpClient));
+        HttpRequestExecutor executor = new ApacheExecutor(new ValueSingle<HttpClient>(new DefaultHttpClient()));
         String response = executor.execute(URI.create("http://httpbin.org/post"), new HttpRequest<String>()
         {
             @Override

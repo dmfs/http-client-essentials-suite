@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.android.apache;
+package org.dmfs.httpessentials.apache4;
 
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpRequestExecutor;
 import org.dmfs.httpessentials.client.HttpResponse;
@@ -25,6 +26,7 @@ import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
+import org.dmfs.httpessentials.headers.Header;
 import org.dmfs.jems.single.Single;
 
 import java.io.IOException;
@@ -36,13 +38,13 @@ import java.net.URI;
  *
  * @author Marten Gajda
  */
-public final class ApacheExecutor implements HttpRequestExecutor
+public final class PlainApacheExecutor implements HttpRequestExecutor
 {
 
     private final Single<HttpClient> mClient;
 
 
-    public ApacheExecutor(Single<HttpClient> client)
+    public PlainApacheExecutor(Single<HttpClient> client)
     {
         mClient = client;
     }
@@ -51,12 +53,16 @@ public final class ApacheExecutor implements HttpRequestExecutor
     @Override
     public <T> T execute(final URI uri, final HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
     {
-        HttpResponse response = new EssentialsResponse(
-                uri,
-                mClient.value().execute(
-                        request.method().supportsRequestPayload()
-                                ? new ApacheEntityRequest<>(uri, request)
-                                : new ApacheRequest<>(request, uri)));
+        HttpUriRequest apacheRequest = request.method().supportsRequestPayload()
+                ? new ApacheEntityRequest<>(uri, request)
+                : new ApacheRequest<>(request, uri);
+
+        for (Header header : request.headers())
+        {
+            apacheRequest.setHeader(header.type().name(), header.toString());
+        }
+
+        HttpResponse response = new EssentialsResponse(uri, mClient.value().execute(apacheRequest));
         return request.responseHandler(response).handleResponse(response);
     }
 

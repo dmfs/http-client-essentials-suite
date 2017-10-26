@@ -1,0 +1,49 @@
+plugins {
+    id 'de.fuerstenau.buildconfig' version '1.1.8'
+}
+
+apply plugin: 'java'
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java', 'build/gen/buildconfig/src/main'
+        }
+    }
+}
+
+sourceCompatibility = 1.7
+
+configurations {
+    pom
+}
+
+apply from: '../publish.gradle'
+
+repositories {
+    mavenCentral()
+}
+
+buildConfig {
+    packageName = 'org.dmfs.httpessentials.apache4'
+}
+
+tasks.withType(Jar) {
+    eachFile {
+        it.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+}
+
+dependencies {
+    compile 'org.dmfs:optional:' + JEMS_VERSION
+    compileOnly 'org.apache.httpcomponents:httpclient:' + APACHE_VERSION
+    compile project(':http-client-basics')
+    compile project(':http-client-essentials')
+    compile project(':http-client-types')
+    compile project(':http-client-headers')
+    compile project(':http-executor-commons')
+
+    testCompile 'org.apache.httpcomponents:httpclient:' + APACHE_VERSION
+    testCompile 'junit:junit:' + JUNIT_VERSION
+    testCompile 'org.dmfs:jems-testing:' + JEMS_VERSION
+}

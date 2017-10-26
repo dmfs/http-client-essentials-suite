@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.android.apache;
+package org.dmfs.httpessentials.apache4;
 
 import org.apache.http.Header;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
