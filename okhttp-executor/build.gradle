@@ -35,7 +35,7 @@ tasks.withType(Jar) {
 }
 
 dependencies {
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'com.squareup.okhttp3:okhttp:' + OKHTTP_VERSION
     compile project(':http-client-essentials')
     compile project(':http-client-types')
     compile project(':http-client-headers')
