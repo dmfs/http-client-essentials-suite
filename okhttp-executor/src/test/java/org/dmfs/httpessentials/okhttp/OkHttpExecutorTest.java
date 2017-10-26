@@ -49,7 +49,7 @@ import static org.hamcrest.Matchers.containsString;
 
 
 /**
- * Test ApacheExecutor
+ * Test OkHttpExecutor
  * <p>
  * For now we just run few simple tests against http://httpbin.org
  *
