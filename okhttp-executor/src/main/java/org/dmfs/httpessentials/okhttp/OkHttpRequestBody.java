@@ -21,6 +21,8 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
 import org.dmfs.httpessentials.client.HttpRequestEntity;
+import org.dmfs.iterators.Function;
+import org.dmfs.optional.decorators.Mapped;
 
 import java.io.IOException;
 
@@ -51,7 +53,7 @@ final class OkHttpRequestBody extends RequestBody
     @Override
     public MediaType contentType()
     {
-        return MediaType.parse(mRequestEntity.contentType().toString());
+        return new Mapped<>(new MediaTypeConversionFunction(), mRequestEntity.contentType()).value(null);
     }
 
 
@@ -61,4 +63,16 @@ final class OkHttpRequestBody extends RequestBody
         mRequestEntity.writeContent(sink.outputStream());
     }
 
+
+    /**
+     * A {@link Function} to convert a {@link org.dmfs.httpessentials.types.MediaType} into a {@link MediaType}.
+     */
+    private final static class MediaTypeConversionFunction implements Function<org.dmfs.httpessentials.types.MediaType, MediaType>
+    {
+        @Override
+        public MediaType apply(org.dmfs.httpessentials.types.MediaType argument)
+        {
+            return MediaType.parse(argument.toString());
+        }
+    }
 }
