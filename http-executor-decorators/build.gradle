@@ -10,17 +10,44 @@ apply from: '../publish.gradle'
 
 repositories {
     mavenCentral()
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
-    compile project(':http-client-essentials')
-    compile project(':http-client-types')
-    compile project(':http-client-headers')
-    compile project(':http-client-basics')
-    compile "org.dmfs:rfc3986-uri:0.7"
+    compile 'net.iharder:base64:2.3.9'
+
+    compile(project(':http-client-essentials')) {
+        exclude group: "org.dmfs", module: "jems"
+        exclude group: "org.dmfs", module: "iterators"
+        exclude group: "org.dmfs", module: "optional"
+    }
+    compile(project(':http-client-types')) {
+        exclude group: "org.dmfs", module: "jems"
+        exclude group: "org.dmfs", module: "iterators"
+        exclude group: "org.dmfs", module: "optional"
+    }
+    compile(project(':http-client-headers')) {
+        exclude group: "org.dmfs", module: "jems"
+        exclude group: "org.dmfs", module: "iterators"
+        exclude group: "org.dmfs", module: "optional"
+    }
+    compile(project(':http-client-basics')) {
+        exclude group: "org.dmfs", module: "jems"
+        exclude group: "org.dmfs", module: "iterators"
+        exclude group: "org.dmfs", module: "optional"
+    }
+
+    compile("org.dmfs:rfc3986-uri:0.7") {
+        exclude group: "org.dmfs", module: "jems"
+        exclude group: "org.dmfs", module: "iterators"
+        exclude group: "org.dmfs", module: "optional"
+    }
+
+    compile 'com.github.dmfs:jems:8a30de2a9edcddfef1fc59143ea2a2d62080576f'
 
     testCompile 'junit:junit:' + JUNIT_VERSION
     testCompile 'org.jmockit:jmockit:1.26'
     testCompile project(':http-client-mockutils')
-    testCompile 'org.mockito:mockito-core:'+MOCKITO_VERSION
+    testCompile 'org.mockito:mockito-core:' + MOCKITO_VERSION
+    testCompile project(':httpurlconnection-executor')
 }
