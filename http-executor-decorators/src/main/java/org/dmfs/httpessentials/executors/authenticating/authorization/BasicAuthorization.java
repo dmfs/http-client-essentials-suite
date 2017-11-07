@@ -33,7 +33,7 @@ import java.util.Locale;
 
 
 /**
- * The {@link Authorization} of the Basic auth scheme.
+ * The {@link Authorization} value of the {@code Basic} auth scheme.
  *
  * @author Marten Gajda
  */
@@ -86,7 +86,7 @@ public final class BasicAuthorization implements Authorization
     @Override
     public Iterable<Pair<Token, CharSequence>> parameters()
     {
-        // BASIC authentication doesn't use credential parameters
+        // Basic authentication doesn't use credential parameters
         return EmptyIterable.instance();
     }
 }

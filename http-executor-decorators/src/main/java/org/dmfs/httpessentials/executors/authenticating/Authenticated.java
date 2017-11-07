@@ -26,6 +26,7 @@ import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseHandler;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
+import org.dmfs.httpessentials.executors.authenticating.challenges.ResponseChallenges;
 import org.dmfs.httpessentials.executors.authenticating.charsequences.SingleCredentials;
 import org.dmfs.httpessentials.headers.BasicSingletonHeaderType;
 import org.dmfs.httpessentials.headers.HeaderType;
@@ -133,7 +134,7 @@ final class Authenticated<T> implements HttpRequest<T>
                         // start over with the new AuthState
                         return mExecutor.execute(
                                 response.requestUri(),
-                                new Authenticated<>(mExecutor, mAuthCache, mUri, mRequest, mAuthState));
+                                new Authenticated<>(mExecutor, mAuthCache, mUri, mRequest, mAuthState.withChallenges(new ResponseChallenges(response))));
                     }
                 };
             }

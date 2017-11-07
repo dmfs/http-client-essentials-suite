@@ -17,14 +17,19 @@
 
 package org.dmfs.httpessentials.executors.authenticating.authstates.basic;
 
+import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.exceptions.UnauthorizedException;
+import org.dmfs.httpessentials.executors.authenticating.AuthInfo;
 import org.dmfs.httpessentials.executors.authenticating.AuthState;
+import org.dmfs.httpessentials.executors.authenticating.AuthStrategy;
 import org.dmfs.httpessentials.executors.authenticating.Authorization;
 import org.dmfs.httpessentials.executors.authenticating.Challenge;
 import org.dmfs.httpessentials.executors.authenticating.UserCredentials;
 import org.dmfs.httpessentials.executors.authenticating.authorization.BasicAuthorization;
 import org.dmfs.optional.Optional;
 import org.dmfs.optional.Present;
+
+import java.net.URI;
 
 
 /**
@@ -38,7 +43,7 @@ public final class AuthenticatedBasicAuthState implements AuthState
     private final AuthState mDelegate;
 
 
-    AuthenticatedBasicAuthState(UserCredentials credentials, AuthState delegate)
+    public AuthenticatedBasicAuthState(UserCredentials credentials, AuthState delegate)
     {
         mCredentials = credentials;
         mDelegate = delegate;
@@ -54,8 +59,22 @@ public final class AuthenticatedBasicAuthState implements AuthState
 
 
     @Override
-    public Optional<Authorization> credentials()
+    public Optional<Authorization> authorization()
     {
         return new Present<Authorization>(new BasicAuthorization(mCredentials));
+    }
+
+
+    @Override
+    public AuthStrategy prematureAuthStrategy(Optional<AuthInfo> authInfo)
+    {
+        return new AuthStrategy()
+        {
+            @Override
+            public AuthState authState(HttpMethod method, URI uri, AuthState fallback)
+            {
+                return new AuthenticatedBasicAuthState(mCredentials, fallback);
+            }
+        };
     }
 }

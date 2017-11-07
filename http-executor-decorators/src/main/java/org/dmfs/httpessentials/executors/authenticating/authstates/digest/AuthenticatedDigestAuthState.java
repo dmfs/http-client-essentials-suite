@@ -19,13 +19,16 @@ package org.dmfs.httpessentials.executors.authenticating.authstates.digest;
 
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.exceptions.UnauthorizedException;
+import org.dmfs.httpessentials.executors.authenticating.AuthInfo;
 import org.dmfs.httpessentials.executors.authenticating.AuthState;
+import org.dmfs.httpessentials.executors.authenticating.AuthStrategy;
 import org.dmfs.httpessentials.executors.authenticating.Authorization;
 import org.dmfs.httpessentials.executors.authenticating.Challenge;
+import org.dmfs.httpessentials.executors.authenticating.Parametrized;
 import org.dmfs.httpessentials.executors.authenticating.UserCredentials;
-import org.dmfs.httpessentials.executors.authenticating.charsequences.StringToken;
 import org.dmfs.httpessentials.executors.authenticating.authorization.AuthDigestAuthorization;
 import org.dmfs.httpessentials.executors.authenticating.authorization.DigestAuthorization;
+import org.dmfs.httpessentials.executors.authenticating.charsequences.StringToken;
 import org.dmfs.jems.charsequence.elementary.Hex;
 import org.dmfs.optional.Optional;
 import org.dmfs.optional.Present;
@@ -37,22 +40,30 @@ import java.security.SecureRandom;
 /**
  * @author Marten Gajda
  */
-final class AuthenticatedDigestAuthState implements AuthState
+public final class AuthenticatedDigestAuthState implements AuthState
 {
     private final HttpMethod mHttpMethod;
     private final URI mUri;
     private final UserCredentials mCredentials;
     private final AuthState mDelegate;
-    private final Challenge mDigestChallenge;
+    private final Parametrized mDigestChallenge;
+    private final int mNonceCount;
 
 
-    public AuthenticatedDigestAuthState(HttpMethod httpMethod, URI uri, UserCredentials credentials, AuthState delegate, Challenge digestChallenge)
+    public AuthenticatedDigestAuthState(HttpMethod httpMethod, URI uri, UserCredentials credentials, AuthState delegate, Parametrized digestChallenge)
+    {
+        this(httpMethod, uri, credentials, delegate, digestChallenge, 1);
+    }
+
+
+    public AuthenticatedDigestAuthState(HttpMethod httpMethod, URI uri, UserCredentials credentials, AuthState delegate, Parametrized digestChallenge, int nonceCount)
     {
         mHttpMethod = httpMethod;
         mUri = uri;
         mCredentials = credentials;
         mDelegate = delegate;
         mDigestChallenge = digestChallenge;
+        mNonceCount = nonceCount;
     }
 
 
@@ -64,7 +75,7 @@ final class AuthenticatedDigestAuthState implements AuthState
 
 
     @Override
-    public Optional<Authorization> credentials()
+    public Optional<Authorization> authorization()
     {
         if (!mDigestChallenge.parameter(new StringToken("qop")).isPresent() || !mDigestChallenge.parameter(new StringToken("opaque"))
                 .isPresent() || !mDigestChallenge.parameter(new StringToken("realm")).isPresent())
@@ -73,6 +84,22 @@ final class AuthenticatedDigestAuthState implements AuthState
         }
         // qop must be auth, we don't support auth-int and wouldn't be here if auth wasn't an option
         return new Present<Authorization>(
-                new AuthDigestAuthorization(mHttpMethod, mUri, mDigestChallenge, mCredentials, new Hex(new SecureRandom().generateSeed(16))));
+                new AuthDigestAuthorization(mHttpMethod, mUri, mDigestChallenge, mCredentials, new Hex(new SecureRandom().generateSeed(16)), mNonceCount));
     }
+
+
+    @Override
+    public AuthStrategy prematureAuthStrategy(Optional<AuthInfo> authInfo)
+    {
+        // return an AuthStrategy which can authenticate requests to the same realm prematurely
+        return new AuthStrategy()
+        {
+            @Override
+            public AuthState authState(HttpMethod method, URI uri, AuthState fallback)
+            {
+                return new AuthenticatedDigestAuthState(method, uri, mCredentials, fallback, mDigestChallenge, mNonceCount + 1);
+            }
+        };
+    }
+
 }

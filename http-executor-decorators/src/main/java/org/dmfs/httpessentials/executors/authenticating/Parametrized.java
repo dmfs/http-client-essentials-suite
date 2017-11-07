@@ -15,32 +15,16 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.authenticating.utils;
+package org.dmfs.httpessentials.executors.authenticating;
 
-import org.dmfs.httpessentials.executors.authenticating.Challenge;
 import org.dmfs.httpessentials.types.Token;
-import org.dmfs.iterators.Filter;
+import org.dmfs.optional.Optional;
 
 
 /**
- * Filters {@link Challenge}s by a specific auth scheme token.
- *
  * @author Marten Gajda
  */
-public final class ChallengeFilter implements Filter<Challenge>
+public interface Parametrized
 {
-    private final Token mToken;
-
-
-    public ChallengeFilter(Token token)
-    {
-        mToken = token;
-    }
-
-
-    @Override
-    public boolean iterate(Challenge challenge)
-    {
-        return mToken.toString().equals(challenge.scheme().toString());
-    }
+    Optional<CharSequence> parameter(Token name);
 }

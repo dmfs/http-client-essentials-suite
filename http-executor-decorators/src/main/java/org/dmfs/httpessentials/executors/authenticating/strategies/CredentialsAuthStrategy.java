@@ -18,13 +18,31 @@
 package org.dmfs.httpessentials.executors.authenticating.strategies;
 
 import org.dmfs.httpessentials.HttpMethod;
+import org.dmfs.httpessentials.exceptions.UnauthorizedException;
+import org.dmfs.httpessentials.executors.authenticating.AuthInfo;
 import org.dmfs.httpessentials.executors.authenticating.AuthScheme;
 import org.dmfs.httpessentials.executors.authenticating.AuthState;
 import org.dmfs.httpessentials.executors.authenticating.AuthStrategy;
+import org.dmfs.httpessentials.executors.authenticating.Authorization;
+import org.dmfs.httpessentials.executors.authenticating.Challenge;
 import org.dmfs.httpessentials.executors.authenticating.CredentialsStore;
+import org.dmfs.iterables.decorators.Filtered;
+import org.dmfs.iterables.decorators.Flattened;
+import org.dmfs.iterables.decorators.Mapped;
+import org.dmfs.iterables.decorators.Reverse;
 import org.dmfs.iterables.elementary.Seq;
+import org.dmfs.iterators.Filter;
+import org.dmfs.iterators.Function;
+import org.dmfs.jems.function.BiFunction;
+import org.dmfs.jems.pair.Pair;
+import org.dmfs.jems.single.elementary.Consumed;
+import org.dmfs.optional.Optional;
 
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.dmfs.optional.Absent.absent;
 
 
 /**
@@ -56,13 +74,63 @@ public final class CredentialsAuthStrategy<CredentialsType> implements AuthStrat
 
 
     @Override
-    public AuthState authState(HttpMethod method, URI uri, AuthState fallback)
+    public AuthState authState(final HttpMethod method, final URI uri, final AuthState fallback)
     {
-        AuthState result = fallback;
-        for (AuthScheme<CredentialsType> authScheme : mSchemes)
+        final Set<String> realms = new HashSet<>();
+        return new AuthState()
         {
-            result = authScheme.authState(mCredentialsStore, method, uri, result, fallback);
-        }
-        return result;
+            @Override
+            public AuthState withChallenges(final Iterable<Challenge> challenges) throws UnauthorizedException
+            {
+                return new Consumed<>(
+                        fallback,
+                        new BiFunction<Pair<CharSequence, AuthStrategy>, AuthState, AuthState>()
+                        {
+                            @Override
+                            public AuthState value(Pair<CharSequence, AuthStrategy> charSequenceAuthStrategyPair, AuthState authState)
+                            {
+                                return charSequenceAuthStrategyPair.right().authState(method, uri, authState);
+                            }
+                        },
+                        new Reverse<>(
+                                new Filtered<>(
+                                        new Flattened<>(
+                                                new Mapped<>(
+                                                        mSchemes,
+                                                        new Function<AuthScheme<CredentialsType>, Iterable<Pair<CharSequence, AuthStrategy>>>()
+                                                        {
+                                                            @Override
+                                                            public Iterable<Pair<CharSequence, AuthStrategy>> apply(AuthScheme<CredentialsType> argument)
+                                                            {
+                                                                return argument.authStrategies(mCredentialsStore, method, uri, challenges);
+                                                            }
+                                                        })),
+                                        new Filter<Pair<CharSequence, AuthStrategy>>()
+                                        {
+                                            @Override
+                                            public boolean iterate(Pair<CharSequence, AuthStrategy> argument)
+                                            {
+                                                return realms.add(argument.left().toString());
+                                            }
+                                        }))
+                ).value();
+            }
+
+
+            @Override
+            public Optional<Authorization> authorization()
+            {
+                return absent();
+            }
+
+
+            @Override
+            public AuthStrategy prematureAuthStrategy(Optional<AuthInfo> authInfo)
+            {
+                // not at this point
+                return new PassThroughStrategy();
+            }
+        };
+
     }
 }

@@ -18,8 +18,8 @@
 package org.dmfs.httpessentials.executors.authenticating.authorization;
 
 import org.dmfs.httpessentials.HttpMethod;
-import org.dmfs.httpessentials.executors.authenticating.Challenge;
 import org.dmfs.httpessentials.executors.authenticating.Authorization;
+import org.dmfs.httpessentials.executors.authenticating.Parametrized;
 import org.dmfs.httpessentials.executors.authenticating.UserCredentials;
 import org.dmfs.httpessentials.executors.authenticating.charsequences.SingleCredentials;
 import org.dmfs.httpessentials.executors.authenticating.charsequences.StringToken;
@@ -43,7 +43,7 @@ public class AuthDigestAuthorizationTest
     @Test
     public void testParameters() throws Exception
     {
-        Challenge mockChallenge = mock(Challenge.class);
+        Parametrized mockChallenge = mock(Parametrized.class);
         doReturn(new Present<>("testrealm@host.com")).when(mockChallenge).parameter(new StringToken("realm"));
         doReturn(new Present<>("dcd98b7102dd2f0e8b11d0f600bfb0c093")).when(mockChallenge).parameter(new StringToken("nonce"));
         doReturn(new Present<>("5ccc069c403ebaf9f0171e9517f40e41")).when(mockChallenge).parameter(new StringToken("opaque"));
@@ -54,7 +54,8 @@ public class AuthDigestAuthorizationTest
         doReturn("Mufasa").when(mockUserCredentials).userName();
         doReturn("Circle Of Life").when(mockUserCredentials).password();
 
-        Authorization authorization = new AuthDigestAuthorization(HttpMethod.GET, URI.create("/dir/index.html"), mockChallenge, mockUserCredentials, "0a4f113b");
+        Authorization authorization = new AuthDigestAuthorization(HttpMethod.GET, URI.create("/dir/index.html"), mockChallenge, mockUserCredentials, "0a4f113b",
+                1);
         for (Pair<Token, CharSequence> param : authorization.parameters())
         {
             System.out.println(String.format("%s: %s", param.left(), param.right().toString()));
@@ -66,7 +67,7 @@ public class AuthDigestAuthorizationTest
     @Test
     public void testParameters2() throws Exception
     {
-        Challenge mockChallenge = mock(Challenge.class);
+        Parametrized mockChallenge = mock(Parametrized.class);
         doReturn(new Present<>("http-auth@example.org")).when(mockChallenge).parameter(new StringToken("realm"));
         doReturn(new Present<>("7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v")).when(mockChallenge).parameter(new StringToken("nonce"));
         doReturn(new Present<>("FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS")).when(mockChallenge).parameter(new StringToken("opaque"));
@@ -78,7 +79,7 @@ public class AuthDigestAuthorizationTest
         doReturn("Circle Of Life").when(mockUserCredentials).password();
 
         Authorization authorization = new AuthDigestAuthorization(HttpMethod.GET, URI.create("/dir/index.html"), mockChallenge, mockUserCredentials,
-                "f2/wE4q74E6zIJEtWaHKaf5wv/H5QzzpXusqGemxURZJ");
+                "f2/wE4q74E6zIJEtWaHKaf5wv/H5QzzpXusqGemxURZJ", 1);
         for (Pair<Token, CharSequence> param : authorization.parameters())
         {
             System.out.println(String.format("%s: %s", param.left(), param.right().toString()));
@@ -90,7 +91,7 @@ public class AuthDigestAuthorizationTest
     @Test
     public void testParameters3() throws Exception
     {
-        Challenge mockChallenge = mock(Challenge.class);
+        Parametrized mockChallenge = mock(Parametrized.class);
         doReturn(new Present<>("http-auth@example.org")).when(mockChallenge).parameter(new StringToken("realm"));
         doReturn(new Present<>("7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v")).when(mockChallenge).parameter(new StringToken("nonce"));
         doReturn(new Present<>("FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS")).when(mockChallenge).parameter(new StringToken("opaque"));
@@ -102,7 +103,7 @@ public class AuthDigestAuthorizationTest
         doReturn("Circle Of Life").when(mockUserCredentials).password();
 
         Authorization authorization = new AuthDigestAuthorization(HttpMethod.GET, URI.create("/dir/index.html"), mockChallenge, mockUserCredentials,
-                "f2/wE4q74E6zIJEtWaHKaf5wv/H5QzzpXusqGemxURZJ");
+                "f2/wE4q74E6zIJEtWaHKaf5wv/H5QzzpXusqGemxURZJ", 1);
         for (Pair<Token, CharSequence> param : authorization.parameters())
         {
             System.out.println(String.format("%s: %s", param.left(), param.right().toString()));
@@ -114,7 +115,7 @@ public class AuthDigestAuthorizationTest
     @Test
     public void testParameters4() throws Exception
     {
-        Challenge mockChallenge = mock(Challenge.class);
+        Parametrized mockChallenge = mock(Parametrized.class);
         doReturn(new Present<>("http-auth@example.org")).when(mockChallenge).parameter(new StringToken("realm"));
         doReturn(new Present<>("7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v")).when(mockChallenge).parameter(new StringToken("nonce"));
         doReturn(new Present<>("FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS")).when(mockChallenge).parameter(new StringToken("opaque"));
@@ -126,7 +127,7 @@ public class AuthDigestAuthorizationTest
         doReturn("Circle Of Life").when(mockUserCredentials).password();
 
         Authorization authorization = new AuthDigestAuthorization(HttpMethod.GET, URI.create("/dir/index.html"), mockChallenge, mockUserCredentials,
-                "f2/wE4q74E6zIJEtWaHKaf5wv/H5QzzpXusqGemxURZJ");
+                "f2/wE4q74E6zIJEtWaHKaf5wv/H5QzzpXusqGemxURZJ", 1);
         for (Pair<Token, CharSequence> param : authorization.parameters())
         {
             System.out.println(String.format("%s: %s", param.left(), param.right().toString()));

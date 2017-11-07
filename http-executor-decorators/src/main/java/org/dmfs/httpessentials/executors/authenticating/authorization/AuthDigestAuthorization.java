@@ -19,7 +19,7 @@ package org.dmfs.httpessentials.executors.authenticating.authorization;
 
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.executors.authenticating.Authorization;
-import org.dmfs.httpessentials.executors.authenticating.Challenge;
+import org.dmfs.httpessentials.executors.authenticating.Parametrized;
 import org.dmfs.httpessentials.executors.authenticating.UserCredentials;
 import org.dmfs.httpessentials.executors.authenticating.charsequences.Quoted;
 import org.dmfs.httpessentials.executors.authenticating.charsequences.StringToken;
@@ -43,7 +43,7 @@ import static org.dmfs.optional.Absent.absent;
 
 
 /**
- * The {@link Authorization} value of the DIGEST authentication scheme with {@code qop=auth}.
+ * The {@link Authorization} value of the {@code Digest} authentication scheme with {@code qop=auth}.
  *
  * @author Marten Gajda
  */
@@ -51,18 +51,20 @@ public final class AuthDigestAuthorization implements Authorization
 {
     private final HttpMethod mMethod;
     private final URI mRequestUri;
-    private final Challenge mDigestChallenge;
+    private final Parametrized mDigestChallenge;
     private final UserCredentials mUserCredentials;
     private final CharSequence mCnonce;
+    private final int mNonceCount;
 
 
-    public AuthDigestAuthorization(HttpMethod method, URI requestUri, Challenge digestChallenge, UserCredentials userCredentials, CharSequence cnonce)
+    public AuthDigestAuthorization(HttpMethod method, URI requestUri, Parametrized digestChallenge, UserCredentials userCredentials, CharSequence cnonce, int nonceCount)
     {
         mMethod = method;
         mRequestUri = requestUri;
         mDigestChallenge = digestChallenge;
         mUserCredentials = userCredentials;
         mCnonce = cnonce;
+        mNonceCount = nonceCount;
     }
 
 
@@ -112,9 +114,8 @@ public final class AuthDigestAuthorization implements Authorization
                         new Parameter("nonce", new Quoted(mDigestChallenge.parameter(new StringToken("nonce")).value())),
                         new Parameter("uri", new Quoted(mRequestUri.getRawPath())),
                         new Parameter("qop", "auth"),
-                        new Parameter("nc", "00000001"),
+                        new Parameter("nc", new Hex(bigEndianByteArray(mNonceCount))),
                         new Parameter("cnonce", new Quoted(mCnonce)),
-                        new Parameter("opaque", new Quoted(mDigestChallenge.parameter(new StringToken("opaque")).value())),
                         new Parameter("algorithm", algorithm),
                         new Parameter("response", new Quoted(
                                 new Hex(new Digested(algorithm,
@@ -126,7 +127,9 @@ public final class AuthDigestAuthorization implements Authorization
                                                 mUserCredentials.password()).value()),
                                         ":",
                                         mDigestChallenge.parameter(new StringToken("nonce")).value(),
-                                        ":00000001:",
+                                        ":",
+                                        new Hex(bigEndianByteArray(mNonceCount)),
+                                        ":",
                                         mCnonce,
                                         ":auth:",
                                         new Hex(new Digested(algorithm,
@@ -152,5 +155,17 @@ public final class AuthDigestAuthorization implements Authorization
                                 return new Parameter("userhash", argument);
                             }
                         }, mDigestChallenge.parameter(new StringToken("userhash")))));
+    }
+
+
+    // TODO: make this a Single<byte[]>
+    private byte[] bigEndianByteArray(int i)
+    {
+        return new byte[] {
+                (byte) (i >>> 24),
+                (byte) (i >>> 16),
+                (byte) (i >>> 8),
+                (byte) (i)
+        };
     }
 }

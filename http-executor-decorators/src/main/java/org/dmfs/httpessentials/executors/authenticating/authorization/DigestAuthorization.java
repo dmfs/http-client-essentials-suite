@@ -19,7 +19,7 @@ package org.dmfs.httpessentials.executors.authenticating.authorization;
 
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.executors.authenticating.Authorization;
-import org.dmfs.httpessentials.executors.authenticating.Challenge;
+import org.dmfs.httpessentials.executors.authenticating.Parametrized;
 import org.dmfs.httpessentials.executors.authenticating.UserCredentials;
 import org.dmfs.httpessentials.executors.authenticating.charsequences.Quoted;
 import org.dmfs.httpessentials.executors.authenticating.charsequences.StringToken;
@@ -41,7 +41,7 @@ import static org.dmfs.optional.Absent.absent;
 
 
 /**
- * The {@link Authorization} of a DIGEST authentication scheme as per <a href="https://tools.ietf.org/html/rfc2069">RFC 2069</a>
+ * The {@link Authorization} value of a {@code Digest} authentication scheme as per <a href="https://tools.ietf.org/html/rfc2069">RFC 2069</a>
  *
  * @author Marten Gajda
  */
@@ -49,11 +49,11 @@ public final class DigestAuthorization implements Authorization
 {
     private final HttpMethod mMethod;
     private final URI mRequestUri;
-    private final Challenge mDigestChallenge;
+    private final Parametrized mDigestChallenge;
     private final UserCredentials mUserCredentials;
 
 
-    public DigestAuthorization(HttpMethod method, URI requestUri, Challenge digestChallenge, UserCredentials userCredentials)
+    public DigestAuthorization(HttpMethod method, URI requestUri, Parametrized digestChallenge, UserCredentials userCredentials)
     {
         mMethod = method;
         mRequestUri = requestUri;

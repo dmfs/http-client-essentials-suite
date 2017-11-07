@@ -20,6 +20,7 @@ package org.dmfs.httpessentials.executors.authenticating.authorization;
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.executors.authenticating.Challenge;
 import org.dmfs.httpessentials.executors.authenticating.Authorization;
+import org.dmfs.httpessentials.executors.authenticating.Parametrized;
 import org.dmfs.httpessentials.executors.authenticating.UserCredentials;
 import org.dmfs.httpessentials.executors.authenticating.charsequences.SingleCredentials;
 import org.dmfs.httpessentials.executors.authenticating.charsequences.StringToken;
@@ -43,7 +44,7 @@ public class DigestAuthorizationTest
     @Test
     public void testParameters() throws Exception
     {
-        Challenge mockChallenge = mock(Challenge.class);
+        Parametrized mockChallenge = mock(Parametrized.class);
         doReturn(new Present<>("testrealm@host.com")).when(mockChallenge).parameter(new StringToken("realm"));
         doReturn(new Present<>("dcd98b7102dd2f0e8b11d0f600bfb0c093")).when(mockChallenge).parameter(new StringToken("nonce"));
         doReturn(new Present<>("5ccc069c403ebaf9f0171e9517f40e41")).when(mockChallenge).parameter(new StringToken("opaque"));

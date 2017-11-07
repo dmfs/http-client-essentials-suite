@@ -24,6 +24,7 @@ import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
 import org.dmfs.httpessentials.executors.authenticating.authcaches.EmptyAuthCache;
+import org.dmfs.httpessentials.executors.authenticating.authcaches.SimpleAuthCache;
 import org.dmfs.httpessentials.executors.authenticating.authstates.failed.FailedAuthState;
 import org.dmfs.httpessentials.executors.authenticating.strategies.CachedAuthStrategy;
 
@@ -45,9 +46,15 @@ public final class Authenticating implements HttpRequestExecutor
 
     public Authenticating(HttpRequestExecutor delegate, AuthStrategy authStrategy)
     {
+        this(delegate, authStrategy, new EmptyAuthCache());
+    }
+
+
+    public Authenticating(HttpRequestExecutor delegate, AuthStrategy authStrategy, AuthCache authCache)
+    {
         mDelegate = delegate;
         mAuthStrategy = authStrategy;
-        mAuthCache = new EmptyAuthCache();
+        mAuthCache = new SimpleAuthCache();
     }
 
 

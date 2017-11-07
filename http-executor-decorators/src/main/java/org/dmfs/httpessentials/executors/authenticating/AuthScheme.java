@@ -18,6 +18,7 @@
 package org.dmfs.httpessentials.executors.authenticating;
 
 import org.dmfs.httpessentials.HttpMethod;
+import org.dmfs.jems.pair.Pair;
 
 import java.net.URI;
 
@@ -38,13 +39,10 @@ public interface AuthScheme<CredentialsType>
      *         The {@link HttpMethod} of the request to authenticate.
      * @param uri
      *         The target {@link URI} of the request to authenticate.
-     * @param naFallback
-     *         The "not applicable" fallback {@link AuthState}. The resulting {@link AuthState} will fall back to this if the server doesn't support this
-     *         authentication scheme.
-     * @param failFallback
-     *         The fail fallback {@link AuthState}. The resulting {@link AuthState} will fall back to this if the authentication with this scheme failed.
+     * @param challenges
      *
-     * @return An {@link AuthState}.
+     * @return
      */
-    AuthState authState(CredentialsStore<CredentialsType> credentialsStore, HttpMethod method, URI uri, AuthState naFallback, AuthState failFallback);
+    Iterable<Pair<CharSequence, AuthStrategy>> authStrategies(CredentialsStore<CredentialsType> credentialsStore, HttpMethod method, URI uri, Iterable<Challenge> challenges);
+
 }

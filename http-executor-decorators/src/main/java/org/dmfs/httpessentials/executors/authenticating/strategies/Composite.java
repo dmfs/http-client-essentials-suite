@@ -21,6 +21,8 @@ import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.executors.authenticating.AuthState;
 import org.dmfs.httpessentials.executors.authenticating.AuthStrategy;
 import org.dmfs.iterables.elementary.Seq;
+import org.dmfs.jems.function.BiFunction;
+import org.dmfs.jems.single.elementary.Consumed;
 
 import java.net.URI;
 
@@ -60,13 +62,18 @@ public final class Composite implements AuthStrategy
 
 
     @Override
-    public AuthState authState(HttpMethod method, URI uri, AuthState fallback)
+    public AuthState authState(final HttpMethod method, final URI uri, AuthState fallback)
     {
-        AuthState authState = fallback;
-        for (AuthStrategy authStrategy : mStrategies)
-        {
-            authState = authStrategy.authState(method, uri, authState);
-        }
-        return authState;
+        return new Consumed<>(
+                fallback,
+                new BiFunction<AuthStrategy, AuthState, AuthState>()
+                {
+                    @Override
+                    public AuthState value(AuthStrategy strategy, AuthState authState)
+                    {
+                        return strategy.authState(method, uri, authState);
+                    }
+                },
+                mStrategies).value();
     }
 }

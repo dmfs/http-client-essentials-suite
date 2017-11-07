@@ -15,32 +15,30 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.authenticating.utils;
+package org.dmfs.jems.single.elementary;
 
-import org.dmfs.httpessentials.executors.authenticating.Challenge;
-import org.dmfs.httpessentials.types.Token;
-import org.dmfs.iterators.Filter;
+import org.dmfs.jems.single.Single;
 
 
 /**
- * Filters {@link Challenge}s by a specific auth scheme token.
+ * The Single Hexadecimal representation of a Single byte array.
  *
  * @author Marten Gajda
  */
-public final class ChallengeFilter implements Filter<Challenge>
+public final class Hex implements Single<CharSequence>
 {
-    private final Token mToken;
+    private final Single<byte[]> mDelegate;
 
 
-    public ChallengeFilter(Token token)
+    public Hex(Single<byte[]> delegate)
     {
-        mToken = token;
+        mDelegate = delegate;
     }
 
 
     @Override
-    public boolean iterate(Challenge challenge)
+    public CharSequence value()
     {
-        return mToken.toString().equals(challenge.scheme().toString());
+        return new org.dmfs.jems.charsequence.elementary.Hex(mDelegate.value());
     }
 }

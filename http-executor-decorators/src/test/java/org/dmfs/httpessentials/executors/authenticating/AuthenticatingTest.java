@@ -69,35 +69,9 @@ public class AuthenticatingTest
                     }
                 })));
 
-        String response = executor.execute(URI.create("http://localhost:5000/digest-auth/auth/user/passwd/MD5/never"), new HttpRequest<String>()
-        {
-            @Override
-            public HttpMethod method()
-            {
-                return HttpMethod.GET;
-            }
-
-
-            @Override
-            public Headers headers()
-            {
-                return EmptyHeaders.INSTANCE;
-            }
-
-
-            @Override
-            public HttpRequestEntity requestEntity()
-            {
-                return EmptyHttpRequestEntity.INSTANCE;
-            }
-
-
-            @Override
-            public HttpResponseHandler<String> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
-            {
-                return new StringResponseHandler();
-            }
-        });
+        String response = executor.execute(URI.create("http://localhost:5000/digest-auth/auth/user/passwd/MD5/never"), new StringHttpRequest());
+        response = executor.execute(URI.create("http://localhost:5000/digest-auth/auth/user/passwd/MD5/never"), new StringHttpRequest());
+        response = executor.execute(URI.create("http://localhost:5000/digest-auth/auth/user/passwd/MD5/never"), new StringHttpRequest());
 
         System.out.println(response);
     }
@@ -130,37 +104,41 @@ public class AuthenticatingTest
                     }
                 })));
 
-        String response = executor.execute(URI.create("http://localhost:5000/basic-auth/user/passwd"), new HttpRequest<String>()
-        {
-            @Override
-            public HttpMethod method()
-            {
-                return HttpMethod.GET;
-            }
-
-
-            @Override
-            public Headers headers()
-            {
-                return EmptyHeaders.INSTANCE;
-            }
-
-
-            @Override
-            public HttpRequestEntity requestEntity()
-            {
-                return EmptyHttpRequestEntity.INSTANCE;
-            }
-
-
-            @Override
-            public HttpResponseHandler<String> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
-            {
-                return new StringResponseHandler();
-            }
-        });
+        String response = executor.execute(URI.create("http://localhost:5000/basic-auth/user/passwd"), new StringHttpRequest());
+        response = executor.execute(URI.create("http://localhost:5000/basic-auth/user/passwd"), new StringHttpRequest());
+        response = executor.execute(URI.create("http://localhost:5000/basic-auth/user/passwd"), new StringHttpRequest());
 
         System.out.println(response);
     }
 
+
+    private static class StringHttpRequest implements HttpRequest<String>
+    {
+        @Override
+        public HttpMethod method()
+        {
+            return HttpMethod.GET;
+        }
+
+
+        @Override
+        public Headers headers()
+        {
+            return EmptyHeaders.INSTANCE;
+        }
+
+
+        @Override
+        public HttpRequestEntity requestEntity()
+        {
+            return EmptyHttpRequestEntity.INSTANCE;
+        }
+
+
+        @Override
+        public HttpResponseHandler<String> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
+        {
+            return new StringResponseHandler();
+        }
+    }
 }

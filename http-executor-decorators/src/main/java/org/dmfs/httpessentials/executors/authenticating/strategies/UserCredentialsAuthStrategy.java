@@ -42,10 +42,11 @@ public final class UserCredentialsAuthStrategy implements AuthStrategy
 
     public UserCredentialsAuthStrategy(CredentialsStore<UserCredentials> credentialsStore)
     {
-        this(credentialsStore, new Seq<>(new Basic(), new Digest()));
+        this(credentialsStore, new Seq<>(new Digest(), new Basic()));
     }
 
 
+    @SafeVarargs
     public UserCredentialsAuthStrategy(CredentialsStore<UserCredentials> credentialsStore, AuthScheme<UserCredentials>... authSchemes)
     {
         this(credentialsStore, new Seq<>(authSchemes));
