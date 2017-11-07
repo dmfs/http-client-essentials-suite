@@ -48,7 +48,7 @@ public interface AuthState
      *
      * @return An {@link Optional} {@link Authorization}.
      */
-    Optional<Authorization> credentials();
+    Optional<Authorization> authorization();
 
     /**
      * Returns an {@link AuthStrategy} which is able to authenticate future requests to the same realm prematurely. {@link AuthState}s which don't support

@@ -30,7 +30,7 @@ public interface Challenge
     /**
      * The scheme {@link Token} of the challenge.
      *
-     * @return
+     * @return a {@link Token}.
      */
     Token scheme();
 

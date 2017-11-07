@@ -47,7 +47,7 @@ public final class FailedAuthState implements AuthState
 
 
     @Override
-    public Optional<Authorization> credentials()
+    public Optional<Authorization> authorization()
     {
         return absent();
     }

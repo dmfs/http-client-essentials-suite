@@ -104,7 +104,7 @@ final class Authenticated<T> implements HttpRequest<T>
                     {
                         return originalHeaders.withHeader(AUTHORIZATION.entity(authorization));
                     }
-                }, mAuthState.credentials()).value(originalHeaders);
+                }, mAuthState.authorization()).value(originalHeaders);
     }
 
 

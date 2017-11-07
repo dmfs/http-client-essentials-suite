@@ -42,5 +42,13 @@ public interface AuthCache
      */
     AuthStrategy authStrategy(URI uri);
 
-    // TODO: add some way add/update entries
+    /**
+     * Updates the cache with the given {@link AuthStrategy} for the given URI.
+     *
+     * @param uri
+     *         The URI which had been authenticated.
+     * @param strategy
+     *         An {@link AuthStrategy} which can be used to "replay" the authentication.
+     */
+    void update(URI uri, AuthStrategy strategy);
 }

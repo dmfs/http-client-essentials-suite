@@ -36,4 +36,11 @@ public final class EmptyAuthCache implements AuthCache
     {
         return new PassThroughStrategy();
     }
+
+
+    @Override
+    public void update(URI uri, AuthStrategy strategy)
+    {
+        // not supported
+    }
 }
