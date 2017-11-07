@@ -49,7 +49,8 @@ public final class BasicChallenge implements Challenge
     @Override
     public CharSequence challenge()
     {
-        return mChallengeText.subSequence(space() + 1, mChallengeText.length()).toString().trim();
+        int spacePos = space();
+        return spacePos > 0 ? mChallengeText.subSequence(space() + 1, mChallengeText.length()).toString().trim() : "";
     }
 
 

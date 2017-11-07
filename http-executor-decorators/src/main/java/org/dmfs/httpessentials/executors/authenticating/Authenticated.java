@@ -26,13 +26,13 @@ import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseHandler;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
-import org.dmfs.httpessentials.executors.authenticating.challenges.ResponseChallenges;
 import org.dmfs.httpessentials.executors.authenticating.charsequences.SingleCredentials;
 import org.dmfs.httpessentials.headers.BasicSingletonHeaderType;
 import org.dmfs.httpessentials.headers.HeaderType;
 import org.dmfs.httpessentials.headers.Headers;
 import org.dmfs.httpessentials.typedentity.EntityConverter;
 import org.dmfs.iterators.Function;
+import org.dmfs.optional.Absent;
 import org.dmfs.optional.decorators.Mapped;
 
 import java.io.IOException;
@@ -40,8 +40,7 @@ import java.net.URI;
 
 
 /**
- * An authenticated {@link HttpRequest}. It takes an {@link AuthState} and adds any {@link Authorization} it returns to the request. "401" responses will be
- * handled by an {@link AuthenticatingResponseHandler}.
+ * An authenticated {@link HttpRequest}. It takes an {@link AuthState} and adds any {@link Authorization} it returns to the request.
  *
  * @author Marten Gajda
  */
@@ -70,11 +69,13 @@ final class Authenticated<T> implements HttpRequest<T>
     private final AuthState mAuthState;
     private final URI mUri;
     private final HttpRequest<T> mRequest;
+    private final AuthCache mAuthCache;
 
 
-    Authenticated(HttpRequestExecutor executor, URI uri, HttpRequest<T> request, AuthState authState)
+    Authenticated(HttpRequestExecutor executor, AuthCache authCache, URI uri, HttpRequest<T> request, AuthState authState)
     {
         mExecutor = executor;
+        mAuthCache = authCache;
         mAuthState = authState;
         mUri = uri;
         mRequest = request;
@@ -118,15 +119,27 @@ final class Authenticated<T> implements HttpRequest<T>
     @Override
     public HttpResponseHandler<T> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
     {
-        if (HttpStatus.UNAUTHORIZED.equals(response.status()) && !mRequest.headers().contains(AUTHORIZATION))
+        if (!mRequest.headers().contains(AUTHORIZATION))
         {
-            // authentication failed, return a response handler which authenticates and re-sends the request
-            return new AuthenticatingResponseHandler<>(
-                    mExecutor,
-                    mUri,
-                    mRequest,
-                    mAuthState.withChallenges(new ResponseChallenges(response))
-            );
+            if (HttpStatus.UNAUTHORIZED.equals(response.status()))
+            {
+
+                // authentication failed, return a response handler which authenticates and re-sends the request
+                return new HttpResponseHandler<T>()
+                {
+                    @Override
+                    public T handleResponse(HttpResponse response) throws IOException, ProtocolError, ProtocolException
+                    {
+                        // start over with the new AuthState
+                        return mExecutor.execute(
+                                response.requestUri(),
+                                new Authenticated<>(mExecutor, mAuthCache, mUri, mRequest, mAuthState));
+                    }
+                };
+            }
+            // successfully authenticated, update the auth cache
+            // TODO: pass any Authentication-Info header value
+            mAuthCache.update(mUri, mAuthState.prematureAuthStrategy(Absent.<AuthInfo>absent()));
         }
         return mRequest.responseHandler(response);
     }

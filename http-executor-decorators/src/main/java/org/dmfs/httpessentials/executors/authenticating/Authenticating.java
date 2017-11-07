@@ -58,7 +58,7 @@ public final class Authenticating implements HttpRequestExecutor
                 uri,
                 new Authenticated<>(
                         mDelegate,
-                        uri,
+                        mAuthCache, uri,
                         request,
                         new CachedAuthStrategy(mAuthCache, mAuthStrategy).authState(request.method(), uri, new FailedAuthState())));
     }
