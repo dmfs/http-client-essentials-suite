@@ -50,7 +50,7 @@ import java.net.URI;
 public final class Basic implements AuthScheme<UserCredentials>
 {
     @Override
-    public Iterable<Pair<CharSequence, AuthStrategy>> authStrategies(Iterable<Challenge> challenges, final CredentialsStore<UserCredentials> credentialsStore, HttpMethod method, final URI uri)
+    public Iterable<Pair<CharSequence, AuthStrategy>> authStrategies(Iterable<Challenge> challenges, final CredentialsStore<UserCredentials> credentialsStore, final URI uri)
     {
         return new PresentValues<>(
                 new Fluent<>(challenges)

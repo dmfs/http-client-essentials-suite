@@ -120,7 +120,7 @@ public final class CredentialsAuthStrategy<CredentialsType> implements AuthStrat
                                                         @Override
                                                         public Iterable<Pair<CharSequence, AuthStrategy>> apply(AuthScheme<CredentialsType> argument)
                                                         {
-                                                            return argument.authStrategies(challenges, mCredentialsStore, mMethod, mUri);
+                                                            return argument.authStrategies(challenges, mCredentialsStore, mUri);
                                                         }
                                                     })),
                                     new Filter<Pair<CharSequence, AuthStrategy>>()

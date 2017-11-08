@@ -17,7 +17,6 @@
 
 package org.dmfs.httpessentials.executors.authenticating;
 
-import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.jems.pair.Pair;
 
 import java.net.URI;
@@ -40,12 +39,10 @@ public interface AuthScheme<CredentialsType>
      *         The challenges provided by the server.
      * @param credentialsStore
      *         A {@link CredentialsStore} suitable for this {@link AuthScheme}.
-     * @param method
-     *         The {@link HttpMethod} of the request to authenticate.
      * @param uri
      *         The target {@link URI} of the request to authenticate.
      *
      * @return
      */
-    Iterable<Pair<CharSequence, AuthStrategy>> authStrategies(Iterable<Challenge> challenges, CredentialsStore<CredentialsType> credentialsStore, HttpMethod method, URI uri);
+    Iterable<Pair<CharSequence, AuthStrategy>> authStrategies(Iterable<Challenge> challenges, CredentialsStore<CredentialsType> credentialsStore, URI uri);
 }
