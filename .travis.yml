@@ -1,2 +1,10 @@
 language: java
 
+sudo: required
+
+python:
+  - "3.6"
+
+before_script:
+  - sudo pip install httpbin
+  - python -m httpbin.core &
