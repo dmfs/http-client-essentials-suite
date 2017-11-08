@@ -20,6 +20,7 @@ package org.dmfs.httpessentials.executors.authenticating.strategies;
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.executors.authenticating.AuthState;
 import org.dmfs.httpessentials.executors.authenticating.AuthStrategy;
+import org.dmfs.iterables.decorators.Reverse;
 import org.dmfs.iterables.elementary.Seq;
 import org.dmfs.jems.function.BiFunction;
 import org.dmfs.jems.single.elementary.Consumed;
@@ -41,7 +42,7 @@ public final class Composite implements AuthStrategy
      * Creates a composite {@link AuthStrategy} of the given {@link AuthStrategy}s.
      *
      * @param strategies
-     *         The {@link AuthStrategy}s, prioritized in ascending order (highest priority is last)
+     *         The {@link AuthStrategy}s, the one with the highest priority being first.
      */
     public Composite(AuthStrategy... strategies)
     {
@@ -53,7 +54,7 @@ public final class Composite implements AuthStrategy
      * Creates a composite {@link AuthStrategy} of the given {@link AuthStrategy}s.
      *
      * @param strategies
-     *         Iterable of {@link AuthStrategy}s, prioritized in ascending order (highest priority is last)
+     *         Iterable of {@link AuthStrategy}s, the one with the highest priority being first.
      */
     public Composite(Iterable<AuthStrategy> strategies)
     {
@@ -74,6 +75,6 @@ public final class Composite implements AuthStrategy
                         return strategy.authState(method, uri, authState);
                     }
                 },
-                mStrategies).value();
+                new Reverse<>(mStrategies)).value();
     }
 }

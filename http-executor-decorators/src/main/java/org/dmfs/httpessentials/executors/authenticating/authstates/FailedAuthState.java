@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.authenticating.authstates.failed;
+package org.dmfs.httpessentials.executors.authenticating.authstates;
 
 import org.dmfs.httpessentials.exceptions.UnauthorizedException;
 import org.dmfs.httpessentials.executors.authenticating.AuthInfo;

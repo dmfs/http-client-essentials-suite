@@ -24,25 +24,28 @@ import java.net.URI;
 
 
 /**
- * An authentication scheme.
+ * An authentication scheme. It knows how to handle challenges with a specific scheme token and can return {@link AuthStrategy}s for each of the supported
+ * challenges.
  *
  * @author Marten Gajda
  */
 public interface AuthScheme<CredentialsType>
 {
     /**
-     * Returns an initial {@link AuthState} for this {@link AuthScheme}.
+     * Returns a pair of realm and {@link AuthStrategy} for each of the supported {@link Challenge}s.
+     * <p>
+     * Each of the {@link AuthStrategy}s returned will return an initial {@link AuthState} for one specific {@link Challenge}.
      *
+     * @param challenges
+     *         The challenges provided by the server.
      * @param credentialsStore
      *         A {@link CredentialsStore} suitable for this {@link AuthScheme}.
      * @param method
      *         The {@link HttpMethod} of the request to authenticate.
      * @param uri
      *         The target {@link URI} of the request to authenticate.
-     * @param challenges
      *
      * @return
      */
-    Iterable<Pair<CharSequence, AuthStrategy>> authStrategies(CredentialsStore<CredentialsType> credentialsStore, HttpMethod method, URI uri, Iterable<Challenge> challenges);
-
+    Iterable<Pair<CharSequence, AuthStrategy>> authStrategies(Iterable<Challenge> challenges, CredentialsStore<CredentialsType> credentialsStore, HttpMethod method, URI uri);
 }

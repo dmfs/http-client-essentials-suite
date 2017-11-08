@@ -22,6 +22,8 @@ import org.dmfs.optional.Optional;
 
 
 /**
+ * A generic interface of a set of key value pairs.
+ *
  * @author Marten Gajda
  */
 public interface Parametrized

@@ -25,7 +25,7 @@ import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
 import org.dmfs.httpessentials.executors.authenticating.authcaches.EmptyAuthCache;
 import org.dmfs.httpessentials.executors.authenticating.authcaches.SimpleAuthCache;
-import org.dmfs.httpessentials.executors.authenticating.authstates.failed.FailedAuthState;
+import org.dmfs.httpessentials.executors.authenticating.authstates.FailedAuthState;
 import org.dmfs.httpessentials.executors.authenticating.strategies.CachedAuthStrategy;
 
 import java.io.IOException;

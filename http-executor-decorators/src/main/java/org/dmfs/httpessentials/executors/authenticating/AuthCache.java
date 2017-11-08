@@ -33,7 +33,7 @@ public interface AuthCache
      * Returns an {@link AuthStrategy} for the given URI.
      * <p>
      * Note that this will always return an {@link AuthStrategy}, even if there is none cached yet. In this case a {@link PassThroughStrategy} will be returned
-     * as the default.
+     * as a neutral default.
      *
      * @param uri
      *         The {@link URI} to authenticate.

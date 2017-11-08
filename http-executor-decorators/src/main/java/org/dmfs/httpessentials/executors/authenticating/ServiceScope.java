@@ -18,6 +18,8 @@
 package org.dmfs.httpessentials.executors.authenticating;
 
 /**
+ * The scope of a service.
+ *
  * @author Marten Gajda
  */
 public interface ServiceScope

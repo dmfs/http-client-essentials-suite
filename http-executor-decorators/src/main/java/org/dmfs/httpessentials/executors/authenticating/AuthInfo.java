@@ -17,25 +17,11 @@
 
 package org.dmfs.httpessentials.executors.authenticating;
 
-import org.dmfs.httpessentials.types.Token;
-import org.dmfs.optional.Optional;
-
-
 /**
  * The {@code Authentication-Info} header as per <a href="https://tools.ietf.org/html/rfc7615">RFC 7615</a>
  *
  * @author Marten Gajda
  */
-public interface AuthInfo
+public interface AuthInfo extends Parametrized
 {
-
-    /**
-     * Returns the {@link Optional} value of the {@code Authentication-Info} parameter with the given name.
-     *
-     * @param name
-     *         The parameter name {@link Token} of the parameter value to return.
-     *
-     * @return the {@link Optional} parameter value {@link CharSequence}. Will be absent if no such parameter exists.
-     */
-    Optional<CharSequence> parameter(Token name);
 }

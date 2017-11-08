@@ -26,7 +26,7 @@ import org.dmfs.httpessentials.executors.authenticating.CredentialsStore;
 import org.dmfs.httpessentials.executors.authenticating.Parametrized;
 import org.dmfs.httpessentials.executors.authenticating.UserCredentials;
 import org.dmfs.httpessentials.executors.authenticating.authscopes.UriScope;
-import org.dmfs.httpessentials.executors.authenticating.authstates.digest.AuthenticatedDigestAuthState;
+import org.dmfs.httpessentials.executors.authenticating.authstates.AuthenticatedDigestAuthState;
 import org.dmfs.httpessentials.executors.authenticating.charsequences.StringToken;
 import org.dmfs.httpessentials.executors.authenticating.utils.ChallengeFilter;
 import org.dmfs.httpessentials.executors.authenticating.utils.SimpleParametrized;
@@ -52,7 +52,7 @@ import java.net.URI;
 public final class Digest implements AuthScheme<UserCredentials>
 {
     @Override
-    public Iterable<Pair<CharSequence, AuthStrategy>> authStrategies(final CredentialsStore<UserCredentials> credentialsStore, HttpMethod method, final URI uri, Iterable<Challenge> challenges)
+    public Iterable<Pair<CharSequence, AuthStrategy>> authStrategies(Iterable<Challenge> challenges, final CredentialsStore<UserCredentials> credentialsStore, HttpMethod method, final URI uri)
     {
 
         return new org.dmfs.iterables.decorators.Mapped<Pair<Parametrized, UserCredentials>, Pair<CharSequence, AuthStrategy>>(
@@ -97,7 +97,7 @@ public final class Digest implements AuthScheme<UserCredentials>
                                     }
                                 })
                         // map each challenge to an optional pair of challenge and credentials (optional because we may not have credentials for the realm)
-                        // TODO: first sort digestChallenges by protection level (i.e. SHA-256 over MD5 and qop=auth over no qop) and remove challenges with duplicate realms
+                        // TODO: first sort digestChallenges by protection level (i.e. SHA-256 over MD5 and qop=auth over no qop)
                         .mapped(
                                 new Function<Parametrized, Optional<Pair<Parametrized, UserCredentials>>>()
                                 {

@@ -76,61 +76,77 @@ public final class CredentialsAuthStrategy<CredentialsType> implements AuthStrat
     @Override
     public AuthState authState(final HttpMethod method, final URI uri, final AuthState fallback)
     {
-        final Set<String> realms = new HashSet<>();
-        return new AuthState()
+        return new CredentialsAuthState(method, uri, fallback);
+
+    }
+
+
+    private final class CredentialsAuthState implements AuthState
+    {
+        private final HttpMethod mMethod;
+        private final URI mUri;
+        private final AuthState mFallback;
+
+
+        public CredentialsAuthState(HttpMethod method, URI uri, AuthState fallback)
         {
-            @Override
-            public AuthState withChallenges(final Iterable<Challenge> challenges) throws UnauthorizedException
-            {
-                return new Consumed<>(
-                        fallback,
-                        new BiFunction<Pair<CharSequence, AuthStrategy>, AuthState, AuthState>()
+            mMethod = method;
+            mUri = uri;
+            mFallback = fallback;
+        }
+
+
+        @Override
+        public AuthState withChallenges(final Iterable<Challenge> challenges) throws UnauthorizedException
+        {
+            final Set<String> realms = new HashSet<>();
+            return new Consumed<>(
+                    mFallback,
+                    new BiFunction<Pair<CharSequence, AuthStrategy>, AuthState, AuthState>()
+                    {
+                        @Override
+                        public AuthState value(Pair<CharSequence, AuthStrategy> charSequenceAuthStrategyPair, AuthState authState)
                         {
-                            @Override
-                            public AuthState value(Pair<CharSequence, AuthStrategy> charSequenceAuthStrategyPair, AuthState authState)
-                            {
-                                return charSequenceAuthStrategyPair.right().authState(method, uri, authState);
-                            }
-                        },
-                        new Reverse<>(
-                                new Filtered<>(
-                                        new Flattened<>(
-                                                new Mapped<>(
-                                                        mSchemes,
-                                                        new Function<AuthScheme<CredentialsType>, Iterable<Pair<CharSequence, AuthStrategy>>>()
+                            return charSequenceAuthStrategyPair.right().authState(mMethod, mUri, authState);
+                        }
+                    },
+                    new Reverse<>(
+                            new Filtered<>(
+                                    new Flattened<>(
+                                            new Mapped<>(
+                                                    mSchemes,
+                                                    new Function<AuthScheme<CredentialsType>, Iterable<Pair<CharSequence, AuthStrategy>>>()
+                                                    {
+                                                        @Override
+                                                        public Iterable<Pair<CharSequence, AuthStrategy>> apply(AuthScheme<CredentialsType> argument)
                                                         {
-                                                            @Override
-                                                            public Iterable<Pair<CharSequence, AuthStrategy>> apply(AuthScheme<CredentialsType> argument)
-                                                            {
-                                                                return argument.authStrategies(mCredentialsStore, method, uri, challenges);
-                                                            }
-                                                        })),
-                                        new Filter<Pair<CharSequence, AuthStrategy>>()
+                                                            return argument.authStrategies(challenges, mCredentialsStore, mMethod, mUri);
+                                                        }
+                                                    })),
+                                    new Filter<Pair<CharSequence, AuthStrategy>>()
+                                    {
+                                        @Override
+                                        public boolean iterate(Pair<CharSequence, AuthStrategy> argument)
                                         {
-                                            @Override
-                                            public boolean iterate(Pair<CharSequence, AuthStrategy> argument)
-                                            {
-                                                return realms.add(argument.left().toString());
-                                            }
-                                        }))
-                ).value();
-            }
+                                            return realms.add(argument.left().toString());
+                                        }
+                                    }))
+            ).value();
+        }
 
 
-            @Override
-            public Optional<Authorization> authorization()
-            {
-                return absent();
-            }
+        @Override
+        public Optional<Authorization> authorization()
+        {
+            return absent();
+        }
 
 
-            @Override
-            public AuthStrategy prematureAuthStrategy(Optional<AuthInfo> authInfo)
-            {
-                // not at this point
-                return new PassThroughStrategy();
-            }
-        };
-
+        @Override
+        public AuthStrategy prematureAuthStrategy(Optional<AuthInfo> authInfo)
+        {
+            //  no premature authentication available at this point
+            return new PassThroughStrategy();
+        }
     }
 }

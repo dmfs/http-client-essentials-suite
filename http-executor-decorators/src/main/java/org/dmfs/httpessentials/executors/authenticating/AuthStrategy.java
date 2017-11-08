@@ -23,7 +23,7 @@ import java.net.URI;
 
 
 /**
- * An authentication strategy. It serves as a factory for the initial {@link AuthState} when starting an authenticated request.
+ * An authentication strategy. It serves as a factory for an initial {@link AuthState} when starting an authenticated request.
  *
  * @author Marten Gajda
  */

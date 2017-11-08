@@ -26,7 +26,7 @@ import org.dmfs.httpessentials.executors.authenticating.CredentialsStore;
 import org.dmfs.httpessentials.executors.authenticating.Parametrized;
 import org.dmfs.httpessentials.executors.authenticating.UserCredentials;
 import org.dmfs.httpessentials.executors.authenticating.authscopes.UriScope;
-import org.dmfs.httpessentials.executors.authenticating.authstates.basic.AuthenticatedBasicAuthState;
+import org.dmfs.httpessentials.executors.authenticating.authstates.AuthenticatedBasicAuthState;
 import org.dmfs.httpessentials.executors.authenticating.charsequences.StringToken;
 import org.dmfs.httpessentials.executors.authenticating.utils.ChallengeFilter;
 import org.dmfs.httpessentials.executors.authenticating.utils.SimpleParametrized;
@@ -50,7 +50,7 @@ import java.net.URI;
 public final class Basic implements AuthScheme<UserCredentials>
 {
     @Override
-    public Iterable<Pair<CharSequence, AuthStrategy>> authStrategies(final CredentialsStore<UserCredentials> credentialsStore, HttpMethod method, final URI uri, Iterable<Challenge> challenges)
+    public Iterable<Pair<CharSequence, AuthStrategy>> authStrategies(Iterable<Challenge> challenges, final CredentialsStore<UserCredentials> credentialsStore, HttpMethod method, final URI uri)
     {
         return new PresentValues<>(
                 new Fluent<>(challenges)

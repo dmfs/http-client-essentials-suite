@@ -25,7 +25,7 @@ package org.dmfs.httpessentials.executors.authenticating;
 public interface UserCredentials
 {
     /**
-     * Returns the user name.
+     * Returns the username.
      *
      * @return The {@link CharSequence} of the username.
      */

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.authenticating.authstates.digest;
+package org.dmfs.httpessentials.executors.authenticating.authstates;
 
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.exceptions.UnauthorizedException;
