@@ -19,6 +19,8 @@ package org.dmfs.httpessentials.types;
 
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.hasToString;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 
@@ -49,58 +51,28 @@ public class StringTokenTest
         // Must have at least one character
         assertInvalid("");
 
-        assertValid("a");
-        assertValid("3bc8D0");
+        for (int i = 0; i < 0x0ffff; ++i)
+        {
+            if ("!#$%&'*+-.^_`|~1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(i) < 0)
+            {
+                assertInvalid(new String(new char[] { (char) i }));
+            }
+            else
+            {
+                assertThat(new SafeToken(new String(new char[] { (char) i })), hasToString(new String(new char[] { (char) i })));
+            }
+        }
+
+        // also test a few CharSequences
+
+        assertThat(new StringToken("3bc8D0"), hasToString("3bc8D0"));
+        assertThat(new StringToken("sdf43D_sdf.sdf+234#sdfuo|sdf's"), hasToString("sdf43D_sdf.sdf+234#sdfuo|sdf's"));
 
         assertInvalid("space notAllowed");
-
-        // The explicitly allowed non-alphanumeric characters:
-        assertValid("!");
-        assertValid("#");
-        assertValid("$");
-        assertValid("%");
-        assertValid("&");
-        assertValid("'");
-        assertValid("*");
-        assertValid("+");
-        assertValid("-");
-        assertValid(".");
-        assertValid("^");
-        assertValid("_");
-        assertValid("`");
-        assertValid("|");
-        assertValid("~");
-
-        // The following delimiters are not allowed:(DQUOTE and "(),/:;<=>?@[\]{}").
-        assertInvalid("\"");
-        assertInvalid("(");
-        assertInvalid(")");
-        assertInvalid(",");
-        assertInvalid("/");
-        assertInvalid(":");
-        assertInvalid(";");
-        assertInvalid("<");
-        assertInvalid("=");
-        assertInvalid(">");
-        assertInvalid("?");
-        assertInvalid("@");
-        assertInvalid("[");
-        assertInvalid("\\");
-        assertInvalid("]");
-        assertInvalid("{");
-        assertInvalid("}");
-
         assertInvalid("sdf453(sdlfk)sd");
         assertInvalid("with=equals");
         assertInvalid("with@at");
 
-        assertValid("sdf43D_sdf.sdf+234#sdfuo|sdf's");
-    }
-
-
-    private void assertValid(String value)
-    {
-        new StringToken(value);
     }
 
 
@@ -113,6 +85,7 @@ public class StringTokenTest
         }
         catch (IllegalArgumentException e)
         {
+            // pass
         }
     }
 
