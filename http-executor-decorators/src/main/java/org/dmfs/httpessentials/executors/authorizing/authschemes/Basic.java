@@ -24,10 +24,10 @@ import org.dmfs.httpessentials.executors.authorizing.AuthStrategy;
 import org.dmfs.httpessentials.executors.authorizing.Challenge;
 import org.dmfs.httpessentials.executors.authorizing.CredentialsStore;
 import org.dmfs.httpessentials.executors.authorizing.Parametrized;
+import org.dmfs.httpessentials.executors.authorizing.Tokens;
 import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.authscopes.UriScope;
 import org.dmfs.httpessentials.executors.authorizing.authstates.AuthenticatedBasicAuthState;
-import org.dmfs.httpessentials.executors.authorizing.charsequences.StringToken;
 import org.dmfs.httpessentials.executors.authorizing.utils.ChallengeFilter;
 import org.dmfs.httpessentials.executors.authorizing.utils.SimpleParametrized;
 import org.dmfs.iterables.decorators.Fluent;
@@ -54,7 +54,7 @@ public final class Basic implements AuthScheme<UserCredentials>
     {
         return new PresentValues<>(
                 new Fluent<>(challenges)
-                        .filtered(new ChallengeFilter(new StringToken("Basic")))
+                        .filtered(new ChallengeFilter(Tokens.BASIC))
                         .mapped(new Function<Challenge, Parametrized>()
                         {
                             @Override
@@ -70,7 +70,7 @@ public final class Basic implements AuthScheme<UserCredentials>
                             {
                                 return new Zipped<>(
                                         credentialsStore.credentials(new UriScope(uri)),
-                                        challenge.parameter(new StringToken("realm")),
+                                        challenge.parameter(Tokens.REALM),
                                         new BiFunction<UserCredentials, CharSequence, Pair<CharSequence, AuthStrategy>>()
                                         {
                                             @Override

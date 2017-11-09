@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 dmfs GmbH
+ * Copyright 2016 Marten Gajda <marten@dmfs.org>
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,32 +15,17 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.authorizing.utils;
-
-import org.dmfs.httpessentials.executors.authorizing.Challenge;
-import org.dmfs.httpessentials.types.Token;
-import org.dmfs.iterators.Filter;
-
+package org.dmfs.httpessentials.types;
 
 /**
- * Filters {@link Challenge}s by a specific auth scheme token.
+ * A simple non-validating {@link CharSequence} - {@link Token} adapter.
  *
  * @author Marten Gajda
  */
-public final class ChallengeFilter implements Filter<Challenge>
+public final class CharToken extends AbstractBaseToken
 {
-    private final Token mToken;
-
-
-    public ChallengeFilter(Token token)
+    public CharToken(CharSequence delegate)
     {
-        mToken = token;
-    }
-
-
-    @Override
-    public boolean iterate(Challenge challenge)
-    {
-        return mToken.equals(challenge.scheme());
+        super(delegate);
     }
 }

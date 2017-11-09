@@ -20,9 +20,9 @@ package org.dmfs.httpessentials.executors.authorizing.authorization;
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.executors.authorizing.Authorization;
 import org.dmfs.httpessentials.executors.authorizing.Parametrized;
+import org.dmfs.httpessentials.executors.authorizing.Tokens;
 import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.charsequences.Quoted;
-import org.dmfs.httpessentials.executors.authorizing.charsequences.StringToken;
 import org.dmfs.httpessentials.executors.authorizing.utils.Parameter;
 import org.dmfs.httpessentials.types.Token;
 import org.dmfs.iterables.decorators.Flattened;
@@ -71,7 +71,7 @@ public final class AuthDigestAuthorization implements Authorization
     @Override
     public Token scheme()
     {
-        return new StringToken("Digest");
+        return Tokens.DIGEST;
     }
 
 
@@ -85,8 +85,10 @@ public final class AuthDigestAuthorization implements Authorization
     @Override
     public Iterable<Pair<Token, CharSequence>> parameters()
     {
-        final String algorithm = mDigestChallenge.parameter(new StringToken("algorithm")).value("MD5").toString();
-        final Optional<CharSequence> userhash = mDigestChallenge.parameter(new StringToken("userhash"));
+        final String algorithm = mDigestChallenge.parameter(Tokens.ALGORITHM).value("MD5").toString();
+        final Optional<CharSequence> userhash = mDigestChallenge.parameter(Tokens.USERHASH);
+        final CharSequence realm = mDigestChallenge.parameter(Tokens.REALM).value();
+        final CharSequence nonce = mDigestChallenge.parameter(Tokens.NONCE).value();
 
         final CharSequence username = mUserCredentials.userName();
         CharSequence user = new Mapped<>(
@@ -95,7 +97,7 @@ public final class AuthDigestAuthorization implements Authorization
                     @Override
                     public CharSequence apply(CharSequence argument)
                     {
-                        return new Hex(new Digested(algorithm, username, ":", mDigestChallenge.parameter(new StringToken("realm")).value()).value());
+                        return new Hex(new Digested(algorithm, username, ":", realm).value());
                     }
                 },
                 new Filtered<>(new Filter<CharSequence>()
@@ -109,24 +111,24 @@ public final class AuthDigestAuthorization implements Authorization
 
         return new Flattened<>(
                 new Seq<Pair<Token, CharSequence>>(
-                        new Parameter("username", new Quoted(user)),
-                        new Parameter("realm", new Quoted(mDigestChallenge.parameter(new StringToken("realm")).value())),
-                        new Parameter("nonce", new Quoted(mDigestChallenge.parameter(new StringToken("nonce")).value())),
-                        new Parameter("uri", new Quoted(mRequestUri.getRawPath())),
-                        new Parameter("qop", "auth"),
-                        new Parameter("nc", new Hex(bigEndianByteArray(mNonceCount))),
-                        new Parameter("cnonce", new Quoted(mCnonce)),
-                        new Parameter("algorithm", algorithm),
-                        new Parameter("response", new Quoted(
+                        new Parameter(Tokens.USERNAME, new Quoted(user)),
+                        new Parameter(Tokens.REALM, new Quoted(realm)),
+                        new Parameter(Tokens.NONCE, new Quoted(nonce)),
+                        new Parameter(Tokens.URI, new Quoted(mRequestUri.getRawPath())),
+                        new Parameter(Tokens.QOP, "auth"),
+                        new Parameter(Tokens.NC, new Hex(bigEndianByteArray(mNonceCount))),
+                        new Parameter(Tokens.CNONCE, new Quoted(mCnonce)),
+                        new Parameter(Tokens.ALGORITHM, algorithm),
+                        new Parameter(Tokens.RESPONSE, new Quoted(
                                 new Hex(new Digested(algorithm,
                                         new Hex(new Digested(algorithm,
                                                 mUserCredentials.userName(),
                                                 ":",
-                                                mDigestChallenge.parameter(new StringToken("realm")).value(),
+                                                realm,
                                                 ":",
                                                 mUserCredentials.password()).value()),
                                         ":",
-                                        mDigestChallenge.parameter(new StringToken("nonce")).value(),
+                                        nonce,
                                         ":",
                                         new Hex(bigEndianByteArray(mNonceCount)),
                                         ":",
@@ -144,17 +146,17 @@ public final class AuthDigestAuthorization implements Authorization
                                     @Override
                                     public Pair<Token, CharSequence> apply(CharSequence charSequence)
                                     {
-                                        return new Parameter("opaque", new Quoted(charSequence));
+                                        return new Parameter(Tokens.OPAQUE, new Quoted(charSequence));
                                     }
-                                }, mDigestChallenge.parameter(new StringToken("opaque"))),
+                                }, mDigestChallenge.parameter(Tokens.OPAQUE)),
                         new Mapped<>(new Function<CharSequence, Pair<Token, CharSequence>>()
                         {
                             @Override
                             public Pair<Token, CharSequence> apply(CharSequence argument)
                             {
-                                return new Parameter("userhash", argument);
+                                return new Parameter(Tokens.USERHASH, argument);
                             }
-                        }, mDigestChallenge.parameter(new StringToken("userhash")))));
+                        }, mDigestChallenge.parameter(Tokens.USERHASH))));
     }
 
 

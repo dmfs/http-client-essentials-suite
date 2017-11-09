@@ -17,7 +17,8 @@
 
 package org.dmfs.httpessentials.executors.authorizing.utils;
 
-import org.dmfs.httpessentials.executors.authorizing.charsequences.CharSequenceToken;
+import org.dmfs.httpessentials.types.CharToken;
+import org.dmfs.httpessentials.types.StringToken;
 import org.dmfs.httpessentials.types.Token;
 import org.dmfs.jems.pair.Pair;
 
@@ -35,7 +36,7 @@ public final class Parameter implements Pair<Token, CharSequence>
 
     public Parameter(String name, CharSequence value)
     {
-        this(new CharSequenceToken(name), value);
+        this(new StringToken(name), value);
     }
 
 
