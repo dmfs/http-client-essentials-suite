@@ -87,7 +87,6 @@ public abstract class AbstractBaseToken implements Token
         }
         Token other = (Token) obj;
         CharSequence delegate = mDelegate;
-        int start = 0;
         int len = delegate.length();
 
         if (len != other.length())
@@ -98,7 +97,7 @@ public abstract class AbstractBaseToken implements Token
         int pos = 0;
         while (pos < len)
         {
-            char ours = delegate.charAt(pos + start);
+            char ours = delegate.charAt(pos);
             char theirs = other.charAt(pos);
             // if this condition is not satisfied, the tokens can't be equal
             if ((ours | 0x20) != (theirs | 0x20))
