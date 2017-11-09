@@ -104,10 +104,6 @@ public abstract class AbstractBaseToken implements Token
             {
                 return false;
             }
-            if (ours < '@' && ours != theirs)
-            {
-                return false;
-            }
             if ((ours == 0x5E || ours == 0x7E) && ours != theirs)
             {
                 return false;
