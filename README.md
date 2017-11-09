@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/dmfs/http-client-essentials-suite.svg?branch=master)](https://travis-ci.org/dmfs/http-client-essentials-suite)
+[![codecov](https://codecov.io/gh/dmfs/http-client-essentials-suite/branch/master/graph/badge.svg)](https://codecov.io/gh/dmfs/http-client-essentials-suite)
 
 # http-client-essentials-suite
 
