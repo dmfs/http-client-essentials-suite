@@ -19,6 +19,7 @@ configurations {
 }
 
 apply from: '../publish.gradle'
+apply from: '../jacoco.gradle'
 
 repositories {
     mavenCentral()
