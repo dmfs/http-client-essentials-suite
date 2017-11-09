@@ -19,7 +19,8 @@ package org.dmfs.httpessentials.types;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.hasToString;
+import static org.junit.Assert.assertThat;
 
 
 /**
@@ -33,35 +34,36 @@ public class SafeTokenTest
     @Test
     public void testCharacterReplacements()
     {
-        assertEquals("a", new SafeToken("a").toString());
-        assertEquals("!#$%&'*+-.^_`|~1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
-                new SafeToken("!#$%&'*+-.^_`|~1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ").toString());
+        assertThat(new SafeToken("a"), hasToString("a"));
+
+        assertThat(new SafeToken("!#$%&'*+-.^_`|~1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+                hasToString("!#$%&'*+-.^_`|~1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"));
 
         // Delimiters are replaced
-        assertEquals("________________", new SafeToken("(),/:;<=>?@[\\]{}").toString());
-        assertEquals("_", new SafeToken("(").toString());
-        assertEquals("_", new SafeToken(")").toString());
-        assertEquals("_", new SafeToken(",").toString());
-        assertEquals("_", new SafeToken("/").toString());
-        assertEquals("_", new SafeToken(":").toString());
-        assertEquals("_", new SafeToken(";").toString());
-        assertEquals("_", new SafeToken("<").toString());
-        assertEquals("_", new SafeToken("=").toString());
-        assertEquals("_", new SafeToken(">").toString());
-        assertEquals("_", new SafeToken("?").toString());
-        assertEquals("_", new SafeToken("@").toString());
-        assertEquals("_", new SafeToken("[").toString());
-        assertEquals("_", new SafeToken("\\").toString());
-        assertEquals("_", new SafeToken("]").toString());
-        assertEquals("_", new SafeToken("{").toString());
-        assertEquals("_", new SafeToken("}").toString());
+        assertThat(new SafeToken("(),/:;<=>?@[\\]{}"), hasToString("________________"));
+        assertThat("_", new SafeToken("("), hasToString("_"));
+        assertThat(new SafeToken(")"), hasToString("_"));
+        assertThat(new SafeToken(","), hasToString("_"));
+        assertThat(new SafeToken("/"), hasToString("_"));
+        assertThat(new SafeToken(":"), hasToString("_"));
+        assertThat(new SafeToken(";"), hasToString("_"));
+        assertThat(new SafeToken("<"), hasToString("_"));
+        assertThat(new SafeToken("="), hasToString("_"));
+        assertThat(new SafeToken(">"), hasToString("_"));
+        assertThat(new SafeToken("?"), hasToString("_"));
+        assertThat(new SafeToken("@"), hasToString("_"));
+        assertThat(new SafeToken("["), hasToString("_"));
+        assertThat(new SafeToken("\\"), hasToString("_"));
+        assertThat(new SafeToken("]"), hasToString("_"));
+        assertThat(new SafeToken("{"), hasToString("_"));
+        assertThat(new SafeToken("}"), hasToString("_"));
 
         // Space is not allowed, so it gets replaced:
-        assertEquals("_", new SafeToken(" ").toString());
-        assertEquals("a_", new SafeToken("a ").toString());
-        assertEquals("_2", new SafeToken(" 2").toString());
-        assertEquals("__", new SafeToken("  ").toString());
-        assertEquals("__sdf__234_f_", new SafeToken("  sdf  234 f ").toString());
+        assertThat(new SafeToken(" "), hasToString("_"));
+        assertThat(new SafeToken("a "), hasToString("a_"));
+        assertThat(new SafeToken(" 2"), hasToString("_2"));
+        assertThat(new SafeToken("  "), hasToString("__"));
+        assertThat(new SafeToken("  sdf  234 f "), hasToString("__sdf__234_f_"));
     }
 
 }
