@@ -1,6 +1,17 @@
-
 apply plugin: 'java'
 apply from: 'jacoco.gradle'
+
+def isSnapshot = { ->
+    def stdout = new ByteArrayOutputStream()
+    def errout = new ByteArrayOutputStream()
+    def result = exec {
+        commandLine 'git', 'describe', '--exact-match', '--tag', 'HEAD'
+        standardOutput = stdout
+        errorOutput = errout
+        ignoreExitValue = true
+    }
+    return result.exitValue != 0
+}
 
 def gitVersion = { ->
     def stdout = new ByteArrayOutputStream()
@@ -8,7 +19,7 @@ def gitVersion = { ->
         commandLine 'git', 'describe', '--tags'
         standardOutput = stdout
     }
-    return stdout.toString().trim()
+    return isSnapshot() ? stdout.toString().trim() + "-SNAPSHOT" : stdout.toString().trim()
 }
 
 sourceCompatibility = 1.7
@@ -26,3 +37,8 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
+task printVersion {
+    doLast {
+        println project.version
+    }
+}

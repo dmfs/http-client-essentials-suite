@@ -60,7 +60,7 @@ if (project.hasProperty('SONATYPE_USERNAME') && project.hasProperty('SONATYPE_PA
         repositories {
             maven {
                 name 'release'
-                url RELEASE_REPOSITORY
+                url version.endsWith("-SNAPSHOT") ? SNAPSHOT_REPOSITORY : RELEASE_REPOSITORY
                 credentials {
                     username SONATYPE_USERNAME
                     password SONATYPE_PASSWORD
