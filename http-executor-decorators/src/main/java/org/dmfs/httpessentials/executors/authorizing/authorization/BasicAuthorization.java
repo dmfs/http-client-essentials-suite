@@ -19,8 +19,8 @@ package org.dmfs.httpessentials.executors.authorizing.authorization;
 
 import net.iharder.Base64;
 import org.dmfs.httpessentials.executors.authorizing.Authorization;
+import org.dmfs.httpessentials.executors.authorizing.Tokens;
 import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
-import org.dmfs.httpessentials.executors.authorizing.charsequences.StringToken;
 import org.dmfs.httpessentials.types.Token;
 import org.dmfs.iterables.EmptyIterable;
 import org.dmfs.jems.pair.Pair;
@@ -59,7 +59,7 @@ public final class BasicAuthorization implements Authorization
     @Override
     public Token scheme()
     {
-        return new StringToken("Basic");
+        return Tokens.BASIC;
     }
 
 

@@ -37,31 +37,31 @@ public class VersionedProductTest extends BaseProductTest
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void test_whenNameIsNull_shouldThrowException()
     {
-        new VersionedProduct(null, "version");
+        new VersionedProduct(null, "version").toString();
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void test_whenNameIsEmpty_shouldThrowException()
     {
-        new VersionedProduct("", "version");
+        new VersionedProduct("", "version").toString();
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void test_whenVersionIsNull_shouldThrowException()
     {
-        new VersionedProduct("name", null);
+        new VersionedProduct("name", null).toString();
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void test_whenVersionIsEmpty_shouldThrowException()
     {
-        new VersionedProduct("name", "");
+        new VersionedProduct("name", "").toString();
     }
 
 }

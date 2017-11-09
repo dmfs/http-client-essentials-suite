@@ -20,9 +20,9 @@ package org.dmfs.httpessentials.executors.authorizing.authorization;
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.executors.authorizing.Authorization;
 import org.dmfs.httpessentials.executors.authorizing.Parametrized;
+import org.dmfs.httpessentials.executors.authorizing.Tokens;
 import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.charsequences.Quoted;
-import org.dmfs.httpessentials.executors.authorizing.charsequences.StringToken;
 import org.dmfs.httpessentials.executors.authorizing.utils.Parameter;
 import org.dmfs.httpessentials.types.Token;
 import org.dmfs.iterables.decorators.Flattened;
@@ -65,7 +65,7 @@ public final class DigestAuthorization implements Authorization
     @Override
     public Token scheme()
     {
-        return new StringToken("Digest");
+        return Tokens.DIGEST;
     }
 
 
@@ -79,24 +79,27 @@ public final class DigestAuthorization implements Authorization
     @Override
     public Iterable<Pair<Token, CharSequence>> parameters()
     {
-        String algorithm = mDigestChallenge.parameter(new StringToken("algorithm")).value("MD5").toString();
+        String algorithm = mDigestChallenge.parameter(Tokens.ALGORITHM).value("MD5").toString();
+        final CharSequence realm = mDigestChallenge.parameter(Tokens.REALM).value();
+        final CharSequence nonce = mDigestChallenge.parameter(Tokens.NONCE).value();
+
         return new Flattened<>(
                 new Seq<Pair<Token, CharSequence>>(
-                        new Parameter("username", new Quoted(mUserCredentials.userName())),
-                        new Parameter("realm", new Quoted(mDigestChallenge.parameter(new StringToken("realm")).value())),
-                        new Parameter("uri", new Quoted(mRequestUri.getRawPath())),
-                        new Parameter("nonce", new Quoted(mDigestChallenge.parameter(new StringToken("nonce")).value())),
-                        new Parameter("algorithm", algorithm),
-                        new Parameter("response", new Quoted(
+                        new Parameter(Tokens.USERNAME, new Quoted(mUserCredentials.userName())),
+                        new Parameter(Tokens.REALM, new Quoted(realm)),
+                        new Parameter(Tokens.URI, new Quoted(mRequestUri.getRawPath())),
+                        new Parameter(Tokens.NONCE, new Quoted(nonce)),
+                        new Parameter(Tokens.ALGORITHM, algorithm),
+                        new Parameter(Tokens.RESPONSE, new Quoted(
                                 new Hex(new Digested(algorithm,
                                         new Hex(new Digested(algorithm,
                                                 mUserCredentials.userName(),
                                                 ":",
-                                                mDigestChallenge.parameter(new StringToken("realm")).value(),
+                                                realm,
                                                 ":",
                                                 mUserCredentials.password()).value()),
                                         ":",
-                                        mDigestChallenge.parameter(new StringToken("nonce")).value(),
+                                        nonce,
                                         ":",
                                         new Hex(new Digested(algorithm,
                                                 (CharSequence) mMethod.verb(),
@@ -111,8 +114,8 @@ public final class DigestAuthorization implements Authorization
                                     @Override
                                     public Pair<Token, CharSequence> apply(CharSequence charSequence)
                                     {
-                                        return new Parameter("opaque", new Quoted(charSequence));
+                                        return new Parameter(Tokens.OPAQUE, new Quoted(charSequence));
                                     }
-                                }, mDigestChallenge.parameter(new StringToken("opaque")))));
+                                }, mDigestChallenge.parameter(Tokens.OPAQUE))));
     }
 }

@@ -47,7 +47,6 @@ public class StringTokenTest
     public void testValidationWithVariousValues()
     {
         // Must have at least one character
-        assertInvalid(null);
         assertInvalid("");
 
         assertValid("a");
@@ -109,7 +108,7 @@ public class StringTokenTest
     {
         try
         {
-            new StringToken(value);
+            new StringToken(value).toString();
             fail(String.format("'%s' should be invalid", value));
         }
         catch (IllegalArgumentException e)

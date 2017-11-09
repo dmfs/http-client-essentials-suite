@@ -46,7 +46,7 @@ public class CommentedProductTest extends BaseProductTest
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void test_whenNameIsNull_shouldThrowException()
     {
         new CommentedProduct(null, "comment");
@@ -60,7 +60,7 @@ public class CommentedProductTest extends BaseProductTest
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void test_whenVersionIsNull_shouldThrowException()
     {
         new CommentedProduct("name", null, "comment");

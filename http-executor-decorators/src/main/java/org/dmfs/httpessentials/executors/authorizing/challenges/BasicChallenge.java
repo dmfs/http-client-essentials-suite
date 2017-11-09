@@ -18,7 +18,7 @@
 package org.dmfs.httpessentials.executors.authorizing.challenges;
 
 import org.dmfs.httpessentials.executors.authorizing.Challenge;
-import org.dmfs.httpessentials.executors.authorizing.charsequences.CharSequenceToken;
+import org.dmfs.httpessentials.types.CharToken;
 import org.dmfs.httpessentials.types.Token;
 
 
@@ -42,7 +42,7 @@ public final class BasicChallenge implements Challenge
     public Token scheme()
     {
         int spacePos = space();
-        return spacePos > 0 ? new CharSequenceToken(mChallengeText.subSequence(0, space()).toString()) : new CharSequenceToken(mChallengeText.toString());
+        return spacePos > 0 ? new CharToken(mChallengeText.subSequence(0, space()).toString()) : new CharToken(mChallengeText.toString());
     }
 
 

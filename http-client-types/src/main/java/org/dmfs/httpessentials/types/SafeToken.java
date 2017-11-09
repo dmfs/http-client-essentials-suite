@@ -17,42 +17,85 @@
 
 package org.dmfs.httpessentials.types;
 
-import java.util.regex.Pattern;
+import java.util.Arrays;
 
 
 /**
- * A {@link Token} that uses the given string as the underlying value.
+ * A {@link Token} that uses the given {@link CharSequence} as the underlying value.
  * <p>
  * Characters in the input string that are not allowed for token according to <a href="https://tools.ietf.org/html/rfc7230#section-3.2.6">RFC7230</a> will be
  * replaced with underscore ('_')
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
-public final class SafeToken extends AbstractStringType implements Token
+public final class SafeToken extends AbstractBaseToken
 {
+    // TODO: use a bitmap instead
+    private final static char[] SAFE_CHARS = "!#$%&'*+-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ^_`abcdefghijklmnopqrstuvwxyz|~".toCharArray();
 
-    private final static Pattern PATTERN_NOT_ALLOWED_CHARS =
-            Pattern.compile("[^" + StringToken.ALLOWED_CHARS_REGEX_CLASS + "]+?");
 
-
-    /**
-     * Constructor.
-     *
-     * @param value
-     *         the token content, must not be null or empty. Characters not allowed for token will be replaced with underscore.
-     */
-    public SafeToken(String value)
+    public SafeToken(CharSequence delegate)
     {
-        super(value == null ? null : makeItStandardCompliant(value));
+        super(new CharToken(new SafeCharSequence(delegate)));
     }
 
 
-    private static String makeItStandardCompliant(String value)
+    // TODO: this could be useful as a standalone top level class
+    private final static class SafeCharSequence implements CharSequence
     {
-        if (value.isEmpty())
+        private final CharSequence mDelegate;
+
+
+        private SafeCharSequence(CharSequence delegate)
         {
-            throw new IllegalArgumentException("Token value must not be empty");
+            if (delegate.length() == 0)
+            {
+                throw new IllegalArgumentException("Tokens must not be empty.");
+            }
+            mDelegate = delegate;
         }
-        return PATTERN_NOT_ALLOWED_CHARS.matcher(value).replaceAll("_");
+
+
+        @Override
+        public int length()
+        {
+            return mDelegate.length();
+        }
+
+
+        @Override
+        public char charAt(int i)
+        {
+            return safe(mDelegate.charAt(i));
+        }
+
+
+        @Override
+        public CharSequence subSequence(int i, int i1)
+        {
+            return new SafeCharSequence(mDelegate.subSequence(i, i1));
+        }
+
+
+        @Override
+        public String toString()
+        {
+            // TODO be more optimistic, assume the delegate is valid and only build a string if it's not
+            StringBuilder stringBuilder = new StringBuilder(length());
+
+            for (int i = 0, len = mDelegate.length(); i < len; ++i)
+            {
+                stringBuilder.append(safe(charAt(i)));
+            }
+
+            return stringBuilder.toString();
+        }
+
+
+        private char safe(char c)
+        {
+            return Arrays.binarySearch(SAFE_CHARS, c) < 0 ? '_' : c;
+        }
     }
+
 }

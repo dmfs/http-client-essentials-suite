@@ -24,10 +24,10 @@ import org.dmfs.httpessentials.executors.authorizing.AuthStrategy;
 import org.dmfs.httpessentials.executors.authorizing.Challenge;
 import org.dmfs.httpessentials.executors.authorizing.CredentialsStore;
 import org.dmfs.httpessentials.executors.authorizing.Parametrized;
+import org.dmfs.httpessentials.executors.authorizing.Tokens;
 import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.authscopes.UriScope;
 import org.dmfs.httpessentials.executors.authorizing.authstates.AuthenticatedDigestAuthState;
-import org.dmfs.httpessentials.executors.authorizing.charsequences.StringToken;
 import org.dmfs.httpessentials.executors.authorizing.utils.ChallengeFilter;
 import org.dmfs.httpessentials.executors.authorizing.utils.SimpleParametrized;
 import org.dmfs.iterables.Split;
@@ -59,7 +59,7 @@ public final class Digest implements AuthScheme<UserCredentials>
                 new PresentValues<>(new Fluent<>(challenges)
                         // remove any non-Digest challenges
                         .filtered(
-                                new ChallengeFilter(new StringToken("Digest")))
+                                new ChallengeFilter(Tokens.DIGEST))
                         .mapped(new Function<Challenge, Parametrized>()
                         {
                             @Override
@@ -75,7 +75,7 @@ public final class Digest implements AuthScheme<UserCredentials>
                                     @Override
                                     public boolean iterate(Parametrized challenge)
                                     {
-                                        String algorithm = challenge.parameter(new StringToken("algorithm")).value("MD5").toString();
+                                        String algorithm = challenge.parameter(Tokens.ALGORITHM).value("MD5").toString();
                                         return "MD5".equalsIgnoreCase(algorithm) || "SHA-256".equalsIgnoreCase(algorithm);
                                     }
                                 })
@@ -86,7 +86,7 @@ public final class Digest implements AuthScheme<UserCredentials>
                                     @Override
                                     public boolean iterate(Parametrized challenge)
                                     {
-                                        return new First<>(new Split(challenge.parameter(new StringToken("qop")).value("auth"), ','), new Filter<CharSequence>()
+                                        return new First<>(new Split(challenge.parameter(Tokens.QOP).value("auth"), ','), new Filter<CharSequence>()
                                         {
                                             @Override
                                             public boolean iterate(CharSequence argument)
@@ -121,7 +121,7 @@ public final class Digest implements AuthScheme<UserCredentials>
                     @Override
                     public Pair<CharSequence, AuthStrategy> apply(final Pair<Parametrized, UserCredentials> argument)
                     {
-                        return new ValuePair<CharSequence, AuthStrategy>(argument.left().parameter(new StringToken("realm")).value(), new AuthStrategy()
+                        return new ValuePair<CharSequence, AuthStrategy>(argument.left().parameter(Tokens.REALM).value(), new AuthStrategy()
                         {
                             @Override
                             public AuthState authState(HttpMethod method, URI uri, AuthState fallback)

@@ -20,9 +20,9 @@ package org.dmfs.httpessentials.executors.authorizing.authorization;
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.executors.authorizing.Authorization;
 import org.dmfs.httpessentials.executors.authorizing.Parametrized;
+import org.dmfs.httpessentials.executors.authorizing.Tokens;
 import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.charsequences.SingleCredentials;
-import org.dmfs.httpessentials.executors.authorizing.charsequences.StringToken;
 import org.dmfs.httpessentials.types.Token;
 import org.dmfs.jems.pair.Pair;
 import org.dmfs.optional.Present;
@@ -44,11 +44,11 @@ public class AuthDigestAuthorizationTest
     public void testParameters() throws Exception
     {
         Parametrized mockChallenge = mock(Parametrized.class);
-        doReturn(new Present<>("testrealm@host.com")).when(mockChallenge).parameter(new StringToken("realm"));
-        doReturn(new Present<>("dcd98b7102dd2f0e8b11d0f600bfb0c093")).when(mockChallenge).parameter(new StringToken("nonce"));
-        doReturn(new Present<>("5ccc069c403ebaf9f0171e9517f40e41")).when(mockChallenge).parameter(new StringToken("opaque"));
-        doReturn(new Present<>("MD5")).when(mockChallenge).parameter(new StringToken("algorithm"));
-        doReturn(absent()).when(mockChallenge).parameter(new StringToken("userhash"));
+        doReturn(new Present<>("testrealm@host.com")).when(mockChallenge).parameter(Tokens.REALM);
+        doReturn(new Present<>("dcd98b7102dd2f0e8b11d0f600bfb0c093")).when(mockChallenge).parameter(Tokens.NONCE);
+        doReturn(new Present<>("5ccc069c403ebaf9f0171e9517f40e41")).when(mockChallenge).parameter(Tokens.OPAQUE);
+        doReturn(new Present<>("MD5")).when(mockChallenge).parameter(Tokens.ALGORITHM);
+        doReturn(absent()).when(mockChallenge).parameter(Tokens.USERHASH);
 
         UserCredentials mockUserCredentials = mock(UserCredentials.class);
         doReturn("Mufasa").when(mockUserCredentials).userName();
@@ -68,11 +68,11 @@ public class AuthDigestAuthorizationTest
     public void testParameters2() throws Exception
     {
         Parametrized mockChallenge = mock(Parametrized.class);
-        doReturn(new Present<>("http-auth@example.org")).when(mockChallenge).parameter(new StringToken("realm"));
-        doReturn(new Present<>("7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v")).when(mockChallenge).parameter(new StringToken("nonce"));
-        doReturn(new Present<>("FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS")).when(mockChallenge).parameter(new StringToken("opaque"));
-        doReturn(new Present<>("SHA-256")).when(mockChallenge).parameter(new StringToken("algorithm"));
-        doReturn(absent()).when(mockChallenge).parameter(new StringToken("userhash"));
+        doReturn(new Present<>("http-auth@example.org")).when(mockChallenge).parameter(Tokens.REALM);
+        doReturn(new Present<>("7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v")).when(mockChallenge).parameter(Tokens.NONCE);
+        doReturn(new Present<>("FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS")).when(mockChallenge).parameter(Tokens.OPAQUE);
+        doReturn(new Present<>("SHA-256")).when(mockChallenge).parameter(Tokens.ALGORITHM);
+        doReturn(absent()).when(mockChallenge).parameter(Tokens.USERHASH);
 
         UserCredentials mockUserCredentials = mock(UserCredentials.class);
         doReturn("Mufasa").when(mockUserCredentials).userName();
@@ -92,11 +92,11 @@ public class AuthDigestAuthorizationTest
     public void testParameters3() throws Exception
     {
         Parametrized mockChallenge = mock(Parametrized.class);
-        doReturn(new Present<>("http-auth@example.org")).when(mockChallenge).parameter(new StringToken("realm"));
-        doReturn(new Present<>("7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v")).when(mockChallenge).parameter(new StringToken("nonce"));
-        doReturn(new Present<>("FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS")).when(mockChallenge).parameter(new StringToken("opaque"));
-        doReturn(new Present<>("MD5")).when(mockChallenge).parameter(new StringToken("algorithm"));
-        doReturn(absent()).when(mockChallenge).parameter(new StringToken("userhash"));
+        doReturn(new Present<>("http-auth@example.org")).when(mockChallenge).parameter(Tokens.REALM);
+        doReturn(new Present<>("7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v")).when(mockChallenge).parameter(Tokens.NONCE);
+        doReturn(new Present<>("FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS")).when(mockChallenge).parameter(Tokens.OPAQUE);
+        doReturn(new Present<>("MD5")).when(mockChallenge).parameter(Tokens.ALGORITHM);
+        doReturn(absent()).when(mockChallenge).parameter(Tokens.USERHASH);
 
         UserCredentials mockUserCredentials = mock(UserCredentials.class);
         doReturn("Mufasa").when(mockUserCredentials).userName();
@@ -116,11 +116,11 @@ public class AuthDigestAuthorizationTest
     public void testParameters4() throws Exception
     {
         Parametrized mockChallenge = mock(Parametrized.class);
-        doReturn(new Present<>("http-auth@example.org")).when(mockChallenge).parameter(new StringToken("realm"));
-        doReturn(new Present<>("7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v")).when(mockChallenge).parameter(new StringToken("nonce"));
-        doReturn(new Present<>("FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS")).when(mockChallenge).parameter(new StringToken("opaque"));
-        doReturn(new Present<>("SHA-256")).when(mockChallenge).parameter(new StringToken("algorithm"));
-        doReturn(new Present<>("true")).when(mockChallenge).parameter(new StringToken("userhash"));
+        doReturn(new Present<>("http-auth@example.org")).when(mockChallenge).parameter(Tokens.REALM);
+        doReturn(new Present<>("7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v")).when(mockChallenge).parameter(Tokens.NONCE);
+        doReturn(new Present<>("FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS")).when(mockChallenge).parameter(Tokens.OPAQUE);
+        doReturn(new Present<>("SHA-256")).when(mockChallenge).parameter(Tokens.ALGORITHM);
+        doReturn(new Present<>("true")).when(mockChallenge).parameter(Tokens.USERHASH);
 
         UserCredentials mockUserCredentials = mock(UserCredentials.class);
         doReturn("Mufasa").when(mockUserCredentials).userName();

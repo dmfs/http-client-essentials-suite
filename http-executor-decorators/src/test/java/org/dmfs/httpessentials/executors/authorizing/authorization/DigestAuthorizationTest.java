@@ -20,9 +20,9 @@ package org.dmfs.httpessentials.executors.authorizing.authorization;
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.executors.authorizing.Authorization;
 import org.dmfs.httpessentials.executors.authorizing.Parametrized;
+import org.dmfs.httpessentials.executors.authorizing.Tokens;
 import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.charsequences.SingleCredentials;
-import org.dmfs.httpessentials.executors.authorizing.charsequences.StringToken;
 import org.dmfs.httpessentials.types.Token;
 import org.dmfs.jems.pair.Pair;
 import org.dmfs.optional.Present;
@@ -44,10 +44,10 @@ public class DigestAuthorizationTest
     public void testParameters() throws Exception
     {
         Parametrized mockChallenge = mock(Parametrized.class);
-        doReturn(new Present<>("testrealm@host.com")).when(mockChallenge).parameter(new StringToken("realm"));
-        doReturn(new Present<>("dcd98b7102dd2f0e8b11d0f600bfb0c093")).when(mockChallenge).parameter(new StringToken("nonce"));
-        doReturn(new Present<>("5ccc069c403ebaf9f0171e9517f40e41")).when(mockChallenge).parameter(new StringToken("opaque"));
-        doReturn(absent()).when(mockChallenge).parameter(new StringToken("algorithm"));
+        doReturn(new Present<>("testrealm@host.com")).when(mockChallenge).parameter(Tokens.REALM);
+        doReturn(new Present<>("dcd98b7102dd2f0e8b11d0f600bfb0c093")).when(mockChallenge).parameter(Tokens.NONCE);
+        doReturn(new Present<>("5ccc069c403ebaf9f0171e9517f40e41")).when(mockChallenge).parameter(Tokens.OPAQUE);
+        doReturn(absent()).when(mockChallenge).parameter(Tokens.ALGORITHM);
 
         UserCredentials mockUserCredentials = mock(UserCredentials.class);
         doReturn("Mufasa").when(mockUserCredentials).userName();

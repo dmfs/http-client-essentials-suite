@@ -30,25 +30,12 @@ import static org.junit.Assert.assertEquals;
 public class SafeTokenTest
 {
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testConstructor_whenInputIsNullShouldThrowException()
-    {
-        new SafeToken(null);
-    }
-
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testConstructor_whenInputIsEmptyStringShouldThrowException()
-    {
-        new SafeToken("");
-    }
-
-
     @Test
     public void testCharacterReplacements()
     {
         assertEquals("a", new SafeToken("a").toString());
-        assertEquals("aB09", new SafeToken("aB09").toString());
+        assertEquals("!#$%&'*+-.^_`|~1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                new SafeToken("!#$%&'*+-.^_`|~1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ").toString());
 
         // Delimiters are replaced
         assertEquals("________________", new SafeToken("(),/:;<=>?@[\\]{}").toString());
@@ -75,9 +62,6 @@ public class SafeTokenTest
         assertEquals("_2", new SafeToken(" 2").toString());
         assertEquals("__", new SafeToken("  ").toString());
         assertEquals("__sdf__234_f_", new SafeToken("  sdf  234 f ").toString());
-
-        // Chars allowed are not replaced:
-        assertEquals("a-zA-Z0-9^_`|~!#$%&'*+.-", new SafeToken("a-zA-Z0-9^_`|~!#$%&'*+.-").toString());
     }
 
 }

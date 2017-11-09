@@ -17,37 +17,85 @@
 
 package org.dmfs.httpessentials.types;
 
-import java.util.regex.Pattern;
+import java.util.Arrays;
+import java.util.Locale;
 
 
 /**
- * A {@link Token} using a {@link String} as the underlying value. See <a href=https://tools.ietf.org/html/rfc7230#section-3.2.6>RFC7230</a> for the allowed
- * characters.
+ * A validated {@link Token}. See <a href=https://tools.ietf.org/html/rfc7230#section-3.2.6>RFC7230</a> for the allowed characters.
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
-public final class StringToken extends AbstractStringType implements Token
+public final class StringToken extends AbstractBaseToken
 {
-
-    final static String ALLOWED_CHARS_REGEX_CLASS = "a-zA-Z0-9^_`|~!#$%&'*+.-";
-
-    private final static Pattern PATTERN_TOKEN = Pattern.compile("[" + ALLOWED_CHARS_REGEX_CLASS + "]+");
+    // TODO: use a bitmap instead
+    private final static char[] SAFE_CHARS = "!#$%&'*+-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ^_`abcdefghijklmnopqrstuvwxyz|~".toCharArray();
 
 
-    public StringToken(String value)
+    public StringToken(CharSequence delegate)
     {
-        super(value);
-        validate(value);
+        super(new CharToken(new ValidatedCharSequence(delegate)));
     }
 
 
-    private void validate(String value)
+    // TODO: this could be useful as a standalone top level class
+    private final static class ValidatedCharSequence implements CharSequence
     {
-        if (!PATTERN_TOKEN.matcher(value).matches())
+        private final CharSequence mDelegate;
+
+
+        private ValidatedCharSequence(CharSequence delegate)
         {
-            throw new IllegalArgumentException(String.format("'%s' is not a valid http header token.", value));
+            if (delegate.length() == 0)
+            {
+                throw new IllegalArgumentException("Tokens must not be empty.");
+            }
+            mDelegate = delegate;
         }
 
+
+        @Override
+        public int length()
+        {
+            return mDelegate.length();
+        }
+
+
+        @Override
+        public char charAt(int i)
+        {
+            return validated(mDelegate.charAt(i));
+        }
+
+
+        @Override
+        public CharSequence subSequence(int i, int i1)
+        {
+            return new ValidatedCharSequence(mDelegate.subSequence(i, i1));
+        }
+
+
+        @Override
+        public String toString()
+        {
+            for (int i = 0, len = mDelegate.length(); i < len; ++i)
+            {
+                // just validate each char
+                charAt(i);
+            }
+
+            return mDelegate.toString();
+        }
+
+
+        private char validated(char c)
+        {
+            if (Arrays.binarySearch(SAFE_CHARS, c) < 0)
+            {
+                throw new IllegalArgumentException(String.format(Locale.ENGLISH, "Illegal character %c in token", c));
+            }
+            return c;
+        }
     }
 
 }

@@ -25,10 +25,10 @@ import org.dmfs.httpessentials.executors.authorizing.AuthStrategy;
 import org.dmfs.httpessentials.executors.authorizing.Authorization;
 import org.dmfs.httpessentials.executors.authorizing.Challenge;
 import org.dmfs.httpessentials.executors.authorizing.Parametrized;
+import org.dmfs.httpessentials.executors.authorizing.Tokens;
 import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.authorization.AuthDigestAuthorization;
 import org.dmfs.httpessentials.executors.authorizing.authorization.DigestAuthorization;
-import org.dmfs.httpessentials.executors.authorizing.charsequences.StringToken;
 import org.dmfs.jems.charsequence.elementary.Hex;
 import org.dmfs.optional.Optional;
 import org.dmfs.optional.Present;
@@ -77,8 +77,8 @@ public final class AuthenticatedDigestAuthState implements AuthState
     @Override
     public Optional<Authorization> authorization()
     {
-        if (!mDigestChallenge.parameter(new StringToken("qop")).isPresent() || !mDigestChallenge.parameter(new StringToken("opaque"))
-                .isPresent() || !mDigestChallenge.parameter(new StringToken("realm")).isPresent())
+        if (!mDigestChallenge.parameter(Tokens.QOP).isPresent() || !mDigestChallenge.parameter(Tokens.OPAQUE)
+                .isPresent() || !mDigestChallenge.parameter(Tokens.REALM).isPresent())
         {
             return new Present<Authorization>(new DigestAuthorization(mHttpMethod, mUri, mDigestChallenge, mCredentials));
         }
