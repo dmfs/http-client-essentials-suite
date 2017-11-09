@@ -23,7 +23,6 @@ import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
-import org.dmfs.httpessentials.executors.authorizing.authcaches.EmptyAuthStrategyCache;
 import org.dmfs.httpessentials.executors.authorizing.authcaches.SimpleAuthStrategyCache;
 import org.dmfs.httpessentials.executors.authorizing.authstates.FailedAuthState;
 import org.dmfs.httpessentials.executors.authorizing.strategies.CachedAuthStrategy;
@@ -46,7 +45,7 @@ public final class Authorizing implements HttpRequestExecutor
 
     public Authorizing(HttpRequestExecutor delegate, AuthStrategy authStrategy)
     {
-        this(delegate, authStrategy, new EmptyAuthStrategyCache());
+        this(delegate, authStrategy, new SimpleAuthStrategyCache());
     }
 
 
@@ -54,7 +53,7 @@ public final class Authorizing implements HttpRequestExecutor
     {
         mDelegate = delegate;
         mAuthStrategy = authStrategy;
-        mAuthStrategyCache = new SimpleAuthStrategyCache();
+        mAuthStrategyCache = authStrategyCache;
     }
 
 
