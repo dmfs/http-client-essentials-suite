@@ -26,7 +26,7 @@ import static org.junit.Assert.assertThat;
 /**
  * Unit test for {@link SafeToken}.
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
 public class SafeTokenTest
 {
@@ -34,36 +34,29 @@ public class SafeTokenTest
     @Test
     public void testCharacterReplacements()
     {
-        assertThat(new SafeToken("a"), hasToString("a"));
+
+        for (int i = 0; i < 0x0ffff; ++i)
+        {
+            if ("!#$%&'*+-.^_`|~1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(i) < 0)
+            {
+                assertThat(new SafeToken(new String(new char[] { (char) i })), hasToString("_"));
+            }
+            else
+            {
+                assertThat(new SafeToken(new String(new char[] { (char) i })), hasToString(new String(new char[] { (char) i })));
+            }
+        }
+
+        // also test a few CharSequences
 
         assertThat(new SafeToken("!#$%&'*+-.^_`|~1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"),
                 hasToString("!#$%&'*+-.^_`|~1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-
-        // Delimiters are replaced
         assertThat(new SafeToken("(),/:;<=>?@[\\]{}"), hasToString("________________"));
-        assertThat("_", new SafeToken("("), hasToString("_"));
-        assertThat(new SafeToken(")"), hasToString("_"));
-        assertThat(new SafeToken(","), hasToString("_"));
-        assertThat(new SafeToken("/"), hasToString("_"));
-        assertThat(new SafeToken(":"), hasToString("_"));
-        assertThat(new SafeToken(";"), hasToString("_"));
-        assertThat(new SafeToken("<"), hasToString("_"));
-        assertThat(new SafeToken("="), hasToString("_"));
-        assertThat(new SafeToken(">"), hasToString("_"));
-        assertThat(new SafeToken("?"), hasToString("_"));
-        assertThat(new SafeToken("@"), hasToString("_"));
-        assertThat(new SafeToken("["), hasToString("_"));
-        assertThat(new SafeToken("\\"), hasToString("_"));
-        assertThat(new SafeToken("]"), hasToString("_"));
-        assertThat(new SafeToken("{"), hasToString("_"));
-        assertThat(new SafeToken("}"), hasToString("_"));
-
-        // Space is not allowed, so it gets replaced:
-        assertThat(new SafeToken(" "), hasToString("_"));
         assertThat(new SafeToken("a "), hasToString("a_"));
         assertThat(new SafeToken(" 2"), hasToString("_2"));
         assertThat(new SafeToken("  "), hasToString("__"));
         assertThat(new SafeToken("  sdf  234 f "), hasToString("__sdf__234_f_"));
+
     }
 
 }
