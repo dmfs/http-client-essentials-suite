@@ -17,8 +17,8 @@
 
 package org.dmfs.httpessentials.types;
 
-import org.dmfs.iterators.SerialIterator;
 import org.dmfs.iterators.SingletonIterator;
+import org.dmfs.iterators.decorators.Serialized;
 
 import java.util.Iterator;
 
@@ -52,7 +52,7 @@ public final class BasicUserAgent implements UserAgent
     @Override
     public Iterator<Product> iterator()
     {
-        return new SerialIterator<Product>(new SingletonIterator<Product>(mProductToAppend),
+        return new Serialized<>(new SingletonIterator<Product>(mProductToAppend),
                 mOriginalUserAgent.iterator());
     }
 

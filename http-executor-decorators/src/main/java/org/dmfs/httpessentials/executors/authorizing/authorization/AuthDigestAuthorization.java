@@ -30,8 +30,10 @@ import org.dmfs.iterables.elementary.Seq;
 import org.dmfs.iterators.Filter;
 import org.dmfs.iterators.Function;
 import org.dmfs.jems.charsequence.elementary.Hex;
+import org.dmfs.jems.messagedigest.MessageDigestFactory;
+import org.dmfs.jems.messagedigest.elementary.DigestFactory;
 import org.dmfs.jems.pair.Pair;
-import org.dmfs.jems.single.elementary.Digested;
+import org.dmfs.jems.single.elementary.Digest;
 import org.dmfs.optional.Optional;
 import org.dmfs.optional.decorators.Filtered;
 import org.dmfs.optional.decorators.Mapped;
@@ -85,7 +87,8 @@ public final class AuthDigestAuthorization implements Authorization
     @Override
     public Iterable<Pair<Token, CharSequence>> parameters()
     {
-        final String algorithm = mDigestChallenge.parameter(Tokens.ALGORITHM).value("MD5").toString();
+        final CharSequence algorithm = mDigestChallenge.parameter(Tokens.ALGORITHM).value("MD5");
+        final MessageDigestFactory digestFactory = new DigestFactory(algorithm.toString());
         final Optional<CharSequence> userhash = mDigestChallenge.parameter(Tokens.USERHASH);
         final CharSequence realm = mDigestChallenge.parameter(Tokens.REALM).value();
         final CharSequence nonce = mDigestChallenge.parameter(Tokens.NONCE).value();
@@ -97,7 +100,7 @@ public final class AuthDigestAuthorization implements Authorization
                     @Override
                     public CharSequence apply(CharSequence argument)
                     {
-                        return new Hex(new Digested(algorithm, username, ":", realm).value());
+                        return new Hex(new Digest(digestFactory, username, ":", realm).value());
                     }
                 },
                 new Filtered<>(new Filter<CharSequence>()
@@ -120,8 +123,8 @@ public final class AuthDigestAuthorization implements Authorization
                         new Parameter(Tokens.CNONCE, new Quoted(mCnonce)),
                         new Parameter(Tokens.ALGORITHM, algorithm),
                         new Parameter(Tokens.RESPONSE, new Quoted(
-                                new Hex(new Digested(algorithm,
-                                        new Hex(new Digested(algorithm,
+                                new Hex(new Digest(digestFactory,
+                                        new Hex(new Digest(digestFactory,
                                                 mUserCredentials.userName(),
                                                 ":",
                                                 realm,
@@ -134,7 +137,7 @@ public final class AuthDigestAuthorization implements Authorization
                                         ":",
                                         mCnonce,
                                         ":auth:",
-                                        new Hex(new Digested(algorithm,
+                                        new Hex(new Digest(digestFactory,
                                                 (CharSequence) mMethod.verb(),
                                                 ":",
                                                 mRequestUri.getRawPath()).value())

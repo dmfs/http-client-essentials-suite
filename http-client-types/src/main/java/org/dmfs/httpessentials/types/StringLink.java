@@ -20,8 +20,8 @@ package org.dmfs.httpessentials.types;
 import org.dmfs.httpessentials.parameters.Parameter;
 import org.dmfs.httpessentials.parameters.ParameterType;
 import org.dmfs.httpessentials.parameters.Parameters;
-import org.dmfs.iterables.CachingIterable;
 import org.dmfs.iterables.CsvIterable;
+import org.dmfs.iterables.Repeatable;
 import org.dmfs.iterators.CsvIterator;
 import org.dmfs.iterators.Filter;
 import org.dmfs.iterators.Function;
@@ -61,7 +61,7 @@ public final class StringLink implements Link
     public StringLink(String link)
     {
         mLink = link;
-        mParts = mLink.length() > 200 ? new CachingIterable<String>(
+        mParts = mLink.length() > 200 ? new Repeatable<>(
                 new CsvIterator(mLink, PARAMETER_SEPARATOR)) : new CsvIterable(mLink, PARAMETER_SEPARATOR);
     }
 
