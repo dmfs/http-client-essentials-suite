@@ -136,7 +136,7 @@ public final class HeaderChallenges extends DelegatingIterable<Challenge>
                         @Override
                         public Challenge apply(CharSequence argument)
                         {
-                            return new BasicChallenge(argument);
+                            return new BasicChallenge(argument.toString().trim());
                         }
                     }))
             {
