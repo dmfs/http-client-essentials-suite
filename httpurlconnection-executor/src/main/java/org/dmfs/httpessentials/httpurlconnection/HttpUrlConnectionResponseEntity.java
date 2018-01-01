@@ -57,7 +57,16 @@ final class HttpUrlConnectionResponseEntity implements HttpResponseEntity
     @Override
     public Optional<Long> contentLength()
     {
-        long length = mConnection.getContentLengthLong();
+        long length;
+        try
+        {
+            length = mConnection.getContentLengthLong();
+        }
+        catch (NoSuchMethodError e)
+        {
+            // getContentLengthLong has been added in Java 7 and Android SDK 24, fall back to integer on older runtime engines
+            length = mConnection.getContentLength();
+        }
         return length < 0 ? Absent.<Long>absent() : new Present<>(length);
     }
 
