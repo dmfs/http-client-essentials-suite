@@ -22,7 +22,7 @@ def gitVersion = { ->
     return isSnapshot() ? stdout.toString().trim() + "-SNAPSHOT" : stdout.toString().trim()
 }
 
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 
 allprojects {
     group 'org.dmfs'
