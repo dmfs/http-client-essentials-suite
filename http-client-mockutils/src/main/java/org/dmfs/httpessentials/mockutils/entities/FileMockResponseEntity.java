@@ -19,8 +19,8 @@ package org.dmfs.httpessentials.mockutils.entities;
 
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.types.MediaType;
-import org.dmfs.optional.Optional;
-import org.dmfs.optional.Present;
+import org.dmfs.jems.optional.Optional;
+import org.dmfs.jems.optional.elementary.Present;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -24,18 +24,15 @@ import org.dmfs.httpessentials.client.HttpRequestExecutor;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseHandler;
 import org.dmfs.httpessentials.entities.EmptyHttpRequestEntity;
-import org.dmfs.httpessentials.exceptions.ProtocolError;
-import org.dmfs.httpessentials.exceptions.ProtocolException;
-import org.dmfs.httpessentials.executors.authorizing.strategies.Composite;
-import org.dmfs.httpessentials.executors.authorizing.strategies.UserCredentialsAuthStrategy;
+import org.dmfs.httpessentials.executors.authorizing.authstrategies.Composite;
+import org.dmfs.httpessentials.executors.authorizing.authstrategies.UserCredentialsAuthStrategy;
 import org.dmfs.httpessentials.headers.EmptyHeaders;
 import org.dmfs.httpessentials.headers.Headers;
 import org.dmfs.httpessentials.httpurlconnection.HttpUrlConnectionExecutor;
 import org.dmfs.httpessentials.responsehandlers.StringResponseHandler;
-import org.dmfs.optional.Present;
+import org.dmfs.jems.optional.elementary.Present;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 
 

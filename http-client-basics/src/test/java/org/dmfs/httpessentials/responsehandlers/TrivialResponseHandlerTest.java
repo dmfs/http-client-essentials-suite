@@ -22,15 +22,14 @@ import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.headers.Headers;
 import org.dmfs.httpessentials.types.MediaType;
-import org.dmfs.optional.Absent;
-import org.dmfs.optional.Optional;
+import org.dmfs.jems.optional.Optional;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static org.dmfs.jems.optional.elementary.Absent.absent;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -88,7 +87,7 @@ public class TrivialResponseHandlerTest
                 public Optional<MediaType> contentType()
                 {
                     fail("Trivial Response should not depend on the actual response entity");
-                    return Absent.absent();
+                    return absent();
                 }
 
 
@@ -96,7 +95,7 @@ public class TrivialResponseHandlerTest
                 public Optional<Long> contentLength()
                 {
                     fail("Trivial Response should not depend on the actual response content length");
-                    return Absent.absent();
+                    return absent();
                 }
 
 

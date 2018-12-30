@@ -20,9 +20,10 @@ package org.dmfs.httpessentials.httpurlconnection;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.httpessentials.types.StringMediaType;
-import org.dmfs.optional.Absent;
-import org.dmfs.optional.Optional;
-import org.dmfs.optional.Present;
+import org.dmfs.jems.optional.Optional;
+import org.dmfs.jems.optional.adapters.Conditional;
+import org.dmfs.jems.optional.decorators.Mapped;
+import org.dmfs.jems.optional.elementary.NullSafe;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,8 +50,7 @@ final class HttpUrlConnectionResponseEntity implements HttpResponseEntity
     @Override
     public Optional<MediaType> contentType()
     {
-        String mediaType = mConnection.getContentType();
-        return mediaType == null ? Absent.<MediaType>absent() : new Present<>(new StringMediaType(mediaType));
+        return new Mapped<>(StringMediaType::new, new NullSafe<>(mConnection.getContentType()));
     }
 
 
@@ -67,7 +67,7 @@ final class HttpUrlConnectionResponseEntity implements HttpResponseEntity
             // getContentLengthLong has been added in Java 7 and Android SDK 24, fall back to integer on older runtime engines
             length = mConnection.getContentLength();
         }
-        return length < 0 ? Absent.<Long>absent() : new Present<>(length);
+        return new Conditional<>(l -> l >= 0, length);
     }
 
 

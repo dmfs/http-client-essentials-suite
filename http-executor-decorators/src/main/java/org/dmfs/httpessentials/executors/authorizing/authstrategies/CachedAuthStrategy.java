@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.authorizing.strategies;
+package org.dmfs.httpessentials.executors.authorizing.authstrategies;
 
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.executors.authorizing.AuthState;

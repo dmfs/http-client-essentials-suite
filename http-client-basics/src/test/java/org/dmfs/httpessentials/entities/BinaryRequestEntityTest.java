@@ -20,16 +20,16 @@ package org.dmfs.httpessentials.entities;
 import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.httpessentials.types.StringMediaType;
 import org.dmfs.httpessentials.types.StructuredMediaType;
-import org.dmfs.jems.hamcrest.matchers.PresentMatcher;
 import org.dmfs.jems.single.Single;
 import org.dmfs.jems.single.elementary.ValueSingle;
 import org.junit.Test;
 
 import java.io.OutputStream;
 
-import static org.dmfs.jems.hamcrest.matchers.PresentMatcher.isPresent;
+import static org.dmfs.jems.hamcrest.matchers.optional.PresentMatcher.present;
 import static org.dmfs.jems.mockito.doubles.TestDoubles.dummy;
 import static org.dmfs.jems.mockito.doubles.TestDoubles.failingMock;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -44,15 +44,15 @@ public class BinaryRequestEntityTest
     public void testContentType()
     {
         assertThat(new BinaryRequestEntity(new StructuredMediaType("application", "text"), dummy(Single.class)).contentType(),
-                PresentMatcher.<MediaType>isPresent(new StringMediaType("application/text")));
+                is(present(new StringMediaType("application/text"))));
     }
 
 
     @Test
     public void testContentLength()
     {
-        assertThat(new BinaryRequestEntity(dummy(MediaType.class), new ValueSingle<>(new byte[0])).contentLength(), isPresent(0L));
-        assertThat(new BinaryRequestEntity(dummy(MediaType.class), new ValueSingle<>(new byte[1000])).contentLength(), isPresent(1000L));
+        assertThat(new BinaryRequestEntity(dummy(MediaType.class), new ValueSingle<>(new byte[0])).contentLength(), is(present(0L)));
+        assertThat(new BinaryRequestEntity(dummy(MediaType.class), new ValueSingle<>(new byte[1000])).contentLength(), is(present(1000L)));
     }
 
 

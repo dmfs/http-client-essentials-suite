@@ -18,11 +18,11 @@
 package org.dmfs.httpessentials.executors.authorizing.authscopes;
 
 import org.dmfs.httpessentials.executors.authorizing.AuthScope;
-import org.dmfs.optional.Optional;
+import org.dmfs.jems.optional.Optional;
 
 import java.net.URI;
 
-import static org.dmfs.optional.Absent.absent;
+import static org.dmfs.jems.optional.elementary.Absent.absent;
 
 
 /**

@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.dmfs:optional:' + JEMS_VERSION
+    compile 'org.dmfs:jems:' + JEMS_VERSION
     compile project(':http-client-essentials')
     compile project(':http-client-types')
     compile project(':http-client-headers')

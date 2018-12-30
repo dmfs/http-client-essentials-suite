@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     compile project(':http-client-essentials')
-    compile 'org.dmfs:iterators:' + JEMS_VERSION
+    compile 'org.dmfs:jems:' + JEMS_VERSION
     testCompile 'junit:junit:' + JUNIT_VERSION
     testCompile 'org.hamcrest:hamcrest-all:' + HAMCREST_VERSION
 }

@@ -39,7 +39,6 @@ final class ApacheProduct implements Product
     @Override
     public void appendTo(StringBuilder sb)
     {
-        sb.append(VersionInfo.getUserAgent("Apache-HttpClient",
-                "org.apache.http.client", HttpClient.class));
+        sb.append(VersionInfo.getUserAgent("Apache-HttpClient", "org.apache.http.client", HttpClient.class));
     }
 }

@@ -30,8 +30,8 @@ import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.authorization.AuthDigestAuthorization;
 import org.dmfs.httpessentials.executors.authorizing.authorization.DigestAuthorization;
 import org.dmfs.jems.charsequence.elementary.Hex;
-import org.dmfs.optional.Optional;
-import org.dmfs.optional.Present;
+import org.dmfs.jems.optional.Optional;
+import org.dmfs.jems.optional.elementary.Present;
 
 import java.net.URI;
 import java.security.SecureRandom;

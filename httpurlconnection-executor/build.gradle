@@ -36,6 +36,7 @@ tasks.withType(Jar) {
 }
 
 dependencies {
+    compile 'org.dmfs:jems:' + JEMS_VERSION
     compile project(':http-client-essentials')
     compile project(':http-client-types')
     compile project(':http-client-headers')

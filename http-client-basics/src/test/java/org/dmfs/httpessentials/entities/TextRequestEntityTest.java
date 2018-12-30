@@ -25,7 +25,7 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import static org.dmfs.jems.hamcrest.matchers.PresentMatcher.isPresent;
+import static org.dmfs.jems.hamcrest.matchers.optional.PresentMatcher.present;
 import static org.dmfs.jems.mockito.doubles.TestDoubles.dummy;
 import static org.dmfs.jems.mockito.doubles.TestDoubles.failingMock;
 import static org.hamcrest.CoreMatchers.sameInstance;
@@ -43,7 +43,7 @@ public class TextRequestEntityTest
     public void testContentType()
     {
         MediaType dummy = dummy(MediaType.class);
-        assertThat(new TextRequestEntity(dummy, dummy(Single.class)).contentType(), isPresent(sameInstance(dummy)));
+        assertThat(new TextRequestEntity(dummy, dummy(Single.class)).contentType(), is(present(sameInstance(dummy))));
     }
 
 
@@ -52,7 +52,7 @@ public class TextRequestEntityTest
     {
         MediaType mockMediaType = failingMock(MediaType.class);
         doReturn("utf-8").when(mockMediaType).charset("utf-8");
-        assertThat(new TextRequestEntity(mockMediaType, new ValueSingle<>("")).contentLength(), isPresent(0L));
+        assertThat(new TextRequestEntity(mockMediaType, new ValueSingle<>("")).contentLength(), is(present(0L)));
     }
 
 
@@ -62,7 +62,7 @@ public class TextRequestEntityTest
         // utf-8 encodes äöü as 2 bytes each
         MediaType mockMediaType = failingMock(MediaType.class);
         doReturn("utf-8").when(mockMediaType).charset("utf-8");
-        assertThat(new TextRequestEntity(mockMediaType, new ValueSingle<>("abcäöü")).contentLength(), isPresent(9L));
+        assertThat(new TextRequestEntity(mockMediaType, new ValueSingle<>("abcäöü")).contentLength(), is(present(9L)));
     }
 
 
@@ -72,7 +72,7 @@ public class TextRequestEntityTest
         // latin1 encodes äöü as 1 byte each
         MediaType mockMediaType = failingMock(MediaType.class);
         doReturn("latin1").when(mockMediaType).charset("utf-8");
-        assertThat(new TextRequestEntity(mockMediaType, new ValueSingle<>("abcäöü")).contentLength(), isPresent(6L));
+        assertThat(new TextRequestEntity(mockMediaType, new ValueSingle<>("abcäöü")).contentLength(), is(present(6L)));
     }
 
 

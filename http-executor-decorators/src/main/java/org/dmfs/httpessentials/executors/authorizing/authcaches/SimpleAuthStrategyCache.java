@@ -19,8 +19,9 @@ package org.dmfs.httpessentials.executors.authorizing.authcaches;
 
 import org.dmfs.httpessentials.executors.authorizing.AuthStrategy;
 import org.dmfs.httpessentials.executors.authorizing.AuthStrategyCache;
-import org.dmfs.httpessentials.executors.authorizing.strategies.PassThroughStrategy;
-import org.dmfs.optional.adapters.MapEntry;
+import org.dmfs.httpessentials.executors.authorizing.authstrategies.PassThroughStrategy;
+import org.dmfs.jems.optional.adapters.MapEntry;
+import org.dmfs.jems.single.combined.Backed;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public final class SimpleAuthStrategyCache implements AuthStrategyCache
     @Override
     public AuthStrategy authStrategy(URI uri)
     {
-        return new MapEntry<>(mMap, uri).value(new PassThroughStrategy());
+        return new Backed<AuthStrategy>(new MapEntry<>(mMap, uri), PassThroughStrategy::new).value();
     }
 
 

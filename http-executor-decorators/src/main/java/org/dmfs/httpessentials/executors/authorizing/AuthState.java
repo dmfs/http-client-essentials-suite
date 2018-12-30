@@ -18,8 +18,8 @@
 package org.dmfs.httpessentials.executors.authorizing;
 
 import org.dmfs.httpessentials.exceptions.UnauthorizedException;
-import org.dmfs.httpessentials.executors.authorizing.strategies.PassThroughStrategy;
-import org.dmfs.optional.Optional;
+import org.dmfs.httpessentials.executors.authorizing.authstrategies.PassThroughStrategy;
+import org.dmfs.jems.optional.Optional;
 
 
 /**

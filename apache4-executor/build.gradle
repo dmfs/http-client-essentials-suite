@@ -14,6 +14,7 @@ sourceSets {
 
 sourceCompatibility = 1.8
 
+
 configurations {
     pom
 }
@@ -36,15 +37,17 @@ tasks.withType(Jar) {
 }
 
 dependencies {
-    compile 'org.dmfs:optional:' + JEMS_VERSION
+    compile 'org.dmfs:jems:' + JEMS_VERSION
     compileOnly 'org.apache.httpcomponents:httpclient:' + APACHE_VERSION
-    compile project(':http-client-basics')
     compile project(':http-client-essentials')
     compile project(':http-client-types')
     compile project(':http-client-headers')
+    compile project(':http-client-basics')
     compile project(':http-executor-commons')
-
     testCompile 'org.apache.httpcomponents:httpclient:' + APACHE_VERSION
     testCompile 'junit:junit:' + JUNIT_VERSION
+    testCompile project(':http-client-mockutils')
+    testCompile 'org.mockito:mockito-core:' + MOCKITO_VERSION
     testCompile 'org.dmfs:jems-testing:' + JEMS_VERSION
+    testCompile 'org.hamcrest:hamcrest-all:' + HAMCREST_VERSION
 }

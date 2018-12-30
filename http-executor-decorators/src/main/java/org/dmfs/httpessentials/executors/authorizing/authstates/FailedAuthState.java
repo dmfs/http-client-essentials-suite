@@ -23,9 +23,9 @@ import org.dmfs.httpessentials.executors.authorizing.AuthState;
 import org.dmfs.httpessentials.executors.authorizing.AuthStrategy;
 import org.dmfs.httpessentials.executors.authorizing.Authorization;
 import org.dmfs.httpessentials.executors.authorizing.Challenge;
-import org.dmfs.optional.Optional;
+import org.dmfs.jems.optional.Optional;
 
-import static org.dmfs.optional.Absent.absent;
+import static org.dmfs.jems.optional.elementary.Absent.absent;
 
 
 /**

@@ -18,7 +18,7 @@ dependencies {
     compile project(':http-client-types')
     compile project(':http-client-headers')
     compile project(':http-client-basics')
-    compile "org.dmfs:rfc3986-uri:0.7"
+    compile "org.dmfs:rfc3986-uri:0.8"
 
     testCompile 'junit:junit:' + JUNIT_VERSION
     testCompile project(':http-client-mockutils')

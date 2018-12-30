@@ -25,9 +25,8 @@ import org.dmfs.httpessentials.headers.Headers;
 import org.dmfs.httpessentials.headers.ListHeaderType;
 import org.dmfs.iterables.UnquotedSplit;
 import org.dmfs.iterables.decorators.DelegatingIterable;
-import org.dmfs.iterables.decorators.Mapped;
 import org.dmfs.iterables.decorators.Reverse;
-import org.dmfs.iterators.Function;
+import org.dmfs.jems.iterable.decorators.Mapped;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,8 +129,10 @@ public final class HeaderChallenges extends DelegatingIterable<Challenge>
         public List<Challenge> valueFromString(String valueString)
         {
             List<Challenge> challenges = new ArrayList<>();
-            for (Challenge challenge : new Mapped<>(new Challenges(new Reverse<>(new UnquotedSplit(valueString, ','))),
-                    (Function<CharSequence, Challenge>) argument -> new BasicChallenge(argument.toString().trim())))
+            for (Challenge challenge : new Mapped<>(
+                    argument -> new BasicChallenge(argument.toString().trim()),
+                    new Challenges(new Reverse<>(new UnquotedSplit(valueString, ',')))
+            ))
             {
                 challenges.add(challenge);
             }

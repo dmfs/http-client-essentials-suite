@@ -14,6 +14,6 @@ repositories {
 }
 
 dependencies {
-    compile 'org.dmfs:optional:' + JEMS_VERSION
+    compile 'org.dmfs:jems:' + JEMS_VERSION
     testCompile 'junit:junit:' + JUNIT_VERSION
 }

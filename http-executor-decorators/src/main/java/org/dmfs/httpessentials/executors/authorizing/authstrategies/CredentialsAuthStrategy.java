@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.authorizing.strategies;
+package org.dmfs.httpessentials.executors.authorizing.authstrategies;
 
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.executors.authorizing.AuthInfo;
@@ -25,18 +25,18 @@ import org.dmfs.httpessentials.executors.authorizing.AuthStrategy;
 import org.dmfs.httpessentials.executors.authorizing.Authorization;
 import org.dmfs.httpessentials.executors.authorizing.Challenge;
 import org.dmfs.httpessentials.executors.authorizing.CredentialsStore;
-import org.dmfs.iterables.decorators.Filtered;
-import org.dmfs.iterables.decorators.Flattened;
-import org.dmfs.iterables.decorators.Mapped;
+import org.dmfs.iterables.decorators.Sieved;
 import org.dmfs.iterables.elementary.Seq;
+import org.dmfs.jems.iterable.composite.Joined;
+import org.dmfs.jems.iterable.decorators.Mapped;
+import org.dmfs.jems.optional.Optional;
 import org.dmfs.jems.pair.Pair;
-import org.dmfs.optional.Optional;
 
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.dmfs.optional.Absent.absent;
+import static org.dmfs.jems.optional.elementary.Absent.absent;
 
 
 /**
@@ -96,13 +96,15 @@ public final class CredentialsAuthStrategy<CredentialsType> implements AuthStrat
             final Set<String> realms = new HashSet<>();
             return new Composite(
                     new Mapped<>(
-                            new Filtered<>(
-                                    new Flattened<>(
+                            Pair::right,
+                            new Sieved<>(
+                                    argument -> realms.add(argument.left().toString()),
+                                    new Joined<>(
                                             new Mapped<>(
-                                                    mSchemes,
-                                                    argument -> argument.authStrategies(challenges, mCredentialsStore, mUri))),
-                                    argument -> realms.add(argument.left().toString())),
-                            Pair::right)).authState(mMethod, mUri, mFallback);
+                                                    scheme -> scheme.authStrategies(challenges, mCredentialsStore, mUri),
+                                                    mSchemes))
+                            )
+                    )).authState(mMethod, mUri, mFallback);
         }
 
 

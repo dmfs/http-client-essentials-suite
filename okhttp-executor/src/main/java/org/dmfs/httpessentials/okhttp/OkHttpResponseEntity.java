@@ -19,15 +19,14 @@ package org.dmfs.httpessentials.okhttp;
 
 import okhttp3.ResponseBody;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
+import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.httpessentials.types.StringMediaType;
-import org.dmfs.optional.NullSafe;
-import org.dmfs.optional.Optional;
-import org.dmfs.optional.Present;
-import org.dmfs.optional.decorators.Mapped;
+import org.dmfs.jems.optional.Optional;
+import org.dmfs.jems.optional.adapters.Conditional;
+import org.dmfs.jems.optional.decorators.Mapped;
+import org.dmfs.jems.optional.elementary.NullSafe;
 
 import java.io.InputStream;
-
-import static org.dmfs.optional.Absent.absent;
 
 
 /**
@@ -47,10 +46,10 @@ final class OkHttpResponseEntity implements HttpResponseEntity
 
 
     @Override
-    public Optional<org.dmfs.httpessentials.types.MediaType> contentType()
+    public Optional<MediaType> contentType()
     {
         return new Mapped<>(
-                argument -> new StringMediaType(argument.toString()),
+                mediaType -> new StringMediaType(mediaType.toString()),
                 new NullSafe<>(mResponseBody.contentType()));
     }
 
@@ -58,7 +57,7 @@ final class OkHttpResponseEntity implements HttpResponseEntity
     @Override
     public Optional<Long> contentLength()
     {
-        return mResponseBody.contentLength() >= 0 ? new Present<>(mResponseBody.contentLength()) : absent();
+        return new Conditional<>(length -> length >= 0, mResponseBody.contentLength());
     }
 
 
