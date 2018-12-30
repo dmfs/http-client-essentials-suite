@@ -32,19 +32,19 @@ public interface Entity<ValueType>
      *
      * @return A {@link EntityType}.
      */
-    public EntityType<ValueType> type();
+    EntityType<ValueType> type();
 
     /**
      * Returns the actual value of this entity.
      *
      * @return The value.
      */
-    public ValueType value();
+    ValueType value();
 
     /**
      * Returns the String representation of the entity value.
      *
      * @return The properly encoded value string.
      */
-    public String toString();
+    String toString();
 }

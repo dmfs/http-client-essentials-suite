@@ -22,11 +22,7 @@ import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpRequestEntity;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseHandler;
-import org.dmfs.httpessentials.exceptions.ProtocolError;
-import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.headers.Headers;
-
-import java.io.IOException;
 
 
 /**
@@ -70,16 +66,11 @@ public final class ResponseDecorated<T> implements HttpRequest<T>
 
 
     @Override
-    public HttpResponseHandler<T> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
+    public HttpResponseHandler<T> responseHandler(HttpResponse response)
     {
-        return new HttpResponseHandler<T>()
-        {
-            @Override
-            public T handleResponse(HttpResponse response) throws IOException, ProtocolError, ProtocolException
-            {
-                HttpResponse decoratedResponse = mResponseDecoration.decorated(response);
-                return mOriginalRequest.responseHandler(decoratedResponse).handleResponse(decoratedResponse);
-            }
+        return response1 -> {
+            HttpResponse decoratedResponse = mResponseDecoration.decorated(response1);
+            return mOriginalRequest.responseHandler(decoratedResponse).handleResponse(decoratedResponse);
         };
     }
 }

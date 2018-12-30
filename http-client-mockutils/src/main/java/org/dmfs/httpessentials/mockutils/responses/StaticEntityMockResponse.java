@@ -41,7 +41,7 @@ public class StaticEntityMockResponse implements HttpResponse
 {
 
     // TODO: remove this once http-client-headers contains a definition for this
-    private final static SingletonHeaderType<Long> CONTENT_LENGTH = new BasicSingletonHeaderType<Long>("content-length",
+    private final static SingletonHeaderType<Long> CONTENT_LENGTH = new BasicSingletonHeaderType<>("content-length",
             new EntityConverter<Long>()
             {
                 public Long value(String valueString)
@@ -50,16 +50,10 @@ public class StaticEntityMockResponse implements HttpResponse
                 }
 
 
-                ;
-
-
                 public String valueString(Long value)
                 {
                     return String.valueOf(value);
                 }
-
-
-                ;
             });
 
     private final HttpResponseEntity mEntity;

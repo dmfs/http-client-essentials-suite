@@ -49,7 +49,7 @@ public final class SingletonHeaders implements Headers
     @Override
     public Iterator<Header<?>> iterator()
     {
-        return new SingletonIterator<Header<?>>(mHeader);
+        return new SingletonIterator<>(mHeader);
     }
 
 

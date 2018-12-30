@@ -63,7 +63,7 @@ public class ApacheExecutorTest
     @Test
     public void testGet() throws Exception
     {
-        HttpRequestExecutor executor = new ApacheExecutor(new ValueSingle<HttpClient>(new DefaultHttpClient()));
+        HttpRequestExecutor executor = new ApacheExecutor(new ValueSingle<>(new DefaultHttpClient()));
         String response = executor.execute(URI.create("http://httpbin.org/get"), new HttpRequest<String>()
         {
             @Override
@@ -88,7 +88,7 @@ public class ApacheExecutorTest
 
 
             @Override
-            public HttpResponseHandler<String> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
+            public HttpResponseHandler<String> responseHandler(HttpResponse response)
             {
                 assertThat(response.responseEntity().contentType(), PresentMatcher.<MediaType>isPresent(new StringMediaType("application/json")));
                 return new StringResponseHandler();
@@ -101,7 +101,7 @@ public class ApacheExecutorTest
     @Test
     public void testPost() throws Exception
     {
-        HttpRequestExecutor executor = new ApacheExecutor(new ValueSingle<HttpClient>(new DefaultHttpClient()));
+        HttpRequestExecutor executor = new ApacheExecutor(new ValueSingle<>(new DefaultHttpClient()));
         String response = executor.execute(URI.create("http://httpbin.org/post"), new HttpRequest<String>()
         {
             @Override
@@ -126,7 +126,7 @@ public class ApacheExecutorTest
                     @Override
                     public Optional<MediaType> contentType()
                     {
-                        return new Present<MediaType>(new StringMediaType("text/plain"));
+                        return new Present<>(new StringMediaType("text/plain"));
                     }
 
 
@@ -154,7 +154,7 @@ public class ApacheExecutorTest
 
 
             @Override
-            public HttpResponseHandler<String> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
+            public HttpResponseHandler<String> responseHandler(HttpResponse response)
             {
                 assertThat(response.responseEntity().contentType(), PresentMatcher.<MediaType>isPresent(new StringMediaType("application/json")));
                 // header names should be case insensitive

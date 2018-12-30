@@ -48,7 +48,7 @@ public final class RegexpSplitListConverter<T> implements EntityConverter<List<T
     @Override
     public List<T> value(String valueString)
     {
-        List<T> result = new ArrayList<T>(16);
+        List<T> result = new ArrayList<>(16);
         for (String value : mDividerPattern.split(valueString))
         {
             result.add(mConverter.value(value));

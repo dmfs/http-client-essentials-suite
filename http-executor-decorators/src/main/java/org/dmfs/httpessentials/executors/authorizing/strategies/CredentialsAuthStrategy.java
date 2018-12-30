@@ -18,7 +18,6 @@
 package org.dmfs.httpessentials.executors.authorizing.strategies;
 
 import org.dmfs.httpessentials.HttpMethod;
-import org.dmfs.httpessentials.exceptions.UnauthorizedException;
 import org.dmfs.httpessentials.executors.authorizing.AuthInfo;
 import org.dmfs.httpessentials.executors.authorizing.AuthScheme;
 import org.dmfs.httpessentials.executors.authorizing.AuthState;
@@ -30,8 +29,6 @@ import org.dmfs.iterables.decorators.Filtered;
 import org.dmfs.iterables.decorators.Flattened;
 import org.dmfs.iterables.decorators.Mapped;
 import org.dmfs.iterables.elementary.Seq;
-import org.dmfs.iterators.Filter;
-import org.dmfs.iterators.Function;
 import org.dmfs.jems.pair.Pair;
 import org.dmfs.optional.Optional;
 
@@ -94,7 +91,7 @@ public final class CredentialsAuthStrategy<CredentialsType> implements AuthStrat
 
 
         @Override
-        public AuthState withChallenges(final Iterable<Challenge> challenges) throws UnauthorizedException
+        public AuthState withChallenges(final Iterable<Challenge> challenges)
         {
             final Set<String> realms = new HashSet<>();
             return new Composite(
@@ -103,30 +100,9 @@ public final class CredentialsAuthStrategy<CredentialsType> implements AuthStrat
                                     new Flattened<>(
                                             new Mapped<>(
                                                     mSchemes,
-                                                    new Function<AuthScheme<CredentialsType>, Iterable<Pair<CharSequence, AuthStrategy>>>()
-                                                    {
-                                                        @Override
-                                                        public Iterable<Pair<CharSequence, AuthStrategy>> apply(AuthScheme<CredentialsType> argument)
-                                                        {
-                                                            return argument.authStrategies(challenges, mCredentialsStore, mUri);
-                                                        }
-                                                    })),
-                                    new Filter<Pair<CharSequence, AuthStrategy>>()
-                                    {
-                                        @Override
-                                        public boolean iterate(Pair<CharSequence, AuthStrategy> argument)
-                                        {
-                                            return realms.add(argument.left().toString());
-                                        }
-                                    }),
-                            new Function<Pair<CharSequence, AuthStrategy>, AuthStrategy>()
-                            {
-                                @Override
-                                public AuthStrategy apply(Pair<CharSequence, AuthStrategy> argument)
-                                {
-                                    return argument.right();
-                                }
-                            })).authState(mMethod, mUri, mFallback);
+                                                    argument -> argument.authStrategies(challenges, mCredentialsStore, mUri))),
+                                    argument -> realms.add(argument.left().toString())),
+                            Pair::right)).authState(mMethod, mUri, mFallback);
         }
 
 

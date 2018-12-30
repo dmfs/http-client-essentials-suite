@@ -129,7 +129,7 @@ public final class StaticMockResponseEntity implements HttpResponseEntity
 
 
     @Override
-    public InputStream contentStream() throws IOException
+    public InputStream contentStream()
     {
         return new ByteArrayInputStream(mContent);
     }

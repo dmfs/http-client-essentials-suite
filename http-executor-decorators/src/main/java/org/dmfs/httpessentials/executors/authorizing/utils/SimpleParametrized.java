@@ -23,7 +23,6 @@ import org.dmfs.httpessentials.types.Token;
 import org.dmfs.iterables.UnquotedSplit;
 import org.dmfs.iterables.decorators.Mapped;
 import org.dmfs.iterators.Filter;
-import org.dmfs.iterators.Function;
 import org.dmfs.jems.pair.Pair;
 import org.dmfs.jems.pair.elementary.ValuePair;
 import org.dmfs.optional.First;
@@ -50,25 +49,13 @@ public final class SimpleParametrized implements Parametrized
     public Optional<CharSequence> parameter(final Token name)
     {
         return new org.dmfs.optional.decorators.Mapped<>(
-                new Function<Pair<CharSequence, CharSequence>, CharSequence>()
-                {
-                    @Override
-                    public CharSequence apply(Pair<CharSequence, CharSequence> charSequenceCharSequencePair)
-                    {
-                        return new Unquoted(charSequenceCharSequencePair.right().toString().trim());
-                    }
-                },
+                charSequenceCharSequencePair -> new Unquoted(charSequenceCharSequencePair.right().toString().trim()),
                 new First<>(new Mapped<>(
                         new UnquotedSplit(mDelegate, ','),
-                        new Function<CharSequence, Pair<CharSequence, CharSequence>>()
-                        {
-                            @Override
-                            public Pair<CharSequence, CharSequence> apply(CharSequence o)
-                            {
-                                Iterable<CharSequence> result = new UnquotedSplit(o, '=');
-                                Iterator<CharSequence> it = result.iterator();
-                                return new ValuePair<>(it.next(), it.next());
-                            }
+                        o -> {
+                            Iterable<CharSequence> result = new UnquotedSplit(o, '=');
+                            Iterator<CharSequence> it = result.iterator();
+                            return new ValuePair<>(it.next(), it.next());
                         }), new Filter<Pair<CharSequence, CharSequence>>()
                 {
                     @Override

@@ -17,9 +17,7 @@
 
 package org.dmfs.httpessentials.executors.authorizing.authschemes;
 
-import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.executors.authorizing.AuthScheme;
-import org.dmfs.httpessentials.executors.authorizing.AuthState;
 import org.dmfs.httpessentials.executors.authorizing.AuthStrategy;
 import org.dmfs.httpessentials.executors.authorizing.Challenge;
 import org.dmfs.httpessentials.executors.authorizing.CredentialsStore;
@@ -37,7 +35,6 @@ import org.dmfs.iterators.Function;
 import org.dmfs.jems.pair.Pair;
 import org.dmfs.jems.pair.elementary.ValuePair;
 import org.dmfs.optional.First;
-import org.dmfs.optional.Optional;
 import org.dmfs.optional.decorators.Mapped;
 import org.dmfs.optional.iterable.PresentValues;
 
@@ -58,78 +55,21 @@ public final class Digest implements AuthScheme<UserCredentials>
         return new org.dmfs.iterables.decorators.Mapped<Pair<Parametrized, UserCredentials>, Pair<CharSequence, AuthStrategy>>(
                 new PresentValues<>(new Fluent<>(challenges)
                         // remove any non-Digest challenges
-                        .filtered(
-                                new ChallengeFilter(Tokens.DIGEST))
-                        .mapped(new Function<Challenge, Parametrized>()
-                        {
-                            @Override
-                            public Parametrized apply(Challenge argument)
-                            {
-                                return new SimpleParametrized(argument.challenge());
-                            }
-                        })
+                        .filtered(new ChallengeFilter(Tokens.DIGEST))
+                        .mapped((Function<Challenge, Parametrized>) argument -> new SimpleParametrized(argument.challenge()))
                         // remove anything that's not MD5 or SHA-256
-                        .filtered(
-                                new Filter<Parametrized>()
-                                {
-                                    @Override
-                                    public boolean iterate(Parametrized challenge)
-                                    {
-                                        String algorithm = challenge.parameter(Tokens.ALGORITHM).value("MD5").toString();
-                                        return "MD5".equalsIgnoreCase(algorithm) || "SHA-256".equalsIgnoreCase(algorithm);
-                                    }
-                                })
+                        .filtered(challenge -> {
+                            String algorithm = challenge.parameter(Tokens.ALGORITHM).value("MD5").toString();
+                            return "MD5".equalsIgnoreCase(algorithm) || "SHA-256".equalsIgnoreCase(algorithm);
+                        })
                         // remove any auth type we don't support
-                        .filtered(
-                                new Filter<Parametrized>()
-                                {
-                                    @Override
-                                    public boolean iterate(Parametrized challenge)
-                                    {
-                                        return new First<>(new Split(challenge.parameter(Tokens.QOP).value("auth"), ','), new Filter<CharSequence>()
-                                        {
-                                            @Override
-                                            public boolean iterate(CharSequence argument)
-                                            {
-                                                return argument.toString().equals("auth");
-                                            }
-                                        }).isPresent();
-                                    }
-                                })
+                        .filtered(challenge -> new First<>(new Split(challenge.parameter(Tokens.QOP).value("auth"), ','),
+                                (Filter<CharSequence>) argument -> argument.toString().equals("auth")).isPresent())
                         // map each challenge to an optional pair of challenge and credentials (optional because we may not have credentials for the realm)
                         // TODO: first sort digestChallenges by protection level (i.e. SHA-256 over MD5 and qop=auth over no qop)
-                        .mapped(
-                                new Function<Parametrized, Optional<Pair<Parametrized, UserCredentials>>>()
-                                {
-
-                                    @Override
-                                    public Optional<Pair<Parametrized, UserCredentials>> apply(final Parametrized challenge)
-                                    {
-                                        return new Mapped<UserCredentials, Pair<Parametrized, UserCredentials>>(
-                                                new Function<UserCredentials, Pair<Parametrized, UserCredentials>>()
-                                                {
-                                                    @Override
-                                                    public Pair<Parametrized, UserCredentials> apply(UserCredentials userCredentials)
-                                                    {
-                                                        return new ValuePair<>(challenge, userCredentials);
-                                                    }
-                                                }, credentialsStore.credentials(new UriScope(uri)));
-                                    }
-                                })),
-                new Function<Pair<Parametrized, UserCredentials>, Pair<CharSequence, AuthStrategy>>()
-                {
-                    @Override
-                    public Pair<CharSequence, AuthStrategy> apply(final Pair<Parametrized, UserCredentials> argument)
-                    {
-                        return new ValuePair<CharSequence, AuthStrategy>(argument.left().parameter(Tokens.REALM).value(), new AuthStrategy()
-                        {
-                            @Override
-                            public AuthState authState(HttpMethod method, URI uri, AuthState fallback)
-                            {
-                                return new AuthenticatedDigestAuthState(method, uri, argument.right(), fallback, argument.left());
-                            }
-                        });
-                    }
-                });
+                        .mapped(challenge -> new Mapped<>(
+                                userCredentials -> new ValuePair<>(challenge, userCredentials), credentialsStore.credentials(new UriScope(uri))))),
+                argument -> new ValuePair<>(argument.left().parameter(Tokens.REALM).value(),
+                        (method, uri1, fallback) -> new AuthenticatedDigestAuthState(method, uri1, argument.right(), fallback, argument.left())));
     }
 }

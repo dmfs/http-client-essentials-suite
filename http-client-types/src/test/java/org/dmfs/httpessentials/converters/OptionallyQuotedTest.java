@@ -28,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 public class OptionallyQuotedTest
 {
     @Test
-    public void value() throws Exception
+    public void value()
     {
         assertEquals("test", new OptionallyQuoted<>(new PlainStringHeaderConverter()).value("test"));
         assertEquals("test", new OptionallyQuoted<>(new PlainStringHeaderConverter()).value("\"test\""));
@@ -38,7 +38,7 @@ public class OptionallyQuotedTest
 
 
     @Test
-    public void valueString() throws Exception
+    public void valueString()
     {
         assertEquals("\"test\"", new OptionallyQuoted<>(new PlainStringHeaderConverter()).valueString("test"));
         assertEquals("\"\\\"test\\\"\"", new OptionallyQuoted<>(new PlainStringHeaderConverter()).valueString("\"test\""));

@@ -32,7 +32,6 @@ import org.dmfs.httpessentials.headers.BasicSingletonHeaderType;
 import org.dmfs.httpessentials.headers.HeaderType;
 import org.dmfs.httpessentials.headers.Headers;
 import org.dmfs.httpessentials.typedentity.EntityConverter;
-import org.dmfs.iterators.Function;
 import org.dmfs.optional.Absent;
 import org.dmfs.optional.decorators.Mapped;
 
@@ -99,14 +98,7 @@ final class Authorized<T> implements HttpRequest<T>
         return originalHeaders.contains(AUTHORIZATION)
                 ? originalHeaders
                 : new Mapped<>(
-                new Function<Authorization, Headers>()
-                {
-                    @Override
-                    public Headers apply(Authorization authorization)
-                    {
-                        return originalHeaders.withHeader(AUTHORIZATION.entity(authorization));
-                    }
-                }, mAuthState.authorization()).value(originalHeaders);
+                authorization -> originalHeaders.withHeader(AUTHORIZATION.entity(authorization)), mAuthState.authorization()).value(originalHeaders);
     }
 
 
@@ -126,16 +118,11 @@ final class Authorized<T> implements HttpRequest<T>
             {
 
                 // authentication failed, return a response handler which authenticates and re-sends the request
-                return new HttpResponseHandler<T>()
-                {
-                    @Override
-                    public T handleResponse(HttpResponse response) throws IOException, ProtocolError, ProtocolException
-                    {
-                        // start over with the new AuthState
-                        return mExecutor.execute(
-                                response.requestUri(),
-                                new Authorized<>(mExecutor, mAuthStrategyCache, mUri, mRequest, mAuthState.withChallenges(new ResponseChallenges(response))));
-                    }
+                return response1 -> {
+                    // start over with the new AuthState
+                    return mExecutor.execute(
+                            response1.requestUri(),
+                            new Authorized<>(mExecutor, mAuthStrategyCache, mUri, mRequest, mAuthState.withChallenges(new ResponseChallenges(response1))));
                 };
             }
             // successfully authenticated, update the auth cache

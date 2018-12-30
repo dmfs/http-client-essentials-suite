@@ -32,7 +32,6 @@ import org.dmfs.httpessentials.headers.EmptyHeaders;
 import org.dmfs.httpessentials.headers.Headers;
 import org.dmfs.httpessentials.httpurlconnection.HttpUrlConnectionExecutor;
 import org.dmfs.httpessentials.responsehandlers.StringResponseHandler;
-import org.dmfs.optional.Optional;
 import org.dmfs.optional.Present;
 import org.junit.Test;
 
@@ -46,28 +45,21 @@ public class AuthorizingTest
     public void testExecuteDigest() throws Exception
     {
         HttpRequestExecutor executor = new Authorizing(new HttpUrlConnectionExecutor(), new Composite(new UserCredentialsAuthStrategy(
-                new CredentialsStore<UserCredentials>()
+                authScope -> new Present<>(new UserCredentials()
                 {
                     @Override
-                    public Optional<UserCredentials> credentials(AuthScope authScope)
+                    public CharSequence userName()
                     {
-                        return new Present<UserCredentials>(new UserCredentials()
-                        {
-                            @Override
-                            public CharSequence userName()
-                            {
-                                return "user";
-                            }
-
-
-                            @Override
-                            public CharSequence password()
-                            {
-                                return "passwd";
-                            }
-                        });
+                        return "user";
                     }
-                })));
+
+
+                    @Override
+                    public CharSequence password()
+                    {
+                        return "passwd";
+                    }
+                }))));
 
         String response = executor.execute(URI.create("http://localhost:5000/digest-auth/auth/user/passwd/MD5/never"), new StringHttpRequest());
         response = executor.execute(URI.create("http://localhost:5000/digest-auth/auth/user/passwd/MD5/never"), new StringHttpRequest());
@@ -81,28 +73,21 @@ public class AuthorizingTest
     public void testExecuteBasic() throws Exception
     {
         HttpRequestExecutor executor = new Authorizing(new HttpUrlConnectionExecutor(), new Composite(new UserCredentialsAuthStrategy(
-                new CredentialsStore<UserCredentials>()
+                authScope -> new Present<>(new UserCredentials()
                 {
                     @Override
-                    public Optional<UserCredentials> credentials(AuthScope authScope)
+                    public CharSequence userName()
                     {
-                        return new Present<UserCredentials>(new UserCredentials()
-                        {
-                            @Override
-                            public CharSequence userName()
-                            {
-                                return "user";
-                            }
-
-
-                            @Override
-                            public CharSequence password()
-                            {
-                                return "passwd";
-                            }
-                        });
+                        return "user";
                     }
-                })));
+
+
+                    @Override
+                    public CharSequence password()
+                    {
+                        return "passwd";
+                    }
+                }))));
 
         String response = executor.execute(URI.create("http://localhost:5000/basic-auth/user/passwd"), new StringHttpRequest());
         response = executor.execute(URI.create("http://localhost:5000/basic-auth/user/passwd"), new StringHttpRequest());
@@ -136,7 +121,7 @@ public class AuthorizingTest
 
 
         @Override
-        public HttpResponseHandler<String> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
+        public HttpResponseHandler<String> responseHandler(HttpResponse response)
         {
             return new StringResponseHandler();
         }

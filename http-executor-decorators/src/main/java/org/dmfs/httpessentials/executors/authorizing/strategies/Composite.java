@@ -22,7 +22,6 @@ import org.dmfs.httpessentials.executors.authorizing.AuthState;
 import org.dmfs.httpessentials.executors.authorizing.AuthStrategy;
 import org.dmfs.iterables.decorators.Reverse;
 import org.dmfs.iterables.elementary.Seq;
-import org.dmfs.jems.function.BiFunction;
 import org.dmfs.jems.single.elementary.Reduced;
 
 import java.net.URI;
@@ -67,14 +66,7 @@ public final class Composite implements AuthStrategy
     {
         return new Reduced<>(
                 fallback,
-                new BiFunction<AuthState, AuthStrategy, AuthState>()
-                {
-                    @Override
-                    public AuthState value(AuthState authState, AuthStrategy strategy)
-                    {
-                        return strategy.authState(method, uri, authState);
-                    }
-                },
+                (authState, strategy) -> strategy.authState(method, uri, authState),
                 new Reverse<>(mStrategies)).value();
     }
 }

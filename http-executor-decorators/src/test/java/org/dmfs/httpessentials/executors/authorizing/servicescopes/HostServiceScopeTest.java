@@ -32,7 +32,7 @@ import static org.junit.Assert.assertThat;
 public class HostServiceScopeTest
 {
     @Test
-    public void testContains() throws Exception
+    public void testContains()
     {
         assertThat(new HostServiceScope(URI.create("https://example.com/")).contains(new UriScope(URI.create("https://example.com/path/xyz"))), is(true));
         assertThat(new HostServiceScope(URI.create("https://example.com/")).contains(new UriScope(URI.create("http://example.com/path/xyz"))), is(false));

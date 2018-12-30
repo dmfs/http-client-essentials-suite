@@ -42,37 +42,37 @@ public final class HttpHeaders
     /**
      * The content-type header that contains the media-type of the response entity.
      */
-    public final static SingletonHeaderType<MediaType> CONTENT_TYPE = new BasicSingletonHeaderType<MediaType>(
+    public final static SingletonHeaderType<MediaType> CONTENT_TYPE = new BasicSingletonHeaderType<>(
             "content-type", MediaTypeConverter.INSTANCE);
     /**
      * The content-length header that contains the number of bytes of the response entity.
      */
-    public final static SingletonHeaderType<Integer> CONTENT_LENGTH = new BasicSingletonHeaderType<Integer>(
+    public final static SingletonHeaderType<Integer> CONTENT_LENGTH = new BasicSingletonHeaderType<>(
             "content-length", IntegerConverter.INSTANCE);
     /**
      * The Link header that contains links to documents related to the response.
      */
-    public final static ListHeaderType<Link> LINK = new BasicListHeaderType<Link>("link", new LinkConverter());
+    public final static ListHeaderType<Link> LINK = new BasicListHeaderType<>("link", new LinkConverter());
     /**
      * The location header.
      */
-    public final static SingletonHeaderType<URI> LOCATION = new BasicSingletonHeaderType<URI>("location",
+    public final static SingletonHeaderType<URI> LOCATION = new BasicSingletonHeaderType<>("location",
             UriConverter.INSTANCE);
     /**
      * User-Agent header type.
      */
-    public final static SingletonHeaderType<UserAgent> USER_AGENT = new BasicSingletonHeaderType<UserAgent>(
+    public final static SingletonHeaderType<UserAgent> USER_AGENT = new BasicSingletonHeaderType<>(
             "User-Agent", new UserAgentConverter());
     private final static EntityConverter<String> OPTIONALLY_QUOTED_TEXT = new OptionallyQuoted<>(PlainStringHeaderConverter.INSTANCE);
     /**
      * The accept-encoding header that contains the content-encoding of the response entity.
      */
-    public final static ListHeaderType<String> ACCEPT_ENCODING = new BasicListHeaderType<String>("accept-encoding",
+    public final static ListHeaderType<String> ACCEPT_ENCODING = new BasicListHeaderType<>("accept-encoding",
             OPTIONALLY_QUOTED_TEXT);
     /**
      * The content-encoding header that contains the content encoding of the response entity.
      */
-    public final static ListHeaderType<String> CONTENT_ENCODING = new BasicListHeaderType<String>("content-encoding",
+    public final static ListHeaderType<String> CONTENT_ENCODING = new BasicListHeaderType<>("content-encoding",
             OPTIONALLY_QUOTED_TEXT);
 
 

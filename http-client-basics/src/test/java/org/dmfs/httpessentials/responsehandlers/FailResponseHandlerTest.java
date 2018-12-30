@@ -49,14 +49,14 @@ import static org.junit.Assert.fail;
 public class FailResponseHandlerTest
 {
     @Test
-    public void getInstance() throws Exception
+    public void getInstance()
     {
         assertNotNull(FailResponseHandler.getInstance());
     }
 
 
     @Test
-    public void handleResponse() throws Exception
+    public void handleResponse()
     {
         final AtomicReference<Boolean> streamClosed = new AtomicReference<>();
         FailResponseHandler<String> testHandler = new FailResponseHandler<>();
@@ -148,12 +148,12 @@ public class FailResponseHandlerTest
 
 
                 @Override
-                public InputStream contentStream() throws IOException
+                public InputStream contentStream()
                 {
                     return new InputStream()
                     {
                         @Override
-                        public int read() throws IOException
+                        public int read()
                         {
                             fail("Trivial Response should not read the actual response entity.");
                             return 0;
@@ -161,7 +161,7 @@ public class FailResponseHandlerTest
 
 
                         @Override
-                        public void close() throws IOException
+                        public void close()
                         {
                             streamClosed.set(true);
                         }

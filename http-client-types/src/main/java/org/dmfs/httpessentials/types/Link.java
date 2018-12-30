@@ -37,7 +37,7 @@ public interface Link extends Parametrized
      *
      * @return
      */
-    public URI target();
+    URI target();
 
     /**
      * Returns the context of the link (the value of the anchor parameter, if present). If the anchor is a relative URI, it will be resolved relatively to the
@@ -48,28 +48,28 @@ public interface Link extends Parametrized
      *
      * @return The anchor {@link URI} or <code>context</code> if there is no anchor.
      */
-    public URI context(URI defaultContext);
+    URI context(URI defaultContext);
 
     /**
      * Return a {@link Set} of all hreflang values present in the link.
      *
      * @return A {@link Set} of {@link Locale}s, may be empty, never <code>null</code>.
      */
-    public Set<Locale> languages();
+    Set<Locale> languages();
 
     /**
      * Returns the value of the title parameter, if there is any or <code>null</code> if there is none.
      *
      * @return The title of the link.
      */
-    public String title();
+    String title();
 
     /**
      * Returns the media-type of the link target.
      *
      * @return A {@link MediaType} or <code>null</code> if there is no media-type parameter.
      */
-    public MediaType mediaType();
+    MediaType mediaType();
 
     /**
      * Returns the set of relation types of this link.
@@ -80,7 +80,7 @@ public interface Link extends Parametrized
      *
      * @return
      */
-    public Set<String> relationTypes();
+    Set<String> relationTypes();
 
     /**
      * Returns the set of reverse relation types of this link.
@@ -91,5 +91,5 @@ public interface Link extends Parametrized
      *
      * @return
      */
-    public Set<String> reverseRelationTypes();
+    Set<String> reverseRelationTypes();
 }

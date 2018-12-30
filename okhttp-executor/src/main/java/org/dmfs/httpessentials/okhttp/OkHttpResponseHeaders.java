@@ -26,9 +26,10 @@ import org.dmfs.httpessentials.headers.ListHeaderType;
 import org.dmfs.httpessentials.headers.SingletonHeaderType;
 import org.dmfs.httpessentials.headers.UpdatedHeaders;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 
 /**
@@ -67,7 +68,7 @@ final class OkHttpResponseHeaders implements Headers
         List<String> headers = mResponse.headers(headerType.name());
         if (headers.isEmpty())
         {
-            return headerType.entity(Collections.<T>emptyList());
+            return headerType.entity(emptyList());
         }
 
         Iterator<String> iterator = headers.iterator();

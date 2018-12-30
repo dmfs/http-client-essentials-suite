@@ -131,14 +131,7 @@ public final class HeaderChallenges extends DelegatingIterable<Challenge>
         {
             List<Challenge> challenges = new ArrayList<>();
             for (Challenge challenge : new Mapped<>(new Challenges(new Reverse<>(new UnquotedSplit(valueString, ','))),
-                    new Function<CharSequence, Challenge>()
-                    {
-                        @Override
-                        public Challenge apply(CharSequence argument)
-                        {
-                            return new BasicChallenge(argument.toString().trim());
-                        }
-                    }))
+                    (Function<CharSequence, Challenge>) argument -> new BasicChallenge(argument.toString().trim())))
             {
                 challenges.add(challenge);
             }

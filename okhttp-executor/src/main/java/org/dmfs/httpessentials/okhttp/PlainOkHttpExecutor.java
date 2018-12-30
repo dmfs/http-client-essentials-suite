@@ -25,8 +25,6 @@ import org.dmfs.httpessentials.client.HttpRequestExecutor;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
-import org.dmfs.httpessentials.exceptions.RedirectionException;
-import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
 import org.dmfs.httpessentials.headers.Header;
 import org.dmfs.jems.single.Single;
 
@@ -52,7 +50,7 @@ public final class PlainOkHttpExecutor implements HttpRequestExecutor
 
 
     @Override
-    public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
+    public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException
     {
         Request.Builder requestBuilder = new Request.Builder();
         requestBuilder.url(uri.toURL());

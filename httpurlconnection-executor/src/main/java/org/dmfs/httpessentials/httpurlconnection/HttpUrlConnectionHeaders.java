@@ -25,16 +25,16 @@ import org.dmfs.httpessentials.headers.ListHeaderType;
 import org.dmfs.httpessentials.headers.SingletonHeaderType;
 import org.dmfs.httpessentials.headers.UpdatedHeaders;
 import org.dmfs.httpessentials.httpurlconnection.utils.iterators.StringEqualsIgnoreCase;
-import org.dmfs.iterators.Function;
 import org.dmfs.iterators.decorators.Filtered;
 import org.dmfs.iterators.decorators.Flattened;
 import org.dmfs.iterators.decorators.Mapped;
 
 import java.net.HttpURLConnection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.Collections.emptyList;
 
 
 /**
@@ -72,8 +72,8 @@ final class HttpUrlConnectionHeaders implements Headers
     {
         /*
          * Note, technically we can't support this, because we don't know the type of each header. However we could implement something that returns all headers
-		 * as plain string headers. This implementation is postponed until someone actually needs this method.
-		 */
+         * as plain string headers. This implementation is postponed until someone actually needs this method.
+         */
         throw new UnsupportedOperationException("Iterating headers is not supported by HttpUrlConnectionHeaders");
     }
 
@@ -90,27 +90,13 @@ final class HttpUrlConnectionHeaders implements Headers
     @Override
     public <T> Header<List<T>> header(final ListHeaderType<T> headerType)
     {
-        Header<List<T>> result = headerType.entity(Collections.<T>emptyList());
+        Header<List<T>> result = headerType.entity(emptyList());
 
         final Iterator<Header<List<T>>> headerIterator = new Mapped<>(new Flattened<>(
                 new Mapped<>(new Filtered<>(mHeaders.keySet().iterator(),
                         new StringEqualsIgnoreCase(headerType.name())),
-                        new Function<String, Iterable<String>>()
-                        {
-                            @Override
-                            public Iterable<String> apply(String element)
-                            {
-                                return mHeaders.get(element);
-                            }
-                        })),
-                new Function<String, Header<List<T>>>()
-                {
-                    @Override
-                    public Header<List<T>> apply(String element)
-                    {
-                        return headerType.entityFromString(element);
-                    }
-                });
+                        mHeaders::get)),
+                headerType::entityFromString);
 
         // combine all headers of this type into one
         while (headerIterator.hasNext())

@@ -20,7 +20,6 @@ package org.dmfs.httpessentials.executors.following.policies;
 import org.dmfs.httpessentials.HttpStatus;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
-import org.dmfs.httpessentials.exceptions.TooManyRedirectsException;
 import org.dmfs.httpessentials.executors.following.RedirectPolicy;
 
 import java.net.URI;
@@ -66,7 +65,7 @@ public final class Temporary implements RedirectPolicy
 
 
     @Override
-    public URI location(HttpResponse response, int redirectNumber) throws RedirectionException, TooManyRedirectsException
+    public URI location(HttpResponse response, int redirectNumber) throws RedirectionException
     {
         return mDecoratedPolicy.location(response, redirectNumber);
     }

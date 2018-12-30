@@ -33,6 +33,6 @@ public interface Header<ValueType> extends Entity<ValueType>
      * @return A {@link HeaderType}.
      */
     @Override
-    public HeaderType<ValueType> type();
+    HeaderType<ValueType> type();
 
 }

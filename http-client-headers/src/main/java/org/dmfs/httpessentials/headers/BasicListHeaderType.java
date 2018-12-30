@@ -49,7 +49,7 @@ public final class BasicListHeaderType<ValueType> implements ListHeaderType<Valu
     public BasicListHeaderType(String headerName, EntityConverter<ValueType> valueConverter)
     {
         mHeaderName = headerName;
-        mValueConverter = new ListConverter<ValueType>(valueConverter);
+        mValueConverter = new ListConverter<>(valueConverter);
     }
 
 
@@ -63,14 +63,14 @@ public final class BasicListHeaderType<ValueType> implements ListHeaderType<Valu
     @Override
     public Header<List<ValueType>> entityFromString(String headerValueString)
     {
-        return new BasicHeader<List<ValueType>>(this, mValueConverter.value(headerValueString));
+        return new BasicHeader<>(this, mValueConverter.value(headerValueString));
     }
 
 
     @Override
     public Header<List<ValueType>> entity(List<ValueType> value)
     {
-        return new BasicHeader<List<ValueType>>(this, value);
+        return new BasicHeader<>(this, value);
     }
 
 
@@ -116,7 +116,7 @@ public final class BasicListHeaderType<ValueType> implements ListHeaderType<Valu
             return value1;
         }
 
-        List<ValueType> merged = new ArrayList<ValueType>(list1.size() + list2.size());
+        List<ValueType> merged = new ArrayList<>(list1.size() + list2.size());
         merged.addAll(list1);
         merged.addAll(list2);
         return entity(merged);

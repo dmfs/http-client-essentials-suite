@@ -17,7 +17,6 @@
 
 package org.dmfs.httpessentials.headers;
 
-import org.dmfs.iterators.Filter;
 import org.dmfs.iterators.decorators.Filtered;
 
 import java.util.Iterator;
@@ -54,14 +53,7 @@ public final class FilteredHeaders implements Headers
     @Override
     public Iterator<Header<?>> iterator()
     {
-        return new Filtered<>(mOriginalHeaders.iterator(), new Filter<Header<?>>()
-        {
-            @Override
-            public boolean iterate(Header<?> element)
-            {
-                return !isFiltered(element.type());
-            }
-        });
+        return new Filtered<>(mOriginalHeaders.iterator(), element -> !isFiltered(element.type()));
     }
 
 

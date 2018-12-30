@@ -34,19 +34,14 @@ public final class TextRequestEntity extends DelegatingRequestEntity
 {
     public TextRequestEntity(final MediaType mediaType, final Single<CharSequence> charSequence)
     {
-        super(new BinaryRequestEntity(mediaType, new Single<byte[]>()
-        {
-            @Override
-            public byte[] value()
+        super(new BinaryRequestEntity(mediaType, () -> {
+            try
             {
-                try
-                {
-                    return charSequence.value().toString().getBytes(mediaType.charset("utf-8"));
-                }
-                catch (UnsupportedEncodingException e)
-                {
-                    throw new RuntimeException(String.format(Locale.ENGLISH, "Encoding %s not supported by runtime", mediaType.charset("utf-8")), e);
-                }
+                return charSequence.value().toString().getBytes(mediaType.charset("utf-8"));
+            }
+            catch (UnsupportedEncodingException e)
+            {
+                throw new RuntimeException(String.format(Locale.ENGLISH, "Encoding %s not supported by runtime", mediaType.charset("utf-8")), e);
             }
         }));
     }

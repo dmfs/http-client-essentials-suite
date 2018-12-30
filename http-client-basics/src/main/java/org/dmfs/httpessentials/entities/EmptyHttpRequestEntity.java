@@ -22,7 +22,6 @@ import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.optional.Absent;
 import org.dmfs.optional.Optional;
 
-import java.io.IOException;
 import java.io.OutputStream;
 
 
@@ -51,7 +50,7 @@ public final class EmptyHttpRequestEntity implements HttpRequestEntity
 
 
     @Override
-    public void writeContent(OutputStream out) throws IOException
+    public void writeContent(OutputStream out)
     {
     }
 

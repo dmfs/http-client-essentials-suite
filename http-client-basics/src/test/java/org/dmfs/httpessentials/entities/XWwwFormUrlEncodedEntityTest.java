@@ -44,7 +44,7 @@ public class XWwwFormUrlEncodedEntityTest
     @Test
     public void testContentType()
     {
-        assertThat(new XWwwFormUrlEncodedEntity(new EmptyIterable<Pair<CharSequence, CharSequence>>()).contentType(),
+        assertThat(new XWwwFormUrlEncodedEntity(new EmptyIterable<>()).contentType(),
                 PresentMatcher.<MediaType>isPresent(new StringMediaType("application/x-www-form-urlencoded")));
         assertThat(new XWwwFormUrlEncodedEntity(new EmptyParameterList()).contentType(),
                 PresentMatcher.<MediaType>isPresent(new StringMediaType("application/x-www-form-urlencoded")));
@@ -55,16 +55,16 @@ public class XWwwFormUrlEncodedEntityTest
     public void testContentLength() throws UnsupportedEncodingException
     {
         assertThat(new XWwwFormUrlEncodedEntity(
-                new EmptyIterable<Pair<CharSequence, CharSequence>>()).contentLength(), isPresent(0L));
+                new EmptyIterable<>()).contentLength(), isPresent(0L));
 
         assertThat(new XWwwFormUrlEncodedEntity(
-                        new Seq<Pair<CharSequence, CharSequence>>(new ValuePair<CharSequence, CharSequence>("key", "valueäöü"))).contentLength(),
+                        new Seq<>(new ValuePair<>("key", "valueäöü"))).contentLength(),
                 isPresent((long) "key=value%C3%A4%C3%B6%C3%BC".getBytes("UTF-8").length));
 
         assertThat(new XWwwFormUrlEncodedEntity(
-                        new Seq<Pair<CharSequence, CharSequence>>(
-                                new ValuePair<CharSequence, CharSequence>("key1", "valueäöü"),
-                                new ValuePair<CharSequence, CharSequence>("key2", "value/+ "))).contentLength(),
+                        new Seq<>(
+                                new ValuePair<>("key1", "valueäöü"),
+                                new ValuePair<>("key2", "value/+ "))).contentLength(),
                 isPresent((long) "key1=value%C3%A4%C3%B6%C3%BC&key2=value%2F%2B+".getBytes("UTF-8").length));
     }
 
@@ -73,7 +73,7 @@ public class XWwwFormUrlEncodedEntityTest
     public void testEmptyContent() throws IOException
     {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        new XWwwFormUrlEncodedEntity(new EmptyIterable<Pair<CharSequence, CharSequence>>()).writeContent(out);
+        new XWwwFormUrlEncodedEntity(new EmptyIterable<>()).writeContent(out);
         assertThat(out.toByteArray(), is("".getBytes("utf-8")));
     }
 
@@ -82,7 +82,7 @@ public class XWwwFormUrlEncodedEntityTest
     public void testUtf8Content() throws IOException
     {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        new XWwwFormUrlEncodedEntity(new Seq<Pair<CharSequence, CharSequence>>(new ValuePair<CharSequence, CharSequence>("key", "valueäöü"))).writeContent(out);
+        new XWwwFormUrlEncodedEntity(new Seq<>(new ValuePair<>("key", "valueäöü"))).writeContent(out);
         assertThat(out.toByteArray(), is("key=value%C3%A4%C3%B6%C3%BC".getBytes("utf-8")));
     }
 
@@ -91,9 +91,9 @@ public class XWwwFormUrlEncodedEntityTest
     public void testUtf8Content2() throws IOException
     {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        new XWwwFormUrlEncodedEntity(new Seq<Pair<CharSequence, CharSequence>>(
-                new ValuePair<CharSequence, CharSequence>("key1", "valueäöü"),
-                new ValuePair<CharSequence, CharSequence>("key2", "value/+ "))).writeContent(out);
+        new XWwwFormUrlEncodedEntity(new Seq<>(
+                new ValuePair<>("key1", "valueäöü"),
+                new ValuePair<>("key2", "value/+ "))).writeContent(out);
         assertThat(out.toByteArray(), is("key1=value%C3%A4%C3%B6%C3%BC&key2=value%2F%2B+".getBytes("utf-8")));
     }
 }

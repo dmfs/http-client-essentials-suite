@@ -54,5 +54,5 @@ public interface HttpRequestEntity
      *
      * @throws IOException
      */
-    public void writeContent(OutputStream out) throws IOException;
+    void writeContent(OutputStream out) throws IOException;
 }

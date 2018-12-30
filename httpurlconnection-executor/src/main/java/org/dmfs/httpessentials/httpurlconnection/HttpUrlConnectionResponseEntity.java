@@ -50,7 +50,7 @@ final class HttpUrlConnectionResponseEntity implements HttpResponseEntity
     public Optional<MediaType> contentType()
     {
         String mediaType = mConnection.getContentType();
-        return mediaType == null ? Absent.<MediaType>absent() : new Present<MediaType>(new StringMediaType(mediaType));
+        return mediaType == null ? Absent.<MediaType>absent() : new Present<>(new StringMediaType(mediaType));
     }
 
 

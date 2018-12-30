@@ -41,7 +41,7 @@ public class ParametrizingTest
 
 
     @Test
-    public void testAddSoleParam() throws Exception
+    public void testAddSoleParam()
     {
         HttpRequest mockRequest = mock(HttpRequest.class);
         RewritePolicy mockPolicy = mock(RewritePolicy.class);
@@ -54,7 +54,7 @@ public class ParametrizingTest
 
 
     @Test
-    public void testAddParam() throws Exception
+    public void testAddParam()
     {
         HttpRequest mockRequest = mock(HttpRequest.class);
         RewritePolicy mockPolicy = mock(RewritePolicy.class);
@@ -67,7 +67,7 @@ public class ParametrizingTest
 
 
     @Test
-    public void testReplaceSoleParam() throws Exception
+    public void testReplaceSoleParam()
     {
         HttpRequest mockRequest = mock(HttpRequest.class);
         RewritePolicy mockPolicy = mock(RewritePolicy.class);
@@ -80,7 +80,7 @@ public class ParametrizingTest
 
 
     @Test
-    public void testReplaceParam() throws Exception
+    public void testReplaceParam()
     {
         HttpRequest mockRequest = mock(HttpRequest.class);
         RewritePolicy mockPolicy = mock(RewritePolicy.class);
@@ -93,7 +93,7 @@ public class ParametrizingTest
 
 
     @Test
-    public void testMixedUpdate() throws Exception
+    public void testMixedUpdate()
     {
         HttpRequest mockRequest = mock(HttpRequest.class);
         RewritePolicy mockPolicy = mock(RewritePolicy.class);

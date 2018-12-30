@@ -27,7 +27,6 @@ import org.dmfs.httpessentials.executors.authorizing.utils.Parameter;
 import org.dmfs.httpessentials.types.Token;
 import org.dmfs.iterables.decorators.Flattened;
 import org.dmfs.iterables.elementary.Seq;
-import org.dmfs.iterators.Function;
 import org.dmfs.jems.charsequence.elementary.Hex;
 import org.dmfs.jems.messagedigest.MessageDigestFactory;
 import org.dmfs.jems.messagedigest.elementary.DigestFactory;
@@ -87,7 +86,7 @@ public final class DigestAuthorization implements Authorization
         final CharSequence nonce = mDigestChallenge.parameter(Tokens.NONCE).value();
 
         return new Flattened<>(
-                new Seq<Pair<Token, CharSequence>>(
+                new Seq<>(
                         new Parameter(Tokens.USERNAME, new Quoted(mUserCredentials.userName())),
                         new Parameter(Tokens.REALM, new Quoted(realm)),
                         new Parameter(Tokens.URI, new Quoted(mRequestUri.getRawPath())),
@@ -112,13 +111,6 @@ public final class DigestAuthorization implements Authorization
                 ),
                 new PresentValues<>(
                         new Mapped<>(
-                                new Function<CharSequence, Pair<Token, CharSequence>>()
-                                {
-                                    @Override
-                                    public Pair<Token, CharSequence> apply(CharSequence charSequence)
-                                    {
-                                        return new Parameter(Tokens.OPAQUE, new Quoted(charSequence));
-                                    }
-                                }, mDigestChallenge.parameter(Tokens.OPAQUE))));
+                                charSequence -> new Parameter(Tokens.OPAQUE, new Quoted(charSequence)), mDigestChallenge.parameter(Tokens.OPAQUE))));
     }
 }

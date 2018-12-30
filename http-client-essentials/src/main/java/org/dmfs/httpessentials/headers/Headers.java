@@ -36,7 +36,7 @@ public interface Headers extends Iterable<Header<?>>
      *
      * @return
      */
-    public boolean contains(HeaderType<?> headerType);
+    boolean contains(HeaderType<?> headerType);
 
     /**
      * Returns the value of the header of the given {@link SingletonHeaderType}.
@@ -49,7 +49,7 @@ public interface Headers extends Iterable<Header<?>>
      * @throws NoSuchElementException
      *         if no such header exists within these {@link Headers}.
      */
-    public <T> Header<T> header(SingletonHeaderType<T> headerType);
+    <T> Header<T> header(SingletonHeaderType<T> headerType);
 
     /**
      * Returns the value of the header of the given {@link ListHeaderType}.
@@ -62,7 +62,7 @@ public interface Headers extends Iterable<Header<?>>
      * @throws NoSuchElementException
      *         if no such header exists within these {@link Headers}.
      */
-    public <T> Header<List<T>> header(ListHeaderType<T> headerType);
+    <T> Header<List<T>> header(ListHeaderType<T> headerType);
 
     /**
      * Returns {@link Headers} that contain the given header. If another header of the same type already exists in this object, it is overridden with the new
@@ -73,7 +73,7 @@ public interface Headers extends Iterable<Header<?>>
      *
      * @return {@link Headers} that contain the given header.
      */
-    public <T> Headers withHeader(Header<T> header);
+    <T> Headers withHeader(Header<T> header);
 
     /**
      * Removes any header of the given {@link HeaderType} and returns the resulting {@link Headers}.
@@ -83,5 +83,5 @@ public interface Headers extends Iterable<Header<?>>
      *
      * @return {@link Headers} that don't contain any header of the given type.
      */
-    public <T> Headers withoutHeaderType(HeaderType<T> headerType);
+    <T> Headers withoutHeaderType(HeaderType<T> headerType);
 }

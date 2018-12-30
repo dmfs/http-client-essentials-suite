@@ -27,7 +27,6 @@ import org.dmfs.httpessentials.executors.authorizing.utils.Parameter;
 import org.dmfs.httpessentials.types.Token;
 import org.dmfs.iterables.decorators.Flattened;
 import org.dmfs.iterables.elementary.Seq;
-import org.dmfs.iterators.Filter;
 import org.dmfs.iterators.Function;
 import org.dmfs.jems.charsequence.elementary.Hex;
 import org.dmfs.jems.messagedigest.MessageDigestFactory;
@@ -95,25 +94,11 @@ public final class AuthDigestAuthorization implements Authorization
 
         final CharSequence username = mUserCredentials.userName();
         CharSequence user = new Mapped<>(
-                new Function<CharSequence, CharSequence>()
-                {
-                    @Override
-                    public CharSequence apply(CharSequence argument)
-                    {
-                        return new Hex(new Digest(digestFactory, username, ":", realm).value());
-                    }
-                },
-                new Filtered<>(new Filter<CharSequence>()
-                {
-                    @Override
-                    public boolean iterate(CharSequence argument)
-                    {
-                        return "true".equalsIgnoreCase(argument.toString());
-                    }
-                }, userhash)).value(username);
+                (Function<CharSequence, CharSequence>) argument -> new Hex(new Digest(digestFactory, username, ":", realm).value()),
+                new Filtered<>(argument -> "true".equalsIgnoreCase(argument.toString()), userhash)).value(username);
 
         return new Flattened<>(
-                new Seq<Pair<Token, CharSequence>>(
+                new Seq<>(
                         new Parameter(Tokens.USERNAME, new Quoted(user)),
                         new Parameter(Tokens.REALM, new Quoted(realm)),
                         new Parameter(Tokens.NONCE, new Quoted(nonce)),
@@ -144,22 +129,11 @@ public final class AuthDigestAuthorization implements Authorization
                                 ).value())))),
                 new PresentValues<>(
                         new Mapped<>(
-                                new Function<CharSequence, Pair<Token, CharSequence>>()
-                                {
-                                    @Override
-                                    public Pair<Token, CharSequence> apply(CharSequence charSequence)
-                                    {
-                                        return new Parameter(Tokens.OPAQUE, new Quoted(charSequence));
-                                    }
-                                }, mDigestChallenge.parameter(Tokens.OPAQUE)),
-                        new Mapped<>(new Function<CharSequence, Pair<Token, CharSequence>>()
-                        {
-                            @Override
-                            public Pair<Token, CharSequence> apply(CharSequence argument)
-                            {
-                                return new Parameter(Tokens.USERHASH, argument);
-                            }
-                        }, mDigestChallenge.parameter(Tokens.USERHASH))));
+                                charSequence -> new Parameter(Tokens.OPAQUE, new Quoted(charSequence)),
+                                mDigestChallenge.parameter(Tokens.OPAQUE)),
+                        new Mapped<>(
+                                argument -> new Parameter(Tokens.USERHASH, argument),
+                                mDigestChallenge.parameter(Tokens.USERHASH))));
     }
 
 

@@ -52,7 +52,7 @@ public final class BasicUserAgent implements UserAgent
     @Override
     public Iterator<Product> iterator()
     {
-        return new Serialized<>(new SingletonIterator<Product>(mProductToAppend),
+        return new Serialized<>(new SingletonIterator<>(mProductToAppend),
                 mOriginalUserAgent.iterator());
     }
 

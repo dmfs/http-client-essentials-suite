@@ -80,10 +80,10 @@ public final class AuthenticatedDigestAuthState implements AuthState
         if (!mDigestChallenge.parameter(Tokens.QOP).isPresent() || !mDigestChallenge.parameter(Tokens.OPAQUE)
                 .isPresent() || !mDigestChallenge.parameter(Tokens.REALM).isPresent())
         {
-            return new Present<Authorization>(new DigestAuthorization(mHttpMethod, mUri, mDigestChallenge, mCredentials));
+            return new Present<>(new DigestAuthorization(mHttpMethod, mUri, mDigestChallenge, mCredentials));
         }
         // qop must be auth, we don't support auth-int and wouldn't be here if auth wasn't an option
-        return new Present<Authorization>(
+        return new Present<>(
                 new AuthDigestAuthorization(mHttpMethod, mUri, mDigestChallenge, mCredentials, new Hex(new SecureRandom().generateSeed(16)), mNonceCount));
     }
 
@@ -92,14 +92,7 @@ public final class AuthenticatedDigestAuthState implements AuthState
     public AuthStrategy prematureAuthStrategy(Optional<AuthInfo> authInfo)
     {
         // return an AuthStrategy which can authenticate requests to the same realm prematurely
-        return new AuthStrategy()
-        {
-            @Override
-            public AuthState authState(HttpMethod method, URI uri, AuthState fallback)
-            {
-                return new AuthenticatedDigestAuthState(method, uri, mCredentials, fallback, mDigestChallenge, mNonceCount + 1);
-            }
-        };
+        return (method, uri, fallback) -> new AuthenticatedDigestAuthState(method, uri, mCredentials, fallback, mDigestChallenge, mNonceCount + 1);
     }
 
 }

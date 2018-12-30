@@ -77,7 +77,7 @@ public final class StringResponseHandler implements HttpResponseHandler<String>
 
 
     @Override
-    public String handleResponse(HttpResponse response) throws IOException, ProtocolError, ProtocolException
+    public String handleResponse(HttpResponse response) throws IOException
     {
         HttpResponseEntity entity = response.responseEntity();
 
@@ -86,8 +86,7 @@ public final class StringResponseHandler implements HttpResponseHandler<String>
         StringBuilder builder = new StringBuilder((int) (long) entity.contentLength().value((long) BUFFER_SIZE));
 
         // note: we already read the content in larger chunks so there should be no need for a BufferedReader
-        Reader reader = new InputStreamReader(entity.contentStream(), contentType.value(mDefaultMediaType).charset(mDefaultCharset));
-        try
+        try (Reader reader = new InputStreamReader(entity.contentStream(), contentType.value(mDefaultMediaType).charset(mDefaultCharset)))
         {
             int read;
             final char[] buffer = new char[BUFFER_SIZE];
@@ -98,10 +97,6 @@ public final class StringResponseHandler implements HttpResponseHandler<String>
             }
 
             return builder.toString();
-        }
-        finally
-        {
-            reader.close();
         }
     }
 }

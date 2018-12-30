@@ -20,7 +20,6 @@ package org.dmfs.httpessentials.executors.common.decorators;
 import org.dmfs.httpessentials.client.HttpRequestExecutor;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
-import org.dmfs.httpessentials.executors.common.decorators.BottomBranded;
 import org.dmfs.httpessentials.headers.Header;
 import org.dmfs.httpessentials.mockutils.executors.CapturingExecutor;
 import org.dmfs.httpessentials.mockutils.requests.EmptyRequest;

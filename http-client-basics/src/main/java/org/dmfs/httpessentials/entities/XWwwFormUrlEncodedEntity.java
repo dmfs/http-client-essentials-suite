@@ -20,9 +20,7 @@ package org.dmfs.httpessentials.entities;
 import org.dmfs.httpessentials.client.HttpRequestEntity;
 import org.dmfs.httpessentials.types.StructuredMediaType;
 import org.dmfs.iterables.decorators.Mapped;
-import org.dmfs.iterators.Function;
 import org.dmfs.jems.pair.Pair;
-import org.dmfs.jems.single.Single;
 import org.dmfs.rfc3986.encoding.XWwwFormUrlEncoded;
 import org.dmfs.rfc3986.parameters.Parameter;
 import org.dmfs.rfc3986.parameters.ParameterList;
@@ -42,14 +40,7 @@ public final class XWwwFormUrlEncodedEntity extends DelegatingRequestEntity
         this(new BasicParameterList(
                 new Mapped<>(
                         values,
-                        new Function<Pair<CharSequence, CharSequence>, Parameter>()
-                        {
-                            @Override
-                            public Parameter apply(final Pair<CharSequence, CharSequence> argument)
-                            {
-                                return new PairParameter(argument);
-                            }
-                        })));
+                        PairParameter::new)));
     }
 
 
@@ -57,14 +48,7 @@ public final class XWwwFormUrlEncodedEntity extends DelegatingRequestEntity
     public XWwwFormUrlEncodedEntity(final ParameterList values)
     {
         super(new TextRequestEntity(new StructuredMediaType("application", "x-www-form-urlencoded"),
-                new Single<CharSequence>()
-                {
-                    @Override
-                    public CharSequence value()
-                    {
-                        return new XWwwFormUrlEncoded(values);
-                    }
-                }));
+                () -> new XWwwFormUrlEncoded(values)));
     }
 
 

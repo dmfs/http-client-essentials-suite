@@ -85,7 +85,7 @@ public class HttpUrlConnectionExecutorTest
 
 
             @Override
-            public HttpResponseHandler<String> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
+            public HttpResponseHandler<String> responseHandler(HttpResponse response)
             {
                 assertThat(response.responseEntity().contentType(), PresentMatcher.<MediaType>isPresent(new StringMediaType("application/json")));
                 return new StringResponseHandler();
@@ -123,7 +123,7 @@ public class HttpUrlConnectionExecutorTest
                     @Override
                     public Optional<MediaType> contentType()
                     {
-                        return new Present<MediaType>(new StringMediaType("text/plain"));
+                        return new Present<>(new StringMediaType("text/plain"));
                     }
 
 
@@ -151,7 +151,7 @@ public class HttpUrlConnectionExecutorTest
 
 
             @Override
-            public HttpResponseHandler<String> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
+            public HttpResponseHandler<String> responseHandler(HttpResponse response)
             {
                 assertThat(response.responseEntity().contentType(), PresentMatcher.<MediaType>isPresent(new StringMediaType("application/json")));
                 // header names should be case insensitive

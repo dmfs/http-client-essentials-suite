@@ -243,7 +243,7 @@ public class StringResponseHandlerTest
 
 
                 @Override
-                public InputStream contentStream() throws IOException
+                public InputStream contentStream()
                 {
                     return new ByteArrayInputStream(mResponse);
                 }
@@ -252,7 +252,7 @@ public class StringResponseHandlerTest
                 @Override
                 public Optional<Long> contentLength()
                 {
-                    return mContentLength < 0 ? Absent.<Long>absent() : new Present<Long>((long) mContentLength);
+                    return mContentLength < 0 ? Absent.<Long>absent() : new Present<>((long) mContentLength);
                 }
             };
         }

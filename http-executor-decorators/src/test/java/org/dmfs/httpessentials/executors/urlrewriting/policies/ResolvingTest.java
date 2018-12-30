@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 public class ResolvingTest
 {
     @Test
-    public void testRewrittenRelative() throws Exception
+    public void testRewrittenRelative()
     {
         HttpRequest mockRequest = mock(HttpRequest.class);
         RewritePolicy mockPolicy = mock(RewritePolicy.class);
@@ -47,7 +47,7 @@ public class ResolvingTest
 
 
     @Test
-    public void testRewrittenAbsolute() throws Exception
+    public void testRewrittenAbsolute()
     {
         HttpRequest mockRequest = mock(HttpRequest.class);
         RewritePolicy mockPolicy = mock(RewritePolicy.class);

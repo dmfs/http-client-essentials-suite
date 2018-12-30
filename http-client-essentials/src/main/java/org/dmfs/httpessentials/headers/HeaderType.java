@@ -39,7 +39,7 @@ public interface HeaderType<ValueType> extends EntityType<ValueType>
      * @return The header name, never <code>null</code>.
      */
     @Override
-    public String name();
+    String name();
 
     /**
      * Factory method to create {@link Header}s of this type from the given {@link String} representation.
@@ -50,7 +50,7 @@ public interface HeaderType<ValueType> extends EntityType<ValueType>
      * @return A new {@link Header} instance.
      */
     @Override
-    public Header<ValueType> entityFromString(String headerValueString);
+    Header<ValueType> entityFromString(String headerValueString);
 
     /**
      * Factory method to create {@link Header}s of this type from a value.
@@ -61,7 +61,7 @@ public interface HeaderType<ValueType> extends EntityType<ValueType>
      * @return A new {@link Header} instance.
      */
     @Override
-    public Header<ValueType> entity(ValueType value);
+    Header<ValueType> entity(ValueType value);
 
     /**
      * Returns the string representation of the given value as defined for this {@link HeaderType}.
@@ -72,5 +72,5 @@ public interface HeaderType<ValueType> extends EntityType<ValueType>
      * @return A header value String representing the given value.
      */
     @Override
-    public String valueString(ValueType headerValue);
+    String valueString(ValueType headerValue);
 }

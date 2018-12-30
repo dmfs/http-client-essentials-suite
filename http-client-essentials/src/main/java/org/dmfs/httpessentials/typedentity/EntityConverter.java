@@ -36,7 +36,7 @@ public interface EntityConverter<ValueType>
      *
      * @return The value as an object.
      */
-    public ValueType value(String valueString);
+    ValueType value(String valueString);
 
     /**
      * Renders the given entity value into its string representation.
@@ -46,5 +46,5 @@ public interface EntityConverter<ValueType>
      *
      * @return The string representation of the value.
      */
-    public String valueString(ValueType value);
+    String valueString(ValueType value);
 }

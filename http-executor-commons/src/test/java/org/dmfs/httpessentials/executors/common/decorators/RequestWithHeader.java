@@ -22,13 +22,9 @@ import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.client.HttpRequestEntity;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseHandler;
-import org.dmfs.httpessentials.exceptions.ProtocolError;
-import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.headers.EmptyHeaders;
 import org.dmfs.httpessentials.headers.Header;
 import org.dmfs.httpessentials.headers.Headers;
-
-import java.io.IOException;
 
 
 /**
@@ -70,7 +66,7 @@ public class RequestWithHeader<T> implements HttpRequest<T>
 
 
     @Override
-    public HttpResponseHandler<T> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
+    public HttpResponseHandler<T> responseHandler(HttpResponse response)
     {
         return null;
     }

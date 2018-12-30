@@ -17,9 +17,7 @@
 
 package org.dmfs.httpessentials.executors.authorizing.authschemes;
 
-import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.executors.authorizing.AuthScheme;
-import org.dmfs.httpessentials.executors.authorizing.AuthState;
 import org.dmfs.httpessentials.executors.authorizing.AuthStrategy;
 import org.dmfs.httpessentials.executors.authorizing.Challenge;
 import org.dmfs.httpessentials.executors.authorizing.CredentialsStore;
@@ -32,10 +30,8 @@ import org.dmfs.httpessentials.executors.authorizing.utils.ChallengeFilter;
 import org.dmfs.httpessentials.executors.authorizing.utils.SimpleParametrized;
 import org.dmfs.iterables.decorators.Fluent;
 import org.dmfs.iterators.Function;
-import org.dmfs.jems.function.BiFunction;
 import org.dmfs.jems.pair.Pair;
 import org.dmfs.jems.pair.elementary.ValuePair;
-import org.dmfs.optional.Optional;
 import org.dmfs.optional.composite.Zipped;
 import org.dmfs.optional.iterable.PresentValues;
 
@@ -55,41 +51,13 @@ public final class Basic implements AuthScheme<UserCredentials>
         return new PresentValues<>(
                 new Fluent<>(challenges)
                         .filtered(new ChallengeFilter(Tokens.BASIC))
-                        .mapped(new Function<Challenge, Parametrized>()
-                        {
-                            @Override
-                            public Parametrized apply(Challenge argument)
-                            {
-                                return new SimpleParametrized(argument.challenge());
-                            }
-                        })
-                        .mapped(new Function<Parametrized, Optional<Pair<CharSequence, AuthStrategy>>>()
-                        {
-                            @Override
-                            public Optional<Pair<CharSequence, AuthStrategy>> apply(final Parametrized challenge)
-                            {
-                                return new Zipped<>(
-                                        credentialsStore.credentials(new UriScope(uri)),
-                                        challenge.parameter(Tokens.REALM),
-                                        new BiFunction<UserCredentials, CharSequence, Pair<CharSequence, AuthStrategy>>()
-                                        {
-                                            @Override
-                                            public Pair<CharSequence, AuthStrategy> value(final UserCredentials userCredentials, CharSequence charSequence)
-                                            {
-                                                return new ValuePair<CharSequence, AuthStrategy>(charSequence,
-                                                        new AuthStrategy()
-                                                        {
-                                                            @Override
-                                                            public AuthState authState(HttpMethod method, URI uri, AuthState fallback)
-                                                            {
-                                                                return new AuthenticatedBasicAuthState(userCredentials, fallback);
-                                                            }
-                                                        }
-                                                );
-                                            }
-                                        });
-                            }
-                        })
+                        .mapped((Function<Challenge, Parametrized>) argument -> new SimpleParametrized(argument.challenge()))
+                        .mapped(challenge -> new Zipped<>(
+                                credentialsStore.credentials(new UriScope(uri)),
+                                challenge.parameter(Tokens.REALM),
+                                (userCredentials, charSequence) -> new ValuePair<CharSequence, AuthStrategy>(charSequence,
+                                        (method, uri1, fallback) -> new AuthenticatedBasicAuthState(userCredentials, fallback)
+                                )))
         );
     }
 }
