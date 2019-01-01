@@ -44,7 +44,7 @@ final class OkHttpRequestBody extends RequestBody
 
 
     @Override
-    public long contentLength() throws IOException
+    public long contentLength()
     {
         return mRequestEntity.contentLength().value(-1L);
     }

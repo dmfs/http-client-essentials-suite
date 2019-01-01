@@ -22,8 +22,6 @@ import org.dmfs.httpessentials.client.HttpRequestExecutor;
 import org.dmfs.httpessentials.decoration.HeaderDecorated;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
-import org.dmfs.httpessentials.exceptions.RedirectionException;
-import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
 import org.dmfs.httpessentials.executors.common.decoration.BottomUserAgentHeaderDecoration;
 import org.dmfs.httpessentials.types.Product;
 
@@ -51,9 +49,9 @@ public final class BottomBranded implements HttpRequestExecutor
 
 
     @Override
-    public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
+    public <T> T execute(URI uri, HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException
     {
         return mExecutor.execute(uri,
-                new HeaderDecorated<T>(request, new BottomUserAgentHeaderDecoration(mBottomProduct)));
+                new HeaderDecorated<>(request, new BottomUserAgentHeaderDecoration(mBottomProduct)));
     }
 }

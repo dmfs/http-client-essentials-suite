@@ -68,7 +68,7 @@ public final class BasicAuthorization implements Authorization
     {
         try
         {
-            return new Present<CharSequence>(
+            return new Present<>(
                     Base64.encodeBytes(String.format(Locale.ENGLISH, "%s:%s", mCredentials.userName(), mCredentials.password()).getBytes(mEncoding),
                             Base64.NO_OPTIONS));
         }

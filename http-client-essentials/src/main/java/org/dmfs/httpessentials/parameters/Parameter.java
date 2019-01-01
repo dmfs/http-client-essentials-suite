@@ -33,6 +33,6 @@ public interface Parameter<ValueType> extends Entity<ValueType>
      * @return A {@link ParameterType}.
      */
     @Override
-    public ParameterType<ValueType> type();
+    ParameterType<ValueType> type();
 
 }

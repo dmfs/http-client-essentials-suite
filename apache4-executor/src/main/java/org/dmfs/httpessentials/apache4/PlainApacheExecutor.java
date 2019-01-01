@@ -24,8 +24,6 @@ import org.dmfs.httpessentials.client.HttpRequestExecutor;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
-import org.dmfs.httpessentials.exceptions.RedirectionException;
-import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
 import org.dmfs.httpessentials.headers.Header;
 import org.dmfs.jems.single.Single;
 
@@ -51,7 +49,7 @@ public final class PlainApacheExecutor implements HttpRequestExecutor
 
 
     @Override
-    public <T> T execute(final URI uri, final HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException, UnexpectedStatusException
+    public <T> T execute(final URI uri, final HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException
     {
         HttpUriRequest apacheRequest = request.method().supportsRequestPayload()
                 ? new ApacheEntityRequest<>(uri, request)

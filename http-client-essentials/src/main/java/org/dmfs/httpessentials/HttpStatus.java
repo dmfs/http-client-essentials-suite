@@ -30,16 +30,16 @@ public interface HttpStatus
 {
     /*
      * Dummy HttpStatus for internal use.
-	 */
+     */
 
     /**
      * A dummy HTTP status which can be used to return "no status". This is the <code>null</code> object.
      */
     HttpStatus NONE = new NoneHttpStatus();
 
-	/*
+    /*
      * 1xx Informational status codes, see http://tools.ietf.org/html/rfc7231#section-6.2
-	 */
+     */
 
     /**
      * HTTP status: <a href="http://tools.ietf.org/html/rfc7231#section-6.2.1">100 Continue</a>

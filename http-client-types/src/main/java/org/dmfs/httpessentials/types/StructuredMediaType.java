@@ -20,8 +20,6 @@ package org.dmfs.httpessentials.types;
 import org.dmfs.httpessentials.parameters.Parameter;
 import org.dmfs.httpessentials.parameters.ParameterType;
 import org.dmfs.httpessentials.parameters.Parameters;
-import org.dmfs.iterators.Filter;
-import org.dmfs.iterators.Function;
 import org.dmfs.iterators.decorators.Filtered;
 import org.dmfs.iterators.decorators.Mapped;
 import org.dmfs.iterators.elementary.Seq;
@@ -145,23 +143,8 @@ public final class StructuredMediaType implements MediaType
     {
         return new Mapped<>(
                 new Filtered<>(new Seq<>(mParameters),
-                        new Filter<Parameter<?>>()
-                        {
-                            @Override
-                            public boolean iterate(Parameter<?> element)
-                            {
-                                return parameterType.equals(element.type());
-                            }
-                        }),
-                new Function<Parameter<?>, Parameter<T>>()
-                {
-                    @SuppressWarnings("unchecked")
-                    @Override
-                    public Parameter<T> apply(Parameter<?> element)
-                    {
-                        return (Parameter<T>) element;
-                    }
-                });
+                        element -> parameterType.equals(element.type())),
+                element -> (Parameter<T>) element);
     }
 
 
@@ -185,9 +168,8 @@ public final class StructuredMediaType implements MediaType
         StringBuilder result = new StringBuilder(mMainType);
         result.append('/');
         result.append(mSubType);
-        for (int i = 0, count = mParameters.length; i < count; ++i)
+        for (Parameter<?> param : mParameters)
         {
-            Parameter<?> param = mParameters[i];
             result.append(';');
             result.append(param.type().name());
             result.append('=');

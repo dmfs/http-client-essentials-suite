@@ -41,7 +41,7 @@ import static org.mockito.Mockito.verify;
 public class BinaryRequestEntityTest
 {
     @Test
-    public void testContentType() throws Exception
+    public void testContentType()
     {
         assertThat(new BinaryRequestEntity(new StructuredMediaType("application", "text"), dummy(Single.class)).contentType(),
                 PresentMatcher.<MediaType>isPresent(new StringMediaType("application/text")));
@@ -49,7 +49,7 @@ public class BinaryRequestEntityTest
 
 
     @Test
-    public void testContentLength() throws Exception
+    public void testContentLength()
     {
         assertThat(new BinaryRequestEntity(dummy(MediaType.class), new ValueSingle<>(new byte[0])).contentLength(), isPresent(0L));
         assertThat(new BinaryRequestEntity(dummy(MediaType.class), new ValueSingle<>(new byte[1000])).contentLength(), isPresent(1000L));

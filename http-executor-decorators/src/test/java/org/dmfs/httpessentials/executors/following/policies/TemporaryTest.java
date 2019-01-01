@@ -42,7 +42,7 @@ public class TemporaryTest
      * @throws Exception
      */
     @Test
-    public void testAffectsTemporary() throws Exception
+    public void testAffectsTemporary()
     {
         HttpResponse mockResponse = mock(HttpResponse.class);
 
@@ -74,7 +74,7 @@ public class TemporaryTest
      * @throws Exception
      */
     @Test
-    public void testAffects2() throws Exception
+    public void testAffects2()
     {
         HttpResponse mockResponse = mock(HttpResponse.class);
 

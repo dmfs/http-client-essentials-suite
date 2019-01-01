@@ -59,14 +59,14 @@ public final class BasicSingletonHeaderType<ValueType> implements SingletonHeade
     @Override
     public Header<ValueType> entityFromString(String headerValueString)
     {
-        return new BasicHeader<ValueType>(this, mValueConverter.value(headerValueString));
+        return new BasicHeader<>(this, mValueConverter.value(headerValueString));
     }
 
 
     @Override
     public Header<ValueType> entity(ValueType value)
     {
-        return new BasicHeader<ValueType>(this, value);
+        return new BasicHeader<>(this, value);
     }
 
 

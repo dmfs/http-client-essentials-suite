@@ -52,7 +52,7 @@ public class TextRequestEntityTest
     {
         MediaType mockMediaType = failingMock(MediaType.class);
         doReturn("utf-8").when(mockMediaType).charset("utf-8");
-        assertThat(new TextRequestEntity(mockMediaType, new ValueSingle<CharSequence>("")).contentLength(), isPresent(0L));
+        assertThat(new TextRequestEntity(mockMediaType, new ValueSingle<>("")).contentLength(), isPresent(0L));
     }
 
 
@@ -62,7 +62,7 @@ public class TextRequestEntityTest
         // utf-8 encodes äöü as 2 bytes each
         MediaType mockMediaType = failingMock(MediaType.class);
         doReturn("utf-8").when(mockMediaType).charset("utf-8");
-        assertThat(new TextRequestEntity(mockMediaType, new ValueSingle<CharSequence>("abcäöü")).contentLength(), isPresent(9L));
+        assertThat(new TextRequestEntity(mockMediaType, new ValueSingle<>("abcäöü")).contentLength(), isPresent(9L));
     }
 
 
@@ -72,7 +72,7 @@ public class TextRequestEntityTest
         // latin1 encodes äöü as 1 byte each
         MediaType mockMediaType = failingMock(MediaType.class);
         doReturn("latin1").when(mockMediaType).charset("utf-8");
-        assertThat(new TextRequestEntity(mockMediaType, new ValueSingle<CharSequence>("abcäöü")).contentLength(), isPresent(6L));
+        assertThat(new TextRequestEntity(mockMediaType, new ValueSingle<>("abcäöü")).contentLength(), isPresent(6L));
     }
 
 
@@ -84,7 +84,7 @@ public class TextRequestEntityTest
         doReturn("utf-8").when(mockMediaType).charset("utf-8");
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        new TextRequestEntity(mockMediaType, new ValueSingle<CharSequence>("abcäöü")).writeContent(out);
+        new TextRequestEntity(mockMediaType, new ValueSingle<>("abcäöü")).writeContent(out);
 
         assertThat(out.toByteArray(), is("abcäöü".getBytes("utf-8")));
     }
@@ -98,7 +98,7 @@ public class TextRequestEntityTest
         doReturn("latin1").when(mockMediaType).charset("utf-8");
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        new TextRequestEntity(mockMediaType, new ValueSingle<CharSequence>("abcäöü")).writeContent(out);
+        new TextRequestEntity(mockMediaType, new ValueSingle<>("abcäöü")).writeContent(out);
 
         assertThat(out.toByteArray(), is("abcäöü".getBytes("latin1")));
     }

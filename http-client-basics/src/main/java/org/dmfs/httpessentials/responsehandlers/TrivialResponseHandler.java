@@ -48,7 +48,7 @@ public final class TrivialResponseHandler<T> implements HttpResponseHandler<T>
 
 
     @Override
-    public T handleResponse(HttpResponse response) throws IOException, ProtocolError, ProtocolException
+    public T handleResponse(HttpResponse response) throws IOException
     {
         response.responseEntity().contentStream().close();
         return mResult;

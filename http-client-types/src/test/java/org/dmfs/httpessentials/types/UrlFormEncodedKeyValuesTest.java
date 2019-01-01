@@ -50,7 +50,7 @@ public class UrlFormEncodedKeyValuesTest
 
 
     @Test
-    public void testFirstParameter() throws Exception
+    public void testFirstParameter()
     {
         assertEquals(PARAM_KEY.entity("defaultValue"),
                 new UrlFormEncodedKeyValues("").firstParameter(PARAM_KEY, "defaultValue"));
@@ -88,7 +88,7 @@ public class UrlFormEncodedKeyValuesTest
 
 
     @Test
-    public void testParameters() throws Exception
+    public void testParameters()
     {
         assertIteratorsEqual(Collections.<Parameter<String>>emptyIterator(),
                 new UrlFormEncodedKeyValues("").parameters(PARAM_KEY));
@@ -104,7 +104,7 @@ public class UrlFormEncodedKeyValuesTest
 
 
     @Test
-    public void testHasParameter() throws Exception
+    public void testHasParameter()
     {
         // test empty keys
         assertTrue(new UrlFormEncodedKeyValues("").hasParameter(PARAM_EMPTY_KEY));
@@ -124,7 +124,7 @@ public class UrlFormEncodedKeyValuesTest
 
 
     @Test
-    public void testToString() throws Exception
+    public void testToString()
     {
         assertEquals("", new UrlFormEncodedKeyValues("").toString());
         assertEquals("key=value", new UrlFormEncodedKeyValues("key=value").toString());

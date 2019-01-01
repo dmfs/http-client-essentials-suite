@@ -17,7 +17,6 @@
 
 package org.dmfs.httpessentials.headers;
 
-import org.dmfs.iterators.Filter;
 import org.dmfs.iterators.SingletonIterator;
 import org.dmfs.iterators.decorators.Filtered;
 import org.dmfs.iterators.decorators.Serialized;
@@ -56,14 +55,7 @@ public final class UpdatedHeaders implements Headers
     public Iterator<Header<?>> iterator()
     {
         return new Serialized<>(
-                new Filtered<>(mHeaders.iterator(), new Filter<Header<?>>()
-                {
-                    @Override
-                    public boolean iterate(Header<?> element)
-                    {
-                        return !element.type().equals(mNewHeader.type());
-                    }
-                }), new SingletonIterator<Header<?>>(mNewHeader));
+                new Filtered<>(mHeaders.iterator(), element -> !element.type().equals(mNewHeader.type())), new SingletonIterator<>(mNewHeader));
     }
 
 

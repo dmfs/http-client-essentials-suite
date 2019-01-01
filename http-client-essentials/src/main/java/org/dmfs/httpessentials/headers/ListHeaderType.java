@@ -33,5 +33,5 @@ import java.util.List;
  */
 public interface ListHeaderType<ValueType> extends HeaderType<List<ValueType>>
 {
-    public Header<List<ValueType>> merged(Header<List<ValueType>> value1, Header<List<ValueType>> value2);
+    Header<List<ValueType>> merged(Header<List<ValueType>> value1, Header<List<ValueType>> value2);
 }

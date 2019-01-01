@@ -41,7 +41,7 @@ import static org.mockito.Mockito.mock;
 public class AuthDigestAuthorizationTest
 {
     @Test
-    public void testParameters() throws Exception
+    public void testParameters()
     {
         Parametrized mockChallenge = mock(Parametrized.class);
         doReturn(new Present<>("testrealm@host.com")).when(mockChallenge).parameter(Tokens.REALM);
@@ -65,7 +65,7 @@ public class AuthDigestAuthorizationTest
 
 
     @Test
-    public void testParameters2() throws Exception
+    public void testParameters2()
     {
         Parametrized mockChallenge = mock(Parametrized.class);
         doReturn(new Present<>("http-auth@example.org")).when(mockChallenge).parameter(Tokens.REALM);
@@ -89,7 +89,7 @@ public class AuthDigestAuthorizationTest
 
 
     @Test
-    public void testParameters3() throws Exception
+    public void testParameters3()
     {
         Parametrized mockChallenge = mock(Parametrized.class);
         doReturn(new Present<>("http-auth@example.org")).when(mockChallenge).parameter(Tokens.REALM);
@@ -113,7 +113,7 @@ public class AuthDigestAuthorizationTest
 
 
     @Test
-    public void testParameters4() throws Exception
+    public void testParameters4()
     {
         Parametrized mockChallenge = mock(Parametrized.class);
         doReturn(new Present<>("http-auth@example.org")).when(mockChallenge).parameter(Tokens.REALM);

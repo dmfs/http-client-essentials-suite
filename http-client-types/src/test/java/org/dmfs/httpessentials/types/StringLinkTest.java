@@ -36,7 +36,7 @@ public class StringLinkTest
 {
 
     @Test
-    public void target() throws Exception
+    public void target()
     {
         assertEquals(URI.create("test"), new StringLink("<test>").target());
         assertEquals(URI.create("test"), new StringLink("<test>; rel=testrel").target());
@@ -44,7 +44,7 @@ public class StringLinkTest
 
 
     @Test
-    public void context() throws Exception
+    public void context()
     {
         assertEquals(URI.create("testcontext"), new StringLink("<test>").context(URI.create("testcontext")));
         assertEquals(URI.create("testcontext"), new StringLink("<test>; rel=testrel; anchor=\"testcontext\"").context(URI.create("fallbackcontext")));
@@ -52,7 +52,7 @@ public class StringLinkTest
 
 
     @Test
-    public void languages() throws Exception
+    public void languages()
     {
         assertEquals(Collections.emptySet(), new StringLink("<test>").languages());
         assertEquals(new HashSet<>(Arrays.asList(Locale.GERMANY)), new StringLink("<test>; hreflang=de-DE").languages());
@@ -61,7 +61,7 @@ public class StringLinkTest
 
 
     @Test
-    public void title() throws Exception
+    public void title()
     {
         assertEquals("", new StringLink("<test>").title());
         assertEquals("TITLE", new StringLink("<test>; title=\"TITLE\"").title());
@@ -69,7 +69,7 @@ public class StringLinkTest
 
 
     @Test
-    public void mediaType() throws Exception
+    public void mediaType()
     {
         assertNull(new StringLink("<test>").mediaType());
         assertEquals(new StructuredMediaType("text", "plain"), new StringLink("<test>; type=text/plain").mediaType());
@@ -78,7 +78,7 @@ public class StringLinkTest
 
 
     @Test
-    public void testRelationTypes() throws Exception
+    public void testRelationTypes()
     {
         assertEquals(new HashSet<>(), new StringLink("<test>").relationTypes());
         assertEquals(new HashSet<>(), new StringLink("<test>; type=\"text/plain\"").relationTypes());
@@ -92,7 +92,7 @@ public class StringLinkTest
 
 
     @Test
-    public void reverseRelationTypes() throws Exception
+    public void reverseRelationTypes()
     {
         assertEquals(new HashSet<>(), new StringLink("<test>").reverseRelationTypes());
         assertEquals(new HashSet<>(), new StringLink("<test>; type=\"text/plain\"").reverseRelationTypes());

@@ -40,7 +40,7 @@ public class EmptyHttpRequestEntityTest
 
 
     @Test
-    public void testContentLength() throws IOException
+    public void testContentLength()
     {
         // there is no content, so it can't have any length, not even 0
         assertThat(EmptyHttpRequestEntity.INSTANCE.contentLength(), AbsentMatcher.<Long>isAbsent());
@@ -54,7 +54,7 @@ public class EmptyHttpRequestEntityTest
         {
 
             @Override
-            public void write(int b) throws IOException
+            public void write(int b)
             {
                 fail("writeContent did write something!");
             }

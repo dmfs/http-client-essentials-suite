@@ -33,7 +33,7 @@ public interface EntityType<ValueType>
      *
      * @return The type name, never <code>null</code>.
      */
-    public String name();
+    String name();
 
     /**
      * Factory method to create {@link Entity}s of this type from the given {@link String} representation.
@@ -43,7 +43,7 @@ public interface EntityType<ValueType>
      *
      * @return A new {@link Entity} instance.
      */
-    public Entity<ValueType> entityFromString(String valueString);
+    Entity<ValueType> entityFromString(String valueString);
 
     /**
      * Convert a string to a value of type &lt;ValueType&gt;
@@ -53,7 +53,7 @@ public interface EntityType<ValueType>
      *
      * @return A new entity value.
      */
-    public ValueType valueFromString(String valueString);
+    ValueType valueFromString(String valueString);
 
     /**
      * Factory method to create {@link Entity}s of this {@link EntityType} from a value.
@@ -63,7 +63,7 @@ public interface EntityType<ValueType>
      *
      * @return A new {@link Entity} instance.
      */
-    public Entity<ValueType> entity(ValueType value);
+    Entity<ValueType> entity(ValueType value);
 
     /**
      * Returns the string representation of the given entity value as defined for this {@link EntityType}.
@@ -73,6 +73,6 @@ public interface EntityType<ValueType>
      *
      * @return A value String representing the given value.
      */
-    public String valueString(ValueType value);
+    String valueString(ValueType value);
 
 }

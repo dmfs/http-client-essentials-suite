@@ -17,11 +17,9 @@
 
 package org.dmfs.httpessentials.apache4;
 
-import org.apache.http.Header;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.httpessentials.types.StringMediaType;
-import org.dmfs.iterators.Function;
 import org.dmfs.optional.Absent;
 import org.dmfs.optional.NullSafe;
 import org.dmfs.optional.Optional;
@@ -49,14 +47,7 @@ public class EssentialsHttpResponseEntity implements HttpResponseEntity
     @Override
     public Optional<MediaType> contentType()
     {
-        return new Mapped<>(new Function<Header, MediaType>()
-        {
-            @Override
-            public MediaType apply(Header argument)
-            {
-                return new StringMediaType(argument.getValue());
-            }
-        }, new NullSafe<>(mResponse.getEntity().getContentType()));
+        return new Mapped<>(contentType -> new StringMediaType(contentType.getValue()), new NullSafe<>(mResponse.getEntity().getContentType()));
     }
 
 

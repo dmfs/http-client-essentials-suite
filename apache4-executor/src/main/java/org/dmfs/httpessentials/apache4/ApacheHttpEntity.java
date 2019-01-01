@@ -22,8 +22,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.message.BasicHeader;
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.headers.HttpHeaders;
-import org.dmfs.httpessentials.types.MediaType;
-import org.dmfs.iterators.Function;
 import org.dmfs.optional.decorators.Mapped;
 
 import java.io.IOException;
@@ -73,14 +71,7 @@ final class ApacheHttpEntity implements HttpEntity
     public Header getContentType()
     {
         return new Mapped<>(
-                new Function<MediaType, Header>()
-                {
-                    @Override
-                    public Header apply(MediaType argument)
-                    {
-                        return new BasicHeader("content-type", argument.type());
-                    }
-                },
+                contentType -> new BasicHeader("content-type", contentType.type()),
                 mRequest.requestEntity().contentType()).value(null);
     }
 
@@ -101,7 +92,7 @@ final class ApacheHttpEntity implements HttpEntity
 
 
     @Override
-    public InputStream getContent() throws IOException, IllegalStateException
+    public InputStream getContent() throws IllegalStateException
     {
         throw new IllegalStateException("Request entity doesn't have an InputStream");
     }
@@ -123,7 +114,7 @@ final class ApacheHttpEntity implements HttpEntity
 
 
     @Override
-    public void consumeContent() throws IOException
+    public void consumeContent()
     {
         //  nothing to do
     }

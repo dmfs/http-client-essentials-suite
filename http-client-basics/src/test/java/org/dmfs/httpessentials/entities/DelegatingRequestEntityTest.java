@@ -39,7 +39,7 @@ import static org.mockito.Mockito.verify;
 public class DelegatingRequestEntityTest
 {
     @Test
-    public void testContentType() throws Exception
+    public void testContentType()
     {
         HttpRequestEntity mockEntity = failingMock(HttpRequestEntity.class);
         Optional<MediaType> dummyOptional = dummy(Optional.class);
@@ -50,7 +50,7 @@ public class DelegatingRequestEntityTest
 
 
     @Test
-    public void testContentLength() throws Exception
+    public void testContentLength()
     {
         HttpRequestEntity mockEntity = failingMock(HttpRequestEntity.class);
         Optional<Long> dummyOptional = dummy(Optional.class);

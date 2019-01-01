@@ -39,7 +39,7 @@ import static junit.framework.TestCase.assertTrue;
 public class HttpUrlConnectionHeadersTest
 {
     @Test
-    public void testContainsNoHeaders() throws Exception
+    public void testContainsNoHeaders()
     {
         Map<String, List<String>> headers = new HashMap<>();
 
@@ -50,7 +50,7 @@ public class HttpUrlConnectionHeadersTest
 
 
     @Test
-    public void testContainsOtherHeaders() throws Exception
+    public void testContainsOtherHeaders()
     {
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("content-type", Arrays.asList("application/octetstream"));
@@ -62,7 +62,7 @@ public class HttpUrlConnectionHeadersTest
 
 
     @Test
-    public void testContainsMatchingHeaderLowerCase() throws Exception
+    public void testContainsMatchingHeaderLowerCase()
     {
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("content-type", Arrays.asList("application/octet-stream"));
@@ -75,7 +75,7 @@ public class HttpUrlConnectionHeadersTest
 
 
     @Test
-    public void testContainsMatchingHeaderUpperCase() throws Exception
+    public void testContainsMatchingHeaderUpperCase()
     {
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("content-type", Arrays.asList("application/octet-stream"));
@@ -88,7 +88,7 @@ public class HttpUrlConnectionHeadersTest
 
 
     @Test
-    public void testContainsMatchingHeaderMixedCase() throws Exception
+    public void testContainsMatchingHeaderMixedCase()
     {
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("content-type", Arrays.asList("application/octet-stream"));
@@ -101,7 +101,7 @@ public class HttpUrlConnectionHeadersTest
 
 
     @Test
-    public void testContainsMultipleMatchingHeaders() throws Exception
+    public void testContainsMultipleMatchingHeaders()
     {
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("content-type", Arrays.asList("application/octet-stream"));
@@ -115,7 +115,7 @@ public class HttpUrlConnectionHeadersTest
 
 
     @Test
-    public void testSingleHeaderLowerCase() throws Exception
+    public void testSingleHeaderLowerCase()
     {
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("content-type", Arrays.asList("application/octetstream"));
@@ -126,7 +126,7 @@ public class HttpUrlConnectionHeadersTest
 
 
     @Test
-    public void testSingleHeaderUpperCase() throws Exception
+    public void testSingleHeaderUpperCase()
     {
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("CONTENT-TYPE", Arrays.asList("application/octetstream"));
@@ -137,7 +137,7 @@ public class HttpUrlConnectionHeadersTest
 
 
     @Test
-    public void testSingleHeaderMixedCase() throws Exception
+    public void testSingleHeaderMixedCase()
     {
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("Content-Type", Arrays.asList("application/octetstream"));
@@ -148,7 +148,7 @@ public class HttpUrlConnectionHeadersTest
 
 
     @Test
-    public void listHeader() throws Exception
+    public void listHeader()
     {
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("content-type", Arrays.asList("application/octet-stream"));

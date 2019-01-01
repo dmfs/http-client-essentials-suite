@@ -21,8 +21,6 @@ import org.dmfs.httpessentials.parameters.Parameter;
 import org.dmfs.httpessentials.parameters.ParameterType;
 import org.dmfs.httpessentials.parameters.Parametrized;
 import org.dmfs.iterables.CsvIterable;
-import org.dmfs.iterators.Filter;
-import org.dmfs.iterators.Function;
 import org.dmfs.iterators.decorators.Filtered;
 import org.dmfs.iterators.decorators.Mapped;
 
@@ -70,30 +68,9 @@ public final class UrlFormEncodedKeyValues implements Parametrized
         return new Mapped<>(
                 new Filtered<>(
                         new Mapped<>(mParts.iterator(),
-                                new Function<String, Map.Entry<String, String>>()
-                                {
-                                    @Override
-                                    public Map.Entry<String, String> apply(final String element)
-                                    {
-                                        return new KeyValueStringEntry(element, element.indexOf(VALUE_SEPARATOR));
-                                    }
-                                }),
-                        new Filter<Map.Entry<String, String>>()
-                        {
-                            @Override
-                            public boolean iterate(final Map.Entry<String, String> element)
-                            {
-                                return parameterType.name().equals(element.getKey());
-                            }
-                        }),
-                new Function<Map.Entry<String, String>, Parameter<T>>()
-                {
-                    @Override
-                    public Parameter<T> apply(final Map.Entry<String, String> element)
-                    {
-                        return parameterType.entityFromString(element.getValue());
-                    }
-                });
+                                element -> new KeyValueStringEntry(element, element.indexOf(VALUE_SEPARATOR))),
+                        element -> parameterType.name().equals(element.getKey())),
+                element -> parameterType.entityFromString(element.getValue()));
     }
 
 

@@ -58,7 +58,7 @@ public final class Following implements HttpRequestExecutor
     @Override
     public <T> T execute(URI uri, final HttpRequest<T> request) throws ProtocolException, ProtocolError, IOException
     {
-        return mDecoratedExecutor.execute(uri, new FollowingRequest<T>(request, uri));
+        return mDecoratedExecutor.execute(uri, new FollowingRequest<>(request, uri));
     }
 
 
@@ -148,7 +148,7 @@ public final class Following implements HttpRequestExecutor
         {
             if (mRedirectHistory == null)
             {
-                return new HashSet<URI>();
+                return new HashSet<>();
             }
             return mRedirectHistory;
         }

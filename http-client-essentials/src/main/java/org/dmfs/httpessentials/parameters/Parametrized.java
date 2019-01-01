@@ -37,7 +37,7 @@ public interface Parametrized
      *
      * @return The {@link Parameter}.
      */
-    public <T> Parameter<T> firstParameter(ParameterType<T> parameterType, T defaultValue);
+    <T> Parameter<T> firstParameter(ParameterType<T> parameterType, T defaultValue);
 
     /**
      * Returns an {@link Iterator} of all {@link Parameter}s of the given {@link ParameterType}. Returns an empty {@link Iterator} of no such parameter exists.
@@ -47,7 +47,7 @@ public interface Parametrized
      *
      * @return An {@link Iterator} of {@link Parameter}s.
      */
-    public <T> Iterator<Parameter<T>> parameters(ParameterType<T> parameterType);
+    <T> Iterator<Parameter<T>> parameters(ParameterType<T> parameterType);
 
     /**
      * Checks whether this object has a {@link Parameter} of the given {@link ParameterType}.
@@ -57,5 +57,5 @@ public interface Parametrized
      *
      * @return <code>true</code> if such a parameter is present, <code>false</code> otherwise.
      */
-    public <T> boolean hasParameter(ParameterType<T> parameterType);
+    <T> boolean hasParameter(ParameterType<T> parameterType);
 }

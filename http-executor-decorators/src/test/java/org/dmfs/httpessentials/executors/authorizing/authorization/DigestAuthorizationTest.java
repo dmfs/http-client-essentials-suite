@@ -41,7 +41,7 @@ import static org.mockito.Mockito.mock;
 public class DigestAuthorizationTest
 {
     @Test
-    public void testParameters() throws Exception
+    public void testParameters()
     {
         Parametrized mockChallenge = mock(Parametrized.class);
         doReturn(new Present<>("testrealm@host.com")).when(mockChallenge).parameter(Tokens.REALM);

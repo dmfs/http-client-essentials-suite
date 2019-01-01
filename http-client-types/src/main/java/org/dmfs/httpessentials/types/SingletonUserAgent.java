@@ -56,7 +56,7 @@ public final class SingletonUserAgent implements UserAgent
     @Override
     public Iterator<Product> iterator()
     {
-        return new SingletonIterator<Product>(mProduct);
+        return new SingletonIterator<>(mProduct);
     }
 
 

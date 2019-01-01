@@ -57,7 +57,7 @@ public class DefaultRetryPolicyTest
 
 
     @Test
-    public void testShouldRetry_withVariousCombinations() throws Exception
+    public void testShouldRetry_withVariousCombinations()
     {
         new Expectations()
         {{ // @formatter:off

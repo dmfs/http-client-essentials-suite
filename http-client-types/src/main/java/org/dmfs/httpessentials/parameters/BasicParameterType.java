@@ -59,7 +59,7 @@ public final class BasicParameterType<ValueType> implements ParameterType<ValueT
     @Override
     public Parameter<ValueType> entityFromString(String valueString)
     {
-        return new BasicParameter<ValueType>(this, valueFromString(valueString));
+        return new BasicParameter<>(this, valueFromString(valueString));
     }
 
 
@@ -73,7 +73,7 @@ public final class BasicParameterType<ValueType> implements ParameterType<ValueT
     @Override
     public Parameter<ValueType> entity(ValueType value)
     {
-        return new BasicParameter<ValueType>(this, value);
+        return new BasicParameter<>(this, value);
     }
 
 

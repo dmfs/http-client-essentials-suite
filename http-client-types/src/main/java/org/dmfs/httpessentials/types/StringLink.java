@@ -23,18 +23,17 @@ import org.dmfs.httpessentials.parameters.Parameters;
 import org.dmfs.iterables.CsvIterable;
 import org.dmfs.iterables.Repeatable;
 import org.dmfs.iterators.CsvIterator;
-import org.dmfs.iterators.Filter;
-import org.dmfs.iterators.Function;
 import org.dmfs.iterators.decorators.Filtered;
 import org.dmfs.iterators.decorators.Mapped;
 import org.dmfs.iterators.filters.Skip;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
+
+import static java.util.Collections.emptyList;
 
 
 /**
@@ -78,25 +77,15 @@ public final class StringLink implements Link
     public <T> Iterator<Parameter<T>> parameters(final ParameterType<T> parameterType)
     {
         return new Mapped<>(
-                new Filtered<>(new Filtered<>(mParts.iterator(), new Skip<String>(1)),
-                        new Filter<String>()
-                        {
-                            @Override
-                            public boolean iterate(String element)
-                            {
-                                String param = element.trim();
-                                int equalsIdx = param.indexOf(PARAMETER_VALUE_SEPARATOR);
-                                return parameterType.name().equalsIgnoreCase(param.substring(0, equalsIdx));
-                            }
-                        }), new Function<String, Parameter<T>>()
-        {
-            @Override
-            public Parameter<T> apply(String element)
-            {
-                element = element.trim();
-                int equalsIdx = element.indexOf(PARAMETER_VALUE_SEPARATOR);
-                return parameterType.entityFromString(element.substring(equalsIdx + 1));
-            }
+                new Filtered<>(new Filtered<>(mParts.iterator(), new Skip<>(1)),
+                        element -> {
+                            String param = element.trim();
+                            int equalsIdx = param.indexOf(PARAMETER_VALUE_SEPARATOR);
+                            return parameterType.name().equalsIgnoreCase(param.substring(0, equalsIdx));
+                        }), element -> {
+            element = element.trim();
+            int equalsIdx = element.indexOf(PARAMETER_VALUE_SEPARATOR);
+            return parameterType.entityFromString(element.substring(equalsIdx + 1));
         });
     }
 
@@ -164,14 +153,14 @@ public final class StringLink implements Link
     @Override
     public Set<String> relationTypes()
     {
-        return new HashSet<>(firstParameter(Parameters.REL, Collections.<String>emptyList()).value());
+        return new HashSet<>(firstParameter(Parameters.REL, emptyList()).value());
     }
 
 
     @Override
     public Set<String> reverseRelationTypes()
     {
-        return new HashSet<>(firstParameter(Parameters.REV, Collections.<String>emptyList()).value());
+        return new HashSet<>(firstParameter(Parameters.REV, emptyList()).value());
     }
 
 }

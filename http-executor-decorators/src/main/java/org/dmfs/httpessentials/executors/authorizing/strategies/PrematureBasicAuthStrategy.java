@@ -54,14 +54,7 @@ public final class PrematureBasicAuthStrategy implements AuthStrategy
     public AuthState authState(HttpMethod method, URI uri, final AuthState fallback)
     {
         return new Mapped<>(
-                new Function<UserCredentials, AuthState>()
-                {
-                    @Override
-                    public AuthState apply(UserCredentials argument)
-                    {
-                        return new AuthenticatedBasicAuthState(argument, fallback);
-                    }
-                },
+                (Function<UserCredentials, AuthState>) argument -> new AuthenticatedBasicAuthState(argument, fallback),
                 mCredentialsStore.credentials(new UriScope(uri)))
                 .value(fallback);
     }

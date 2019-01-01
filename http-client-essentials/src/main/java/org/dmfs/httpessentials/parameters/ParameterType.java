@@ -39,7 +39,7 @@ public interface ParameterType<ValueType> extends EntityType<ValueType>
      * @return The parameter name, never <code>null</code>.
      */
     @Override
-    public String name();
+    String name();
 
     /**
      * Factory method to create {@link Parameter}s of this type from the given {@link String} representation.
@@ -50,7 +50,7 @@ public interface ParameterType<ValueType> extends EntityType<ValueType>
      * @return A new {@link Parameter} instance.
      */
     @Override
-    public Parameter<ValueType> entityFromString(String parameterValueString);
+    Parameter<ValueType> entityFromString(String parameterValueString);
 
     /**
      * Factory method to create {@link Parameter}s of this type from a value.
@@ -61,7 +61,7 @@ public interface ParameterType<ValueType> extends EntityType<ValueType>
      * @return A new {@link Parameter} instance.
      */
     @Override
-    public Parameter<ValueType> entity(ValueType value);
+    Parameter<ValueType> entity(ValueType value);
 
     /**
      * Returns the string representation of the given parameter value as defined for this {@link Parameter}.
@@ -72,6 +72,6 @@ public interface ParameterType<ValueType> extends EntityType<ValueType>
      * @return A value String representing the given value.
      */
     @Override
-    public String valueString(ValueType headerValue);
+    String valueString(ValueType headerValue);
 
 }

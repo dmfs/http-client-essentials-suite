@@ -22,8 +22,6 @@ import org.dmfs.httpessentials.client.HttpRequestExecutor;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
-import org.dmfs.httpessentials.exceptions.RedirectionException;
-import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
 import org.dmfs.httpessentials.headers.Header;
 import org.dmfs.httpessentials.headers.HttpHeaders;
 import org.dmfs.httpessentials.httpurlconnection.factories.DefaultHttpUrlConnectionFactory;
@@ -74,8 +72,7 @@ public final class PlainHttpUrlConnectionExecutor implements HttpRequestExecutor
 
 
     @Override
-    public <T> T execute(final URI uri, final HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException, RedirectionException,
-            UnexpectedStatusException
+    public <T> T execute(final URI uri, final HttpRequest<T> request) throws IOException, ProtocolError, ProtocolException
     {
         HttpResponse r = sendRequest(uri, request);
         return request.responseHandler(r).handleResponse(r);
@@ -130,14 +127,9 @@ public final class PlainHttpUrlConnectionExecutor implements HttpRequestExecutor
         // send the request entity if applicable
         if (request.method().supportsRequestPayload())
         {
-            OutputStream out = connection.getOutputStream();
-            try
+            try (OutputStream out = connection.getOutputStream())
             {
                 request.requestEntity().writeContent(out);
-            }
-            finally
-            {
-                out.close();
             }
         }
         // read response code right away because we can't throw an appropriate exception later on if something happens

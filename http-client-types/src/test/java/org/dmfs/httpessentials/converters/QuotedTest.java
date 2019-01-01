@@ -28,7 +28,7 @@ import static org.junit.Assert.assertEquals;
 public class QuotedTest
 {
     @Test
-    public void value() throws Exception
+    public void value()
     {
         assertEquals("test", new Quoted<>(new PlainStringHeaderConverter()).value("\"test\""));
         assertEquals("te\"st", new Quoted<>(new PlainStringHeaderConverter()).value("\"te\\\"st\""));
@@ -37,7 +37,7 @@ public class QuotedTest
 
 
     @Test
-    public void valueString() throws Exception
+    public void valueString()
     {
         assertEquals("\"test\"", new Quoted<>(new PlainStringHeaderConverter()).valueString("test"));
         assertEquals("\"\\\"test\\\"\"", new Quoted<>(new PlainStringHeaderConverter()).valueString("\"test\""));

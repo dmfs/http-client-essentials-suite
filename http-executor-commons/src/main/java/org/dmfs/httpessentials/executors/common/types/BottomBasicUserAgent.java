@@ -61,7 +61,7 @@ public final class BottomBasicUserAgent implements UserAgent
     public Iterator<Product> iterator()
     {
         return new Serialized<>(mOriginalUserAgent.iterator(),
-                new SingletonIterator<Product>(mProductToAppend));
+                new SingletonIterator<>(mProductToAppend));
     }
 
 

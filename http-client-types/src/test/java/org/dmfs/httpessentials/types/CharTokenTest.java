@@ -30,7 +30,7 @@ import static org.junit.Assert.assertThat;
 public class CharTokenTest
 {
     @Test
-    public void testHashCode() throws Exception
+    public void testHashCode()
     {
         assertThat(new CharToken("!#$%&'*+-.^_`|~1234567890abcdefghijklmnopqrstuvwxyz").hashCode(),
                 is(new CharToken("!#$%&'*+-.^_`|~1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ").hashCode()));
@@ -38,7 +38,7 @@ public class CharTokenTest
 
 
     @Test
-    public void testEquals() throws Exception
+    public void testEquals()
     {
         assertThat(new CharToken("!#$%&'*+-.^_`|~1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"),
                 is(new CharToken("!#$%&'*+-.^_`|~1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")));

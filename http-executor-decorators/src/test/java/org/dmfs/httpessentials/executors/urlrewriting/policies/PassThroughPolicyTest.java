@@ -32,7 +32,7 @@ import static org.mockito.Mockito.mock;
 public class PassThroughPolicyTest
 {
     @Test
-    public void testRewritten() throws Exception
+    public void testRewritten()
     {
         HttpRequest mockRequest = mock(HttpRequest.class);
 

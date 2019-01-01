@@ -32,12 +32,12 @@ public class BasicHeaderTest
     @Test
     public void testType()
     {
-        HeaderType<Integer> type = new BasicSingletonHeaderType<Integer>("TestHeader", IntegerConverter.INSTANCE);
-        BasicHeader<Integer> simpleHeader = new BasicHeader<Integer>(type, 1234);
+        HeaderType<Integer> type = new BasicSingletonHeaderType<>("TestHeader", IntegerConverter.INSTANCE);
+        BasicHeader<Integer> simpleHeader = new BasicHeader<>(type, 1234);
         assertEquals(type, simpleHeader.type());
 
-        HeaderType<List<Integer>> listType = new BasicListHeaderType<Integer>("TestHeader", IntegerConverter.INSTANCE);
-        BasicHeader<List<Integer>> listHeader = new BasicHeader<List<Integer>>(listType,
+        HeaderType<List<Integer>> listType = new BasicListHeaderType<>("TestHeader", IntegerConverter.INSTANCE);
+        BasicHeader<List<Integer>> listHeader = new BasicHeader<>(listType,
                 Arrays.asList(new Integer[] { 1, 2, 3, 10 }));
         assertEquals(listType, listHeader.type());
     }
@@ -46,12 +46,12 @@ public class BasicHeaderTest
     @Test
     public void testValue()
     {
-        HeaderType<Integer> type = new BasicSingletonHeaderType<Integer>("TestHeader", IntegerConverter.INSTANCE);
-        BasicHeader<Integer> simpleHeader = new BasicHeader<Integer>(type, 1234);
+        HeaderType<Integer> type = new BasicSingletonHeaderType<>("TestHeader", IntegerConverter.INSTANCE);
+        BasicHeader<Integer> simpleHeader = new BasicHeader<>(type, 1234);
         assertEquals((Integer) 1234, simpleHeader.value());
 
-        HeaderType<List<Integer>> listType = new BasicListHeaderType<Integer>("TestHeader", IntegerConverter.INSTANCE);
-        BasicHeader<List<Integer>> listHeader = new BasicHeader<List<Integer>>(listType,
+        HeaderType<List<Integer>> listType = new BasicListHeaderType<>("TestHeader", IntegerConverter.INSTANCE);
+        BasicHeader<List<Integer>> listHeader = new BasicHeader<>(listType,
                 Arrays.asList(new Integer[] { 1, 2, 3, 10 }));
         assertEquals(Arrays.asList(new Integer[] { 1, 2, 3, 10 }), listHeader.value());
 
@@ -61,12 +61,12 @@ public class BasicHeaderTest
     @Test
     public void testToString()
     {
-        HeaderType<Integer> type = new BasicSingletonHeaderType<Integer>("TestHeader", IntegerConverter.INSTANCE);
-        BasicHeader<Integer> simpleHeader = new BasicHeader<Integer>(type, 1234);
+        HeaderType<Integer> type = new BasicSingletonHeaderType<>("TestHeader", IntegerConverter.INSTANCE);
+        BasicHeader<Integer> simpleHeader = new BasicHeader<>(type, 1234);
         assertEquals("1234", simpleHeader.toString());
 
-        HeaderType<List<Integer>> listType = new BasicListHeaderType<Integer>("TestHeader", IntegerConverter.INSTANCE);
-        BasicHeader<List<Integer>> listHeader = new BasicHeader<List<Integer>>(listType,
+        HeaderType<List<Integer>> listType = new BasicListHeaderType<>("TestHeader", IntegerConverter.INSTANCE);
+        BasicHeader<List<Integer>> listHeader = new BasicHeader<>(listType,
                 Arrays.asList(new Integer[] { 1, 2, 3, 10 }));
         assertEquals("1,2,3,10", listHeader.toString());
     }

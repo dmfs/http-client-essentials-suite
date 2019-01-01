@@ -41,5 +41,5 @@ public interface HttpUrlConnectionFactory
      *         if the given URI was not a valid absolute URL.
      * @throws IOException
      */
-    public HttpURLConnection httpUrlConnection(URI uri) throws IllegalArgumentException, IOException;
+    HttpURLConnection httpUrlConnection(URI uri) throws IllegalArgumentException, IOException;
 }

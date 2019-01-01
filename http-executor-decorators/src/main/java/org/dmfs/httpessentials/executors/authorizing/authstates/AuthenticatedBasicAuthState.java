@@ -17,7 +17,6 @@
 
 package org.dmfs.httpessentials.executors.authorizing.authstates;
 
-import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.exceptions.UnauthorizedException;
 import org.dmfs.httpessentials.executors.authorizing.AuthInfo;
 import org.dmfs.httpessentials.executors.authorizing.AuthState;
@@ -28,8 +27,6 @@ import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.authorization.BasicAuthorization;
 import org.dmfs.optional.Optional;
 import org.dmfs.optional.Present;
-
-import java.net.URI;
 
 
 /**
@@ -61,20 +58,13 @@ public final class AuthenticatedBasicAuthState implements AuthState
     @Override
     public Optional<Authorization> authorization()
     {
-        return new Present<Authorization>(new BasicAuthorization(mCredentials));
+        return new Present<>(new BasicAuthorization(mCredentials));
     }
 
 
     @Override
     public AuthStrategy prematureAuthStrategy(Optional<AuthInfo> authInfo)
     {
-        return new AuthStrategy()
-        {
-            @Override
-            public AuthState authState(HttpMethod method, URI uri, AuthState fallback)
-            {
-                return new AuthenticatedBasicAuthState(mCredentials, fallback);
-            }
-        };
+        return (method, uri, fallback) -> new AuthenticatedBasicAuthState(mCredentials, fallback);
     }
 }

@@ -30,7 +30,6 @@ import org.dmfs.optional.Absent;
 import org.dmfs.optional.Present;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.mockito.ArgumentMatcher;
 import org.mockito.ArgumentMatchers;
 
 import java.net.URI;
@@ -55,7 +54,7 @@ public class PrematureBasicAuthStrategyTest
      * Test that the AuthStrategy delegates to the fallback if the request can't be authorized due to missing credentials.
      */
     @Test
-    public void testFallbackAuthState() throws Exception
+    public void testFallbackAuthState()
     {
         final URI mockUri = URI.create("https://example.com");
         AuthState mockAuthState = failingMock(AuthState.class);
@@ -64,14 +63,7 @@ public class PrematureBasicAuthStrategyTest
         assertThat(new PrematureBasicAuthStrategy(mockStore).authState(dummy(HttpMethod.class), mockUri, mockAuthState), sameInstance(mockAuthState));
 
         // also check that it actually tried to get credentials from our mock store
-        verify(mockStore).credentials(argThat(new ArgumentMatcher<AuthScope>()
-        {
-            @Override
-            public boolean matches(AuthScope argument)
-            {
-                return argument.uri() == mockUri && !argument.realm().isPresent();
-            }
-        }));
+        verify(mockStore).credentials(argThat(argument -> argument.uri() == mockUri && !argument.realm().isPresent()));
     }
 
 
@@ -92,14 +84,7 @@ public class PrematureBasicAuthStrategyTest
         doReturn("y").when(mockCredentials).password();
 
         CredentialsStore<UserCredentials> mockStore = failingMock(CredentialsStore.class);
-        doReturn(new Present<>(mockCredentials)).when(mockStore).credentials(argThat(new ArgumentMatcher<AuthScope>()
-        {
-            @Override
-            public boolean matches(AuthScope argument)
-            {
-                return argument.uri() == mockUri && !argument.realm().isPresent();
-            }
-        }));
+        doReturn(new Present<>(mockCredentials)).when(mockStore).credentials(argThat(argument -> argument.uri() == mockUri && !argument.realm().isPresent()));
 
         // get an AuthState from the strategy
         AuthState result = new PrematureBasicAuthStrategy(mockStore).authState(dummy(HttpMethod.class), mockUri, mockAuthState);

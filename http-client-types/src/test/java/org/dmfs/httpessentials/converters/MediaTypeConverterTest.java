@@ -29,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 public class MediaTypeConverterTest
 {
     @Test
-    public void value() throws Exception
+    public void value()
     {
         assertEquals(new StructuredMediaType("application", "test"),
                 new MediaTypeConverter().value("application/test"));
@@ -39,7 +39,7 @@ public class MediaTypeConverterTest
 
 
     @Test
-    public void valueString() throws Exception
+    public void valueString()
     {
         assertEquals(new StructuredMediaType("application", "test").toString(),
                 new MediaTypeConverter().valueString(new StructuredMediaType("application", "test")));

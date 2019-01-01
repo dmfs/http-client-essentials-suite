@@ -22,7 +22,6 @@ import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseHandler;
 import org.dmfs.httpessentials.exceptions.ClientErrorException;
 import org.dmfs.httpessentials.exceptions.NotFoundException;
-import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.exceptions.ServerErrorException;
 import org.dmfs.httpessentials.exceptions.UnauthorizedException;
@@ -43,7 +42,7 @@ import java.io.IOException;
 public final class FailResponseHandler<T> implements HttpResponseHandler<T>
 {
 
-    private final static HttpResponseHandler<?> INSTANCE = new FailResponseHandler<Object>();
+    private final static HttpResponseHandler<?> INSTANCE = new FailResponseHandler<>();
 
 
     @SuppressWarnings("unchecked")
@@ -55,7 +54,7 @@ public final class FailResponseHandler<T> implements HttpResponseHandler<T>
 
 
     @Override
-    public T handleResponse(final HttpResponse response) throws IOException, ProtocolError, ProtocolException
+    public T handleResponse(final HttpResponse response) throws IOException, ProtocolException
     {
         try
         {

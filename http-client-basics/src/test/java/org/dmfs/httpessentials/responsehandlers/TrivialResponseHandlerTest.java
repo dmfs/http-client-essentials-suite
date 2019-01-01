@@ -101,12 +101,12 @@ public class TrivialResponseHandlerTest
 
 
                 @Override
-                public InputStream contentStream() throws IOException
+                public InputStream contentStream()
                 {
                     return new InputStream()
                     {
                         @Override
-                        public int read() throws IOException
+                        public int read()
                         {
                             fail("Trivial Response should not read the actual response entity.");
                             return 0;
@@ -114,7 +114,7 @@ public class TrivialResponseHandlerTest
 
 
                         @Override
-                        public void close() throws IOException
+                        public void close()
                         {
                             streamClosed.set(true);
                         }

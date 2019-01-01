@@ -23,7 +23,6 @@ import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.headers.Headers;
 import org.dmfs.httpessentials.headers.HttpHeaders;
 
-import java.io.IOException;
 import java.net.URI;
 
 
@@ -39,7 +38,7 @@ public class StaticMockResponse implements HttpResponse
     private final HttpResponseEntity mResponseEntity;
 
 
-    public StaticMockResponse(HttpStatus responseStatus, Headers responseHeaders, HttpResponseEntity responseEntity) throws IOException
+    public StaticMockResponse(HttpStatus responseStatus, Headers responseHeaders, HttpResponseEntity responseEntity)
     {
         mResponseStatus = responseStatus;
         if (responseEntity.contentType().isPresent())

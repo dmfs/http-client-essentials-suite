@@ -24,9 +24,10 @@ import org.dmfs.httpessentials.headers.Headers;
 import org.dmfs.httpessentials.headers.ListHeaderType;
 import org.dmfs.httpessentials.headers.SingletonHeaderType;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 
 /**
@@ -62,7 +63,7 @@ final class ApacheHeaders implements Headers
     @Override
     public <T> Header<List<T>> header(ListHeaderType<T> headerType)
     {
-        Header<List<T>> header = headerType.entity(Collections.<T>emptyList());
+        Header<List<T>> header = headerType.entity(emptyList());
         for (org.apache.http.Header headers : mResponse.getHeaders(headerType.name()))
         {
             header = headerType.merged(header, headerType.entityFromString(headers.getValue()));

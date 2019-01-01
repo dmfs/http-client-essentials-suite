@@ -33,27 +33,13 @@ public final class JsonRequestEntity extends DelegatingRequestEntity
 {
     public JsonRequestEntity(final JSONArray jsonArray)
     {
-        this(new Single<CharSequence>()
-        {
-            @Override
-            public CharSequence value()
-            {
-                return jsonArray.toString();
-            }
-        });
+        this(jsonArray::toString);
     }
 
 
     public JsonRequestEntity(final JSONObject jsonObject)
     {
-        this(new Single<CharSequence>()
-        {
-            @Override
-            public CharSequence value()
-            {
-                return jsonObject.toString();
-            }
-        });
+        this(jsonObject::toString);
     }
 
 
