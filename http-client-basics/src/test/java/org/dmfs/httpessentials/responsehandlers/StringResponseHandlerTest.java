@@ -28,10 +28,9 @@ import org.dmfs.httpessentials.headers.HttpHeaders;
 import org.dmfs.httpessentials.headers.SingletonHeaders;
 import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.httpessentials.types.StructuredMediaType;
-import org.dmfs.optional.Absent;
-import org.dmfs.optional.NullSafe;
-import org.dmfs.optional.Optional;
-import org.dmfs.optional.Present;
+import org.dmfs.jems.optional.Optional;
+import org.dmfs.jems.optional.elementary.NullSafe;
+import org.dmfs.jems.optional.elementary.Present;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -40,6 +39,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Random;
 
+import static org.dmfs.jems.optional.elementary.Absent.absent;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -252,7 +252,7 @@ public class StringResponseHandlerTest
                 @Override
                 public Optional<Long> contentLength()
                 {
-                    return mContentLength < 0 ? Absent.<Long>absent() : new Present<>((long) mContentLength);
+                    return mContentLength < 0 ? absent() : new Present<>((long) mContentLength);
                 }
             };
         }

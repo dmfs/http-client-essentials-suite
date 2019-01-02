@@ -19,8 +19,6 @@ package org.dmfs.httpessentials.responsehandlers;
 
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseHandler;
-import org.dmfs.httpessentials.exceptions.ProtocolError;
-import org.dmfs.httpessentials.exceptions.ProtocolException;
 
 import java.io.IOException;
 

@@ -17,7 +17,7 @@
 
 package org.dmfs.httpessentials.executors.authorizing;
 
-import org.dmfs.httpessentials.executors.authorizing.strategies.PassThroughStrategy;
+import org.dmfs.httpessentials.executors.authorizing.authstrategies.PassThroughStrategy;
 
 import java.net.URI;
 

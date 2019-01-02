@@ -23,7 +23,7 @@ import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.executors.authorizing.authcaches.SimpleAuthStrategyCache;
 import org.dmfs.httpessentials.executors.authorizing.authstates.FailedAuthState;
-import org.dmfs.httpessentials.executors.authorizing.strategies.CachedAuthStrategy;
+import org.dmfs.httpessentials.executors.authorizing.authstrategies.CachedAuthStrategy;
 
 import java.io.IOException;
 import java.net.URI;

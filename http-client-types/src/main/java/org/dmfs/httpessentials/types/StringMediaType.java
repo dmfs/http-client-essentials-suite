@@ -22,8 +22,8 @@ import org.dmfs.httpessentials.parameters.ParameterType;
 import org.dmfs.httpessentials.parameters.Parameters;
 import org.dmfs.iterables.CsvIterable;
 import org.dmfs.iterators.decorators.Filtered;
-import org.dmfs.iterators.decorators.Mapped;
 import org.dmfs.iterators.filters.Skip;
+import org.dmfs.jems.iterator.decorators.Mapped;
 
 import java.util.Iterator;
 import java.util.Locale;
@@ -69,15 +69,16 @@ public final class StringMediaType implements MediaType
     public <T> Iterator<Parameter<T>> parameters(final ParameterType<T> parameterType)
     {
         return new Mapped<>(
+                element -> {
+                    int equalsIdx = element.indexOf(PARAMETER_VALUE_SEPARATOR);
+                    return parameterType.entityFromString(element.substring(equalsIdx + 1));
+                },
                 new Filtered<>(new Filtered<>(mParts.iterator(), new Skip<>(1)),
                         element -> {
                             String param = element.trim();
                             int equalsIdx = param.indexOf(PARAMETER_VALUE_SEPARATOR);
                             return parameterType.name().equalsIgnoreCase(param.substring(0, equalsIdx));
-                        }), element -> {
-            int equalsIdx = element.indexOf(PARAMETER_VALUE_SEPARATOR);
-            return parameterType.entityFromString(element.substring(equalsIdx + 1));
-        });
+                        }));
     }
 
 

@@ -15,19 +15,17 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.authorizing.strategies;
+package org.dmfs.httpessentials.executors.authorizing.authstrategies;
 
 import org.dmfs.httpessentials.HttpMethod;
-import org.dmfs.httpessentials.executors.authorizing.AuthInfo;
 import org.dmfs.httpessentials.executors.authorizing.AuthScope;
 import org.dmfs.httpessentials.executors.authorizing.AuthState;
 import org.dmfs.httpessentials.executors.authorizing.Challenge;
 import org.dmfs.httpessentials.executors.authorizing.CredentialsStore;
 import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.types.Token;
+import org.dmfs.jems.optional.elementary.Present;
 import org.dmfs.jems.pair.Pair;
-import org.dmfs.optional.Absent;
-import org.dmfs.optional.Present;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
@@ -36,7 +34,7 @@ import java.net.URI;
 
 import static org.dmfs.jems.mockito.doubles.TestDoubles.dummy;
 import static org.dmfs.jems.mockito.doubles.TestDoubles.failingMock;
-import static org.dmfs.optional.Absent.absent;
+import static org.dmfs.jems.optional.elementary.Absent.absent;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertThat;
@@ -96,7 +94,7 @@ public class PrematureBasicAuthStrategyTest
         assertThat(result.authorization().value().parameters(), Matchers.<Pair<Token, CharSequence>>emptyIterable());
         assertThat(result.authorization().value().token().value().toString(), is("eDp5"));
         // it should also return a prematureAuthStrategy which behaves exactly the same
-        AuthState prematureAuth = result.prematureAuthStrategy(Absent.<AuthInfo>absent()).authState(dummy(HttpMethod.class), mockUri, mockAuthState);
+        AuthState prematureAuth = result.prematureAuthStrategy(absent()).authState(dummy(HttpMethod.class), mockUri, mockAuthState);
         assertThat(prematureAuth.withChallenges(mockChallenges), sameInstance(mockNextAuthState));
         assertThat(prematureAuth.authorization().value().scheme().toString(), is("Basic"));
         assertThat(prematureAuth.authorization().value().parameters(), Matchers.<Pair<Token, CharSequence>>emptyIterable());

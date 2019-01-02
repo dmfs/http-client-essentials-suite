@@ -19,7 +19,7 @@ package org.dmfs.httpessentials.executors.authorizing.authcaches;
 
 import org.dmfs.httpessentials.executors.authorizing.AuthStrategy;
 import org.dmfs.httpessentials.executors.authorizing.AuthStrategyCache;
-import org.dmfs.httpessentials.executors.authorizing.strategies.PassThroughStrategy;
+import org.dmfs.httpessentials.executors.authorizing.authstrategies.PassThroughStrategy;
 
 import java.net.URI;
 

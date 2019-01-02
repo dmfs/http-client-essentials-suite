@@ -17,12 +17,9 @@
 
 package org.dmfs.httpessentials.entities;
 
-import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.httpessentials.types.StringMediaType;
 import org.dmfs.iterables.EmptyIterable;
 import org.dmfs.iterables.elementary.Seq;
-import org.dmfs.jems.hamcrest.matchers.PresentMatcher;
-import org.dmfs.jems.pair.Pair;
 import org.dmfs.jems.pair.elementary.ValuePair;
 import org.dmfs.rfc3986.parameters.parametersets.EmptyParameterList;
 import org.junit.Test;
@@ -31,7 +28,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import static org.dmfs.jems.hamcrest.matchers.PresentMatcher.isPresent;
+import static org.dmfs.jems.hamcrest.matchers.optional.PresentMatcher.present;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -45,9 +42,9 @@ public class XWwwFormUrlEncodedEntityTest
     public void testContentType()
     {
         assertThat(new XWwwFormUrlEncodedEntity(new EmptyIterable<>()).contentType(),
-                PresentMatcher.<MediaType>isPresent(new StringMediaType("application/x-www-form-urlencoded")));
+                is(present(new StringMediaType("application/x-www-form-urlencoded"))));
         assertThat(new XWwwFormUrlEncodedEntity(new EmptyParameterList()).contentType(),
-                PresentMatcher.<MediaType>isPresent(new StringMediaType("application/x-www-form-urlencoded")));
+                is(present(new StringMediaType("application/x-www-form-urlencoded"))));
     }
 
 
@@ -55,17 +52,17 @@ public class XWwwFormUrlEncodedEntityTest
     public void testContentLength() throws UnsupportedEncodingException
     {
         assertThat(new XWwwFormUrlEncodedEntity(
-                new EmptyIterable<>()).contentLength(), isPresent(0L));
+                new EmptyIterable<>()).contentLength(), is(present(0L)));
 
         assertThat(new XWwwFormUrlEncodedEntity(
                         new Seq<>(new ValuePair<>("key", "valueäöü"))).contentLength(),
-                isPresent((long) "key=value%C3%A4%C3%B6%C3%BC".getBytes("UTF-8").length));
+                is(present((long) "key=value%C3%A4%C3%B6%C3%BC".getBytes("UTF-8").length)));
 
         assertThat(new XWwwFormUrlEncodedEntity(
                         new Seq<>(
                                 new ValuePair<>("key1", "valueäöü"),
                                 new ValuePair<>("key2", "value/+ "))).contentLength(),
-                isPresent((long) "key1=value%C3%A4%C3%B6%C3%BC&key2=value%2F%2B+".getBytes("UTF-8").length));
+                is(present((long) "key1=value%C3%A4%C3%B6%C3%BC&key2=value%2F%2B+".getBytes("UTF-8").length)));
     }
 
 

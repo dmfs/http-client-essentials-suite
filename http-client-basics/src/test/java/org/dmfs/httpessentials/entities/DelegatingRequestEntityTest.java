@@ -19,7 +19,7 @@ package org.dmfs.httpessentials.entities;
 
 import org.dmfs.httpessentials.client.HttpRequestEntity;
 import org.dmfs.httpessentials.types.MediaType;
-import org.dmfs.optional.Optional;
+import org.dmfs.jems.optional.Optional;
 import org.junit.Test;
 
 import java.io.OutputStream;

@@ -22,7 +22,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.message.BasicHeader;
 import org.dmfs.httpessentials.client.HttpRequest;
 import org.dmfs.httpessentials.headers.HttpHeaders;
-import org.dmfs.optional.decorators.Mapped;
+import org.dmfs.jems.optional.decorators.Mapped;
+import org.dmfs.jems.single.combined.Backed;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,16 +64,18 @@ final class ApacheHttpEntity implements HttpEntity
     @Override
     public long getContentLength()
     {
-        return mRequest.requestEntity().contentLength().value(-1L);
+        return new Backed<>(mRequest.requestEntity().contentLength(), -1L).value();
     }
 
 
     @Override
     public Header getContentType()
     {
-        return new Mapped<>(
-                contentType -> new BasicHeader("content-type", contentType.type()),
-                mRequest.requestEntity().contentType()).value(null);
+        return new Backed<Header>(
+                new Mapped<>(
+                        contentType -> new BasicHeader("content-type", contentType.type()),
+                        mRequest.requestEntity().contentType()),
+                () -> null).value();
     }
 
 

@@ -23,9 +23,9 @@ import org.dmfs.httpessentials.executors.authorizing.Tokens;
 import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.types.Token;
 import org.dmfs.iterables.EmptyIterable;
+import org.dmfs.jems.optional.Optional;
+import org.dmfs.jems.optional.elementary.Present;
 import org.dmfs.jems.pair.Pair;
-import org.dmfs.optional.Optional;
-import org.dmfs.optional.Present;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

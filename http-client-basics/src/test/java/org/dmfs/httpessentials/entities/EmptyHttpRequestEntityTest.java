@@ -17,13 +17,13 @@
 
 package org.dmfs.httpessentials.entities;
 
-import org.dmfs.httpessentials.types.MediaType;
-import org.dmfs.jems.hamcrest.matchers.AbsentMatcher;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
+import static org.dmfs.jems.hamcrest.matchers.optional.AbsentMatcher.absent;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -35,7 +35,7 @@ public class EmptyHttpRequestEntityTest
     public void testContentType()
     {
         // the entity should not return a content-type, since there is no content
-        assertThat(EmptyHttpRequestEntity.INSTANCE.contentType(), AbsentMatcher.<MediaType>isAbsent());
+        assertThat(EmptyHttpRequestEntity.INSTANCE.contentType(), is(absent()));
     }
 
 
@@ -43,7 +43,7 @@ public class EmptyHttpRequestEntityTest
     public void testContentLength()
     {
         // there is no content, so it can't have any length, not even 0
-        assertThat(EmptyHttpRequestEntity.INSTANCE.contentLength(), AbsentMatcher.<Long>isAbsent());
+        assertThat(EmptyHttpRequestEntity.INSTANCE.contentLength(), is(absent()));
     }
 
 

@@ -46,8 +46,6 @@ public final class ApacheExecutor extends DelegatingHttpRequestExecutor
                 new VersionedProduct(BuildConfig.NAME, BuildConfig.VERSION),
                 new BottomBranded(
                         new ApacheProduct(),
-                        new BottomBranded(Platform.INSTANCE, executor)
-                )
-        ));
+                        new BottomBranded(Platform.INSTANCE, executor))));
     }
 }

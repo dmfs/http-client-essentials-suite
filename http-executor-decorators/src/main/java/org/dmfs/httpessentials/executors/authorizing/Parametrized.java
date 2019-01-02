@@ -18,7 +18,7 @@
 package org.dmfs.httpessentials.executors.authorizing;
 
 import org.dmfs.httpessentials.types.Token;
-import org.dmfs.optional.Optional;
+import org.dmfs.jems.optional.Optional;
 
 
 /**

@@ -21,19 +21,16 @@ import org.dmfs.httpessentials.executors.authorizing.AuthScheme;
 import org.dmfs.httpessentials.executors.authorizing.AuthStrategy;
 import org.dmfs.httpessentials.executors.authorizing.Challenge;
 import org.dmfs.httpessentials.executors.authorizing.CredentialsStore;
-import org.dmfs.httpessentials.executors.authorizing.Parametrized;
 import org.dmfs.httpessentials.executors.authorizing.Tokens;
 import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.authscopes.UriScope;
 import org.dmfs.httpessentials.executors.authorizing.authstates.AuthenticatedBasicAuthState;
-import org.dmfs.httpessentials.executors.authorizing.utils.ChallengeFilter;
-import org.dmfs.httpessentials.executors.authorizing.utils.SimpleParametrized;
-import org.dmfs.iterables.decorators.Fluent;
-import org.dmfs.iterators.Function;
+import org.dmfs.httpessentials.executors.authorizing.utils.ParametrizedChallenges;
+import org.dmfs.iterables.elementary.PresentValues;
+import org.dmfs.jems.iterable.decorators.Mapped;
+import org.dmfs.jems.optional.composite.Zipped;
 import org.dmfs.jems.pair.Pair;
 import org.dmfs.jems.pair.elementary.ValuePair;
-import org.dmfs.optional.composite.Zipped;
-import org.dmfs.optional.iterable.PresentValues;
 
 import java.net.URI;
 
@@ -49,15 +46,13 @@ public final class Basic implements AuthScheme<UserCredentials>
     public Iterable<Pair<CharSequence, AuthStrategy>> authStrategies(Iterable<Challenge> challenges, final CredentialsStore<UserCredentials> credentialsStore, final URI uri)
     {
         return new PresentValues<>(
-                new Fluent<>(challenges)
-                        .filtered(new ChallengeFilter(Tokens.BASIC))
-                        .mapped((Function<Challenge, Parametrized>) argument -> new SimpleParametrized(argument.challenge()))
-                        .mapped(challenge -> new Zipped<>(
-                                credentialsStore.credentials(new UriScope(uri)),
-                                challenge.parameter(Tokens.REALM),
-                                (userCredentials, charSequence) -> new ValuePair<CharSequence, AuthStrategy>(charSequence,
-                                        (method, uri1, fallback) -> new AuthenticatedBasicAuthState(userCredentials, fallback)
-                                )))
-        );
+
+                new Mapped<>(challenge -> new Zipped<>(
+                        credentialsStore.credentials(new UriScope(uri)),
+                        challenge.parameter(Tokens.REALM),
+                        (userCredentials, charSequence) -> new ValuePair<>(
+                                charSequence,
+                                (method, uri1, fallback) -> new AuthenticatedBasicAuthState(userCredentials, fallback))),
+                        new ParametrizedChallenges(Tokens.BASIC, challenges)));
     }
 }

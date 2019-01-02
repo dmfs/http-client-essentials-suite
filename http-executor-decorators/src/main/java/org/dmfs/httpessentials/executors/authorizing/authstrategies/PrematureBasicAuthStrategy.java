@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.authorizing.strategies;
+package org.dmfs.httpessentials.executors.authorizing.authstrategies;
 
 import org.dmfs.httpessentials.HttpMethod;
 import org.dmfs.httpessentials.executors.authorizing.AuthState;
@@ -24,8 +24,8 @@ import org.dmfs.httpessentials.executors.authorizing.CredentialsStore;
 import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.authscopes.UriScope;
 import org.dmfs.httpessentials.executors.authorizing.authstates.AuthenticatedBasicAuthState;
-import org.dmfs.iterators.Function;
-import org.dmfs.optional.decorators.Mapped;
+import org.dmfs.jems.optional.decorators.Mapped;
+import org.dmfs.jems.single.combined.Backed;
 
 import java.net.URI;
 
@@ -53,9 +53,10 @@ public final class PrematureBasicAuthStrategy implements AuthStrategy
     @Override
     public AuthState authState(HttpMethod method, URI uri, final AuthState fallback)
     {
-        return new Mapped<>(
-                (Function<UserCredentials, AuthState>) argument -> new AuthenticatedBasicAuthState(argument, fallback),
-                mCredentialsStore.credentials(new UriScope(uri)))
-                .value(fallback);
+        return new Backed<>(
+                new Mapped<>(
+                        argument -> new AuthenticatedBasicAuthState(argument, fallback),
+                        mCredentialsStore.credentials(new UriScope(uri))),
+                fallback).value();
     }
 }

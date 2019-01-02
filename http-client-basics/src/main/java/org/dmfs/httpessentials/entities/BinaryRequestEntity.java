@@ -19,9 +19,9 @@ package org.dmfs.httpessentials.entities;
 
 import org.dmfs.httpessentials.client.HttpRequestEntity;
 import org.dmfs.httpessentials.types.MediaType;
+import org.dmfs.jems.optional.Optional;
+import org.dmfs.jems.optional.elementary.Present;
 import org.dmfs.jems.single.Single;
-import org.dmfs.optional.Optional;
-import org.dmfs.optional.Present;
 
 import java.io.IOException;
 import java.io.OutputStream;

@@ -25,22 +25,22 @@ import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.charsequences.Quoted;
 import org.dmfs.httpessentials.executors.authorizing.utils.Parameter;
 import org.dmfs.httpessentials.types.Token;
-import org.dmfs.iterables.decorators.Flattened;
+import org.dmfs.iterables.elementary.PresentValues;
 import org.dmfs.iterables.elementary.Seq;
-import org.dmfs.iterators.Function;
 import org.dmfs.jems.charsequence.elementary.Hex;
+import org.dmfs.jems.iterable.composite.Joined;
 import org.dmfs.jems.messagedigest.MessageDigestFactory;
 import org.dmfs.jems.messagedigest.elementary.DigestFactory;
+import org.dmfs.jems.optional.Optional;
+import org.dmfs.jems.optional.decorators.Mapped;
+import org.dmfs.jems.optional.decorators.Sieved;
 import org.dmfs.jems.pair.Pair;
+import org.dmfs.jems.single.combined.Backed;
 import org.dmfs.jems.single.elementary.Digest;
-import org.dmfs.optional.Optional;
-import org.dmfs.optional.decorators.Filtered;
-import org.dmfs.optional.decorators.Mapped;
-import org.dmfs.optional.iterable.PresentValues;
 
 import java.net.URI;
 
-import static org.dmfs.optional.Absent.absent;
+import static org.dmfs.jems.optional.elementary.Absent.absent;
 
 
 /**
@@ -86,18 +86,18 @@ public final class AuthDigestAuthorization implements Authorization
     @Override
     public Iterable<Pair<Token, CharSequence>> parameters()
     {
-        final CharSequence algorithm = mDigestChallenge.parameter(Tokens.ALGORITHM).value("MD5");
+        final CharSequence algorithm = new Backed<>(mDigestChallenge.parameter(Tokens.ALGORITHM), "MD5").value();
         final MessageDigestFactory digestFactory = new DigestFactory(algorithm.toString());
         final Optional<CharSequence> userhash = mDigestChallenge.parameter(Tokens.USERHASH);
         final CharSequence realm = mDigestChallenge.parameter(Tokens.REALM).value();
         final CharSequence nonce = mDigestChallenge.parameter(Tokens.NONCE).value();
 
         final CharSequence username = mUserCredentials.userName();
-        CharSequence user = new Mapped<>(
-                (Function<CharSequence, CharSequence>) argument -> new Hex(new Digest(digestFactory, username, ":", realm).value()),
-                new Filtered<>(argument -> "true".equalsIgnoreCase(argument.toString()), userhash)).value(username);
+        CharSequence user = new Mapped<CharSequence, CharSequence>(
+                argument -> new Hex(new Digest(digestFactory, username, ":", realm).value()),
+                new Sieved<>(argument -> "true".equalsIgnoreCase(argument.toString()), userhash)).value(username);
 
-        return new Flattened<>(
+        return new Joined<>(
                 new Seq<>(
                         new Parameter(Tokens.USERNAME, new Quoted(user)),
                         new Parameter(Tokens.REALM, new Quoted(realm)),
@@ -128,12 +128,8 @@ public final class AuthDigestAuthorization implements Authorization
                                                 mRequestUri.getRawPath()).value())
                                 ).value())))),
                 new PresentValues<>(
-                        new Mapped<>(
-                                charSequence -> new Parameter(Tokens.OPAQUE, new Quoted(charSequence)),
-                                mDigestChallenge.parameter(Tokens.OPAQUE)),
-                        new Mapped<>(
-                                argument -> new Parameter(Tokens.USERHASH, argument),
-                                mDigestChallenge.parameter(Tokens.USERHASH))));
+                        new Mapped<>(charSequence -> new Parameter(Tokens.OPAQUE, new Quoted(charSequence)), mDigestChallenge.parameter(Tokens.OPAQUE)),
+                        new Mapped<>(argument -> new Parameter(Tokens.USERHASH, argument), mDigestChallenge.parameter(Tokens.USERHASH))));
     }
 
 

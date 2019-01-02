@@ -27,7 +27,7 @@ import org.dmfs.httpessentials.headers.UpdatedHeaders;
 import org.dmfs.httpessentials.httpurlconnection.utils.iterators.StringEqualsIgnoreCase;
 import org.dmfs.iterators.decorators.Filtered;
 import org.dmfs.iterators.decorators.Flattened;
-import org.dmfs.iterators.decorators.Mapped;
+import org.dmfs.jems.iterator.decorators.Mapped;
 
 import java.net.HttpURLConnection;
 import java.util.Iterator;
@@ -92,11 +92,13 @@ final class HttpUrlConnectionHeaders implements Headers
     {
         Header<List<T>> result = headerType.entity(emptyList());
 
-        final Iterator<Header<List<T>>> headerIterator = new Mapped<>(new Flattened<>(
-                new Mapped<>(new Filtered<>(mHeaders.keySet().iterator(),
-                        new StringEqualsIgnoreCase(headerType.name())),
-                        mHeaders::get)),
-                headerType::entityFromString);
+        final Iterator<Header<List<T>>> headerIterator = new Mapped<>(
+                headerType::entityFromString,
+                new Flattened<>(
+                        new Mapped<>(
+                                mHeaders::get,
+                                new Filtered<>(mHeaders.keySet().iterator(),
+                                        new StringEqualsIgnoreCase(headerType.name())))));
 
         // combine all headers of this type into one
         while (headerIterator.hasNext())

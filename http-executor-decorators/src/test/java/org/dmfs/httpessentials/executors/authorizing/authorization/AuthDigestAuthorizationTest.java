@@ -24,13 +24,13 @@ import org.dmfs.httpessentials.executors.authorizing.Tokens;
 import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.charsequences.SingleCredentials;
 import org.dmfs.httpessentials.types.Token;
+import org.dmfs.jems.optional.elementary.Present;
 import org.dmfs.jems.pair.Pair;
-import org.dmfs.optional.Present;
 import org.junit.Test;
 
 import java.net.URI;
 
-import static org.dmfs.optional.Absent.absent;
+import static org.dmfs.jems.optional.elementary.Absent.absent;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 

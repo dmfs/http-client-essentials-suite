@@ -24,8 +24,9 @@ import org.dmfs.iterables.CsvIterable;
 import org.dmfs.iterables.Repeatable;
 import org.dmfs.iterators.CsvIterator;
 import org.dmfs.iterators.decorators.Filtered;
-import org.dmfs.iterators.decorators.Mapped;
+import org.dmfs.iterators.decorators.Sieved;
 import org.dmfs.iterators.filters.Skip;
+import org.dmfs.jems.iterator.decorators.Mapped;
 
 import java.net.URI;
 import java.util.HashSet;
@@ -77,16 +78,18 @@ public final class StringLink implements Link
     public <T> Iterator<Parameter<T>> parameters(final ParameterType<T> parameterType)
     {
         return new Mapped<>(
-                new Filtered<>(new Filtered<>(mParts.iterator(), new Skip<>(1)),
+                element -> {
+                    element = element.trim();
+                    int equalsIdx = element.indexOf(PARAMETER_VALUE_SEPARATOR);
+                    return parameterType.entityFromString(element.substring(equalsIdx + 1));
+                },
+                new Sieved<>(
                         element -> {
                             String param = element.trim();
                             int equalsIdx = param.indexOf(PARAMETER_VALUE_SEPARATOR);
                             return parameterType.name().equalsIgnoreCase(param.substring(0, equalsIdx));
-                        }), element -> {
-            element = element.trim();
-            int equalsIdx = element.indexOf(PARAMETER_VALUE_SEPARATOR);
-            return parameterType.entityFromString(element.substring(equalsIdx + 1));
-        });
+                        },
+                        new Filtered<>(mParts.iterator(), new Skip<>(1))));
     }
 
 

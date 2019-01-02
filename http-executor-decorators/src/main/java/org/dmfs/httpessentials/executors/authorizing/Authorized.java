@@ -32,11 +32,12 @@ import org.dmfs.httpessentials.headers.BasicSingletonHeaderType;
 import org.dmfs.httpessentials.headers.HeaderType;
 import org.dmfs.httpessentials.headers.Headers;
 import org.dmfs.httpessentials.typedentity.EntityConverter;
-import org.dmfs.optional.Absent;
-import org.dmfs.optional.decorators.Mapped;
+import org.dmfs.jems.optional.decorators.Mapped;
 
 import java.io.IOException;
 import java.net.URI;
+
+import static org.dmfs.jems.optional.elementary.Absent.absent;
 
 
 /**
@@ -127,7 +128,7 @@ final class Authorized<T> implements HttpRequest<T>
             }
             // successfully authenticated, update the auth cache
             // TODO: pass any Authentication-Info header value
-            mAuthStrategyCache.update(mUri, mAuthState.prematureAuthStrategy(Absent.<AuthInfo>absent()));
+            mAuthStrategyCache.update(mUri, mAuthState.prematureAuthStrategy(absent()));
         }
         return mRequest.responseHandler(response);
     }

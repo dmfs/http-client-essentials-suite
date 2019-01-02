@@ -17,9 +17,7 @@
 
 package org.dmfs.httpessentials.entities;
 
-import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.httpessentials.types.StringMediaType;
-import org.dmfs.jems.hamcrest.matchers.PresentMatcher;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -28,7 +26,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import static org.dmfs.jems.hamcrest.matchers.PresentMatcher.isPresent;
+import static org.dmfs.jems.hamcrest.matchers.optional.PresentMatcher.present;
 import static org.dmfs.jems.mockito.doubles.TestDoubles.failingMock;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -43,8 +41,8 @@ public class JsonRequestEntityTest
     @Test
     public void testContentType()
     {
-        assertThat(new JsonRequestEntity(new JSONObject()).contentType(), PresentMatcher.<MediaType>isPresent(new StringMediaType("application/json")));
-        assertThat(new JsonRequestEntity(new JSONArray()).contentType(), PresentMatcher.<MediaType>isPresent(new StringMediaType("application/json")));
+        assertThat(new JsonRequestEntity(new JSONObject()).contentType(), is(present(new StringMediaType("application/json"))));
+        assertThat(new JsonRequestEntity(new JSONArray()).contentType(), is(present(new StringMediaType("application/json"))));
     }
 
 
@@ -53,7 +51,7 @@ public class JsonRequestEntityTest
     {
         JSONObject mockObject = failingMock(JSONObject.class);
         doReturn("dummyStringäöü").when(mockObject).toString();
-        assertThat(new JsonRequestEntity(mockObject).contentLength(), isPresent((long) "dummyStringäöü".getBytes("utf-8").length));
+        assertThat(new JsonRequestEntity(mockObject).contentLength(), is(present((long) "dummyStringäöü".getBytes("utf-8").length)));
     }
 
 
@@ -62,7 +60,7 @@ public class JsonRequestEntityTest
     {
         JSONArray mockArray = failingMock(JSONArray.class);
         doReturn("dummyStringäöü").when(mockArray).toString();
-        assertThat(new JsonRequestEntity(mockArray).contentLength(), isPresent((long) "dummyStringäöü".getBytes("utf-8").length));
+        assertThat(new JsonRequestEntity(mockArray).contentLength(), is(present((long) "dummyStringäöü".getBytes("utf-8").length)));
     }
 
 

@@ -20,9 +20,10 @@ package org.dmfs.httpessentials.executors.authorizing.credentialsstores;
 import org.dmfs.httpessentials.executors.authorizing.AuthScope;
 import org.dmfs.httpessentials.executors.authorizing.CredentialsStore;
 import org.dmfs.httpessentials.executors.authorizing.ServiceScope;
-import org.dmfs.optional.Absent;
-import org.dmfs.optional.Optional;
-import org.dmfs.optional.Present;
+import org.dmfs.jems.optional.Optional;
+import org.dmfs.jems.optional.elementary.Present;
+
+import static org.dmfs.jems.optional.elementary.Absent.absent;
 
 
 /**
@@ -46,6 +47,6 @@ public final class SimpleCredentialsStore<CredentialsType> implements Credential
     @Override
     public Optional<CredentialsType> credentials(AuthScope authScope)
     {
-        return mServiceScope.contains(authScope) ? new Present<>(mCredentials) : Absent.<CredentialsType>absent();
+        return mServiceScope.contains(authScope) ? new Present<>(mCredentials) : absent();
     }
 }

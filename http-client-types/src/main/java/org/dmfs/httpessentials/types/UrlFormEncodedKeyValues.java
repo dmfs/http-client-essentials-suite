@@ -21,8 +21,8 @@ import org.dmfs.httpessentials.parameters.Parameter;
 import org.dmfs.httpessentials.parameters.ParameterType;
 import org.dmfs.httpessentials.parameters.Parametrized;
 import org.dmfs.iterables.CsvIterable;
-import org.dmfs.iterators.decorators.Filtered;
-import org.dmfs.iterators.decorators.Mapped;
+import org.dmfs.iterators.decorators.Sieved;
+import org.dmfs.jems.iterator.decorators.Mapped;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -66,11 +66,13 @@ public final class UrlFormEncodedKeyValues implements Parametrized
     public <T> Iterator<Parameter<T>> parameters(final ParameterType<T> parameterType)
     {
         return new Mapped<>(
-                new Filtered<>(
-                        new Mapped<>(mParts.iterator(),
-                                element -> new KeyValueStringEntry(element, element.indexOf(VALUE_SEPARATOR))),
-                        element -> parameterType.name().equals(element.getKey())),
-                element -> parameterType.entityFromString(element.getValue()));
+                element -> parameterType.entityFromString(element.getValue()),
+                new Sieved<>(
+                        element -> parameterType.name().equals(element.getKey()),
+                        new Mapped<>(
+                                element -> new KeyValueStringEntry(element, element.indexOf(VALUE_SEPARATOR)),
+                                mParts.iterator()))
+        );
     }
 
 

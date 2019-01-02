@@ -20,11 +20,10 @@ package org.dmfs.httpessentials.responsehandlers;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.client.HttpResponseHandler;
-import org.dmfs.httpessentials.exceptions.ProtocolError;
-import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.httpessentials.types.StructuredMediaType;
-import org.dmfs.optional.Optional;
+import org.dmfs.jems.optional.Optional;
+import org.dmfs.jems.single.combined.Backed;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -83,10 +82,10 @@ public final class StringResponseHandler implements HttpResponseHandler<String>
 
         Optional<MediaType> contentType = entity.contentType();
 
-        StringBuilder builder = new StringBuilder((int) (long) entity.contentLength().value((long) BUFFER_SIZE));
+        StringBuilder builder = new StringBuilder((int) (long) new Backed<>(entity.contentLength(), (long) BUFFER_SIZE).value());
 
         // note: we already read the content in larger chunks so there should be no need for a BufferedReader
-        try (Reader reader = new InputStreamReader(entity.contentStream(), contentType.value(mDefaultMediaType).charset(mDefaultCharset)))
+        try (Reader reader = new InputStreamReader(entity.contentStream(), new Backed<>(contentType, mDefaultMediaType).value().charset(mDefaultCharset)))
         {
             int read;
             final char[] buffer = new char[BUFFER_SIZE];

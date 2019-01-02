@@ -21,8 +21,8 @@ import org.dmfs.httpessentials.parameters.Parameter;
 import org.dmfs.httpessentials.parameters.ParameterType;
 import org.dmfs.httpessentials.parameters.Parameters;
 import org.dmfs.iterators.decorators.Filtered;
-import org.dmfs.iterators.decorators.Mapped;
 import org.dmfs.iterators.elementary.Seq;
+import org.dmfs.jems.iterator.decorators.Mapped;
 
 import java.util.Iterator;
 import java.util.Locale;
@@ -142,9 +142,10 @@ public final class StructuredMediaType implements MediaType
     public <T> Iterator<Parameter<T>> parameters(final ParameterType<T> parameterType)
     {
         return new Mapped<>(
+                element -> (Parameter<T>) element,
                 new Filtered<>(new Seq<>(mParameters),
-                        element -> parameterType.equals(element.type())),
-                element -> (Parameter<T>) element);
+                        element -> parameterType.equals(element.type()))
+        );
     }
 
 

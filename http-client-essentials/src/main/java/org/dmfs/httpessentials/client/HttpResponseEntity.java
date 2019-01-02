@@ -18,7 +18,7 @@
 package org.dmfs.httpessentials.client;
 
 import org.dmfs.httpessentials.types.MediaType;
-import org.dmfs.optional.Optional;
+import org.dmfs.jems.optional.Optional;
 
 import java.io.IOException;
 import java.io.InputStream;

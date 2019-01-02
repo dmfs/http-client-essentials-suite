@@ -21,12 +21,12 @@ import org.dmfs.httpessentials.executors.authorizing.Parametrized;
 import org.dmfs.httpessentials.executors.authorizing.charsequences.Unquoted;
 import org.dmfs.httpessentials.types.Token;
 import org.dmfs.iterables.UnquotedSplit;
-import org.dmfs.iterables.decorators.Mapped;
-import org.dmfs.iterators.Filter;
+import org.dmfs.jems.iterable.decorators.Mapped;
+import org.dmfs.jems.optional.Optional;
+import org.dmfs.jems.optional.adapters.First;
 import org.dmfs.jems.pair.Pair;
 import org.dmfs.jems.pair.elementary.ValuePair;
-import org.dmfs.optional.First;
-import org.dmfs.optional.Optional;
+import org.dmfs.jems.predicate.Predicate;
 
 import java.util.Iterator;
 
@@ -48,21 +48,19 @@ public final class SimpleParametrized implements Parametrized
     @Override
     public Optional<CharSequence> parameter(final Token name)
     {
-        return new org.dmfs.optional.decorators.Mapped<>(
+        return new org.dmfs.jems.optional.decorators.Mapped<>(
                 charSequenceCharSequencePair -> new Unquoted(charSequenceCharSequencePair.right().toString().trim()),
-                new First<>(new Mapped<>(
-                        new UnquotedSplit(mDelegate, ','),
-                        o -> {
-                            Iterable<CharSequence> result = new UnquotedSplit(o, '=');
+                new First<>(
+                        new Mapped<>(param -> {
+                            Iterable<CharSequence> result = new UnquotedSplit(param, '=');
                             Iterator<CharSequence> it = result.iterator();
                             return new ValuePair<>(it.next(), it.next());
-                        }), new Filter<Pair<CharSequence, CharSequence>>()
-                {
-                    @Override
-                    public boolean iterate(Pair<CharSequence, CharSequence> charSequenceCharSequencePair)
-                    {
-                        return charSequenceCharSequencePair.left().toString().trim().equalsIgnoreCase(name.toString());
-                    }
-                }));
+                        },
+                                new UnquotedSplit(mDelegate, ',')
+                        ),
+                        (Predicate<Pair<CharSequence, CharSequence>>) charSequenceCharSequencePair -> charSequenceCharSequencePair.left()
+                                .toString()
+                                .trim()
+                                .equalsIgnoreCase(name.toString())));
     }
 }

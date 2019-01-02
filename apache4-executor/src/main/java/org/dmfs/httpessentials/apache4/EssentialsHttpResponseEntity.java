@@ -20,11 +20,10 @@ package org.dmfs.httpessentials.apache4;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.httpessentials.types.StringMediaType;
-import org.dmfs.optional.Absent;
-import org.dmfs.optional.NullSafe;
-import org.dmfs.optional.Optional;
-import org.dmfs.optional.Present;
-import org.dmfs.optional.decorators.Mapped;
+import org.dmfs.jems.optional.Optional;
+import org.dmfs.jems.optional.adapters.Conditional;
+import org.dmfs.jems.optional.decorators.Mapped;
+import org.dmfs.jems.optional.elementary.NullSafe;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +32,7 @@ import java.io.InputStream;
 /**
  * @author Marten Gajda
  */
-public class EssentialsHttpResponseEntity implements HttpResponseEntity
+public final class EssentialsHttpResponseEntity implements HttpResponseEntity
 {
     private final org.apache.http.HttpResponse mResponse;
 
@@ -54,8 +53,8 @@ public class EssentialsHttpResponseEntity implements HttpResponseEntity
     @Override
     public Optional<Long> contentLength()
     {
-        long contentLenght = mResponse.getEntity().getContentLength();
-        return contentLenght >= 0 ? new Present<>(contentLenght) : Absent.<Long>absent();
+        // return a positive content lengths only
+        return new Conditional<>(length -> length >= 0, mResponse.getEntity().getContentLength());
     }
 
 
