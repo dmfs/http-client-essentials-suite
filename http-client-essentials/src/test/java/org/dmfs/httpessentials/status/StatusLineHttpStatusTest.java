@@ -53,54 +53,14 @@ public class StatusLineHttpStatusTest
 
 
     @Test
-    public void testIsInformational()
-    {
-        assertTrue(new StatusLineHttpStatus("HTTP/1.1 155 Some Reason").isInformational());
-        assertFalse(new StatusLineHttpStatus("HTTP/1.1 355 Some Reason").isInformational());
-    }
-
-
-    @Test
-    public void testIsSuccess()
-    {
-        assertTrue(new StatusLineHttpStatus("HTTP/1.1 255 Some Reason").isSuccess());
-        assertFalse(new StatusLineHttpStatus("HTTP/1.1 355 Some Reason").isSuccess());
-    }
-
-
-    @Test
-    public void testIsRedirect()
-    {
-        assertTrue(new StatusLineHttpStatus("HTTP/1.1 355 Some Reason").isRedirect());
-        assertFalse(new StatusLineHttpStatus("HTTP/1.1 455 Some Reason").isRedirect());
-    }
-
-
-    @Test
-    public void testIsClientError()
-    {
-        assertTrue(new StatusLineHttpStatus("HTTP/1.1 455 Some Reason").isClientError());
-        assertFalse(new StatusLineHttpStatus("HTTP/1.1 355 Some Reason").isClientError());
-    }
-
-
-    @Test
-    public void testIsServerError()
-    {
-        assertTrue(new StatusLineHttpStatus("HTTP/1.1 555 Some Reason").isServerError());
-        assertFalse(new StatusLineHttpStatus("HTTP/1.1 355 Some Reason").isServerError());
-    }
-
-
-    @Test
     public void testEqualsObject()
     {
-        assertTrue(new StatusLineHttpStatus("HTTP/1.1 100 Some Reason").equals(new SimpleHttpStatus(100, "Reason")));
+        assertTrue(new StatusLineHttpStatus("HTTP/1.1 100 Some Reason").equals(new StructuredHttpStatus(100, "Reason")));
         assertTrue(
-                new StatusLineHttpStatus("HTTP/1.1 100 Some Reason").equals(new SimpleHttpStatus(100, "Some Reason")));
-        assertFalse(new StatusLineHttpStatus("HTTP/1.1 100 Some Reason").equals(new SimpleHttpStatus(101, "Reason")));
+                new StatusLineHttpStatus("HTTP/1.1 100 Some Reason").equals(new StructuredHttpStatus(100, "Some Reason")));
+        assertFalse(new StatusLineHttpStatus("HTTP/1.1 100 Some Reason").equals(new StructuredHttpStatus(101, "Reason")));
         assertFalse(
-                new StatusLineHttpStatus("HTTP/1.1 100 Some Reason").equals(new SimpleHttpStatus(101, "Some Reason")));
+                new StatusLineHttpStatus("HTTP/1.1 100 Some Reason").equals(new StructuredHttpStatus(101, "Some Reason")));
     }
 
 }

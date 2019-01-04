@@ -21,53 +21,55 @@ import org.dmfs.httpessentials.HttpStatus;
 
 
 /**
- * Represents an {@link HttpStatus} for "no status".
+ * A structured {@link HttpStatus}.
  *
  * @author Marten Gajda
  */
-public final class NoneHttpStatus implements HttpStatus
+public final class StructuredHttpStatus implements HttpStatus
 {
+    private final int mStatusCode;
+    private final String mReasonPhrase;
+
 
     /**
-     * Creates an {@link HttpStatus} that represents a non existing status.
+     * Creates a {@link StructuredHttpStatus}.
+     *
+     * @param statusCode
+     *         The status code.
+     * @param reasonPhrase
+     *         The reason phrase of this status, must be non-{@code null}
      */
-    public NoneHttpStatus()
+    public StructuredHttpStatus(final int statusCode, final String reasonPhrase)
     {
+        mStatusCode = statusCode;
+        mReasonPhrase = reasonPhrase;
     }
 
 
     @Override
     public int statusCode()
     {
-        throw new UnsupportedOperationException("NoneHttpStatus has no status code");
+        return mStatusCode;
     }
 
 
     @Override
     public String reason()
     {
-        throw new UnsupportedOperationException("NoneHttpStatus has no reason");
+        return mReasonPhrase;
     }
 
 
     @Override
     public int hashCode()
     {
-        // return a hash code that won't match the hash code of any valid status
-        return -1;
+        return mStatusCode;
     }
 
 
     @Override
     public boolean equals(final Object obj)
     {
-        return obj == this || obj instanceof NoneHttpStatus;
-    }
-
-
-    @Override
-    public String toString()
-    {
-        return "NONE HttpStatus";
+        return this == obj || obj instanceof HttpStatus && mStatusCode == obj.hashCode();
     }
 }

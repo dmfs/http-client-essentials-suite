@@ -24,4 +24,5 @@ dependencies {
     testCompile 'org.json:json:20171018'
     testCompile 'junit:junit:' + JUNIT_VERSION
     testCompile 'org.dmfs:jems-testing:' + JEMS_VERSION
+    testCompile 'org.hamcrest:hamcrest-all:1.3'
 }

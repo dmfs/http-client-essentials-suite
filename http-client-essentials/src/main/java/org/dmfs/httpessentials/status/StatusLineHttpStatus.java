@@ -21,7 +21,7 @@ import org.dmfs.httpessentials.HttpStatus;
 
 
 /**
- * An {@link HttpStatus} that's derived from an HTTP status line.
+ * An {@link HttpStatus} derived from an HTTP status line.
  * <p>
  * TODO: validate the given status line
  *
@@ -29,9 +29,6 @@ import org.dmfs.httpessentials.HttpStatus;
  */
 public final class StatusLineHttpStatus implements HttpStatus
 {
-    /**
-     * The status line that contains the status.
-     */
     private final String mStatusLine;
 
 
@@ -93,41 +90,6 @@ public final class StatusLineHttpStatus implements HttpStatus
 		 */
 		// @formatter:on
         return mStatusLine.substring(0x0d);
-    }
-
-
-    @Override
-    public boolean isInformational()
-    {
-        return mStatusLine.charAt(0x09) == '1';
-    }
-
-
-    @Override
-    public boolean isSuccess()
-    {
-        return mStatusLine.charAt(0x09) == '2';
-    }
-
-
-    @Override
-    public boolean isRedirect()
-    {
-        return mStatusLine.charAt(0x09) == '3';
-    }
-
-
-    @Override
-    public boolean isClientError()
-    {
-        return mStatusLine.charAt(0x09) == '4';
-    }
-
-
-    @Override
-    public boolean isServerError()
-    {
-        return mStatusLine.charAt(0x09) == '5';
     }
 
 
