@@ -109,7 +109,7 @@ public final class Following implements HttpRequestExecutor
         @Override
         public HttpResponseHandler<T> responseHandler(HttpResponse response) throws IOException, ProtocolError, ProtocolException
         {
-            if (response.status().isRedirect() && mRedirectPolicy.affects(response))
+            if (response.status().statusCode() >= 300 && response.status().statusCode() < 400 && mRedirectPolicy.affects(response))
             {
                 return new RedirectResponseHandler();
             }

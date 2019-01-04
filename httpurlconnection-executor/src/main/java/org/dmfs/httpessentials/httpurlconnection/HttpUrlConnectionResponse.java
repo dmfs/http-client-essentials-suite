@@ -21,7 +21,7 @@ import org.dmfs.httpessentials.HttpStatus;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.headers.Headers;
-import org.dmfs.httpessentials.status.SimpleHttpStatus;
+import org.dmfs.httpessentials.status.StructuredHttpStatus;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -63,7 +63,7 @@ final class HttpUrlConnectionResponse implements HttpResponse
     {
         try
         {
-            return new SimpleHttpStatus(mConnection.getResponseCode(), mConnection.getResponseMessage());
+            return new StructuredHttpStatus(mConnection.getResponseCode(), mConnection.getResponseMessage());
         }
         catch (IOException e)
         {

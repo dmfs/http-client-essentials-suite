@@ -59,7 +59,7 @@ public final class FailResponseHandler<T> implements HttpResponseHandler<T>
         try
         {
             HttpStatus status = response.status();
-            if (status.isClientError())
+            if (status.statusCode() >= 400 && status.statusCode() < 500)
             {
                 if (HttpStatus.NOT_FOUND.equals(status))
                 {
@@ -78,7 +78,7 @@ public final class FailResponseHandler<T> implements HttpResponseHandler<T>
                                 status.statusCode(), status.reason(), response));
             }
 
-            if (status.isServerError())
+            if (status.statusCode() >= 500 && status.statusCode() < 600)
             {
                 throw new ServerErrorException(status,
                         String.format("'%s' returned a server error: '%d %s'", response.responseUri().toASCIIString(),

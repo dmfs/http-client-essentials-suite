@@ -19,45 +19,43 @@ package org.dmfs.httpessentials.status;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
-public class NoneHttpStatusTest
+public class StructuredHttpStatusTest
 {
 
     @Test
     public void testHashCode()
     {
-        assertTrue(new NoneHttpStatus().hashCode() < 0);
+        // hashCode is defined to return the status code
+        assertEquals(200, new StructuredHttpStatus(200, "someReason").hashCode());
     }
 
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testStatusCode()
     {
-        new NoneHttpStatus().statusCode();
+        assertEquals(312, new StructuredHttpStatus(312, "someReason").statusCode());
     }
 
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testReason()
     {
-        new NoneHttpStatus().statusCode();
-    }
-
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void testHttpStatusLine()
-    {
-        new NoneHttpStatus().statusCode();
+        assertEquals("some Reason", new StructuredHttpStatus(312, "some Reason").reason());
     }
 
 
     @Test
     public void testEqualsObject()
     {
-        assertFalse(new NoneHttpStatus().equals(new StructuredHttpStatus(200, "Some Reason")));
-        assertTrue(new NoneHttpStatus().equals(new NoneHttpStatus()));
+        assertTrue(new StructuredHttpStatus(100, "Reason").equals(new StructuredHttpStatus(100, "Reason")));
+        assertTrue(new StructuredHttpStatus(100, "Reason").equals(new StructuredHttpStatus(100, "other Reason")));
+        assertFalse(new StructuredHttpStatus(100, "Reason").equals(new StructuredHttpStatus(101, "Reason")));
+        assertFalse(new StructuredHttpStatus(100, "Reason").equals(new StructuredHttpStatus(101, "other Reason")));
     }
+
 }

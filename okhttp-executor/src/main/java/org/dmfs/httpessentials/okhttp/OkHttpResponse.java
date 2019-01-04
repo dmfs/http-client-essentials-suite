@@ -22,7 +22,7 @@ import org.dmfs.httpessentials.HttpStatus;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.headers.Headers;
-import org.dmfs.httpessentials.status.SimpleHttpStatus;
+import org.dmfs.httpessentials.status.StructuredHttpStatus;
 
 import java.net.URI;
 
@@ -48,7 +48,7 @@ final class OkHttpResponse implements HttpResponse
     @Override
     public HttpStatus status()
     {
-        return new SimpleHttpStatus(mResponse.code(), mResponse.message());
+        return new StructuredHttpStatus(mResponse.code(), mResponse.message());
     }
 
 

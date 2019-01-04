@@ -26,7 +26,7 @@ import org.dmfs.httpessentials.exceptions.ServerErrorException;
 import org.dmfs.httpessentials.exceptions.UnauthorizedException;
 import org.dmfs.httpessentials.exceptions.UnexpectedStatusException;
 import org.dmfs.httpessentials.headers.Headers;
-import org.dmfs.httpessentials.status.SimpleHttpStatus;
+import org.dmfs.httpessentials.status.StructuredHttpStatus;
 import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.jems.optional.Optional;
 import org.junit.Test;
@@ -36,8 +36,13 @@ import java.net.URI;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.dmfs.jems.optional.elementary.Absent.absent;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -62,7 +67,7 @@ public class FailResponseHandlerTest
 
         for (int i = 200; i < 600; ++i)
         {
-            final HttpStatus status = new SimpleHttpStatus(i, "UNKNOWN");
+            final HttpStatus status = new StructuredHttpStatus(i, "UNKNOWN");
 
             try
             {
@@ -79,11 +84,11 @@ public class FailResponseHandlerTest
             }
             catch (ClientErrorException e)
             {
-                assertTrue(status.isClientError());
+                assertThat(status.statusCode(), is(allOf(greaterThanOrEqualTo(400), lessThan(500))));
             }
             catch (ServerErrorException e)
             {
-                assertTrue(status.isServerError());
+                assertThat(status.statusCode(), is(allOf(greaterThanOrEqualTo(500), lessThan(600))));
             }
             catch (UnexpectedStatusException e)
             {
