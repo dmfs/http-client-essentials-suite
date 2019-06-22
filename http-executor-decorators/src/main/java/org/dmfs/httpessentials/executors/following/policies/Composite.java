@@ -20,6 +20,7 @@ package org.dmfs.httpessentials.executors.following.policies;
 import org.dmfs.httpessentials.client.HttpResponse;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
 import org.dmfs.httpessentials.executors.following.RedirectPolicy;
+import org.dmfs.iterables.elementary.Seq;
 import org.dmfs.jems.optional.adapters.First;
 import org.dmfs.jems.predicate.Predicate;
 
@@ -34,6 +35,12 @@ import java.net.URI;
 public final class Composite implements RedirectPolicy
 {
     private final Iterable<RedirectPolicy> mDelegates;
+
+
+    public Composite(RedirectPolicy... delegates)
+    {
+        this(new Seq<>(delegates));
+    }
 
 
     public Composite(Iterable<RedirectPolicy> delegates)

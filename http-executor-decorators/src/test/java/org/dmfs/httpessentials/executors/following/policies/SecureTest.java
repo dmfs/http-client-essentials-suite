@@ -17,153 +17,65 @@
 
 package org.dmfs.httpessentials.executors.following.policies;
 
-import mockit.Injectable;
-import mockit.Mocked;
-import mockit.StrictExpectations;
-import mockit.integration.junit4.JMockit;
-import org.dmfs.httpessentials.client.HttpResponse;
-import org.dmfs.httpessentials.exceptions.RedirectionException;
-import org.dmfs.httpessentials.executors.following.RedirectPolicy;
-import org.junit.Before;
+import org.dmfs.httpessentials.HttpStatus;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.net.URI;
 
-import static org.junit.Assert.assertSame;
+import static org.dmfs.httpessentials.executors.following.policies.matcher.RedirectPolicyFollowMatcher.follows;
+import static org.dmfs.httpessentials.executors.following.policies.matcher.RedirectPolicyFollowMatcher.mockRedirect;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertThat;
 
 
 /**
  * Unit test for {@link Secure}.
  *
- * @author Gabor Keszthelyi
+ * @author Marten Gajda
  */
-@RunWith(JMockit.class)
 public class SecureTest
 {
 
-    @Injectable
-    private RedirectPolicy decoratedPolicy;
-    @Injectable
-    private HttpResponse response;
-    @Injectable
-    private URI redirectingLocation;
-    @Injectable
-    private URI decoratorNewLocation;
-
-    private Secure secure;
-
-
-    @Before
-    public void setup()
+    @Test
+    public void testFollow()
     {
-        secure = new Secure(decoratedPolicy);
+        assertThat(new Secure(new FollowPolicy()),
+                follows(
+                        mockRedirect(
+                                HttpStatus.TEMPORARY_REDIRECT,
+                                URI.create("https://example.com/test"),
+                                URI.create("https://example.net/xyz")),
+                        URI.create("https://example.net/xyz"),
+                        1));
+        assertThat(new Secure(new FollowPolicy()),
+                follows(
+                        mockRedirect(
+                                HttpStatus.TEMPORARY_REDIRECT,
+                                URI.create("https://example.com/test"),
+                                URI.create("/new")),
+                        URI.create("https://example.com/new"),
+                        1));
     }
 
 
     @Test
-    public void testLocation_whenBothUrisAreHttps_shouldReturnDecoratedResult() throws RedirectionException
+    public void testNoFollow()
     {
-        // ARRANGE
-        new StrictExpectations()
-        {{
-            response.requestUri();
-            result = redirectingLocation;
-
-            decoratedPolicy.location(response, anyInt);
-            result = decoratorNewLocation;
-
-            redirectingLocation.getScheme();
-            result = "https";
-
-            decoratorNewLocation.getScheme();
-            result = "https";
-        }};
-
-        // ACT
-        URI actualResult = secure.location(response, 33);
-
-        // ASSERT
-        assertSame(decoratorNewLocation, actualResult);
+        assertThat(new Secure(new FollowPolicy()),
+                not(follows(
+                        mockRedirect(
+                                HttpStatus.TEMPORARY_REDIRECT,
+                                URI.create("https://example.com/test"),
+                                URI.create("http://example.net/xyz")),
+                        URI.create("http://example.net/xyz"),
+                        1)));
+        assertThat(new Secure(new NeverFollowRedirectPolicy()),
+                not(follows(
+                        mockRedirect(
+                                HttpStatus.TEMPORARY_REDIRECT,
+                                URI.create("https://example.com/test"),
+                                URI.create("https://example.com/new")),
+                        URI.create("https://example.com/new"),
+                        1)));
     }
-
-
-    @Test(expected = RedirectionException.class)
-    public void testLocation_whenRequestUriIsNotHttps_shouldThrowException(@Mocked RedirectionException e) throws RedirectionException
-    {
-        // ARRANGE
-        new StrictExpectations()
-        {{
-            response.requestUri();
-            result = redirectingLocation;
-
-            decoratedPolicy.location(response, anyInt);
-            result = decoratorNewLocation;
-
-            redirectingLocation.getScheme();
-            result = "http";
-
-            new RedirectionException(response.status(), "Not secure (HTTPS) redirect.", redirectingLocation,
-                    decoratorNewLocation);
-        }};
-
-        // ACT
-        secure.location(response, 33);
-    }
-
-
-    @Test(expected = RedirectionException.class)
-    public void testLocation_whenNewLocationIsNotHttps_shouldThrowException(@Mocked RedirectionException e) throws RedirectionException
-    {
-        // ARRANGE
-        new StrictExpectations()
-        {{
-            response.requestUri();
-            result = redirectingLocation;
-
-            decoratedPolicy.location(response, anyInt);
-            result = decoratorNewLocation;
-
-            redirectingLocation.getScheme();
-            result = "https";
-
-            decoratorNewLocation.getScheme();
-            result = "http";
-
-            new RedirectionException(response.status(), "Not secure (HTTPS) redirect.", redirectingLocation,
-                    decoratorNewLocation);
-        }};
-
-        // ACT
-        secure.location(response, 33);
-    }
-
-
-    @Test(expected = RedirectionException.class)
-    public void testLocation_whenBothAreNotHttps_shouldThrowException(@Mocked RedirectionException e) throws RedirectionException
-    {
-        // ARRANGE
-        new StrictExpectations()
-        {{
-            response.requestUri();
-            result = redirectingLocation;
-
-            decoratedPolicy.location(response, anyInt);
-            result = decoratorNewLocation;
-
-            redirectingLocation.getScheme();
-            result = "http";
-
-            decoratorNewLocation.getScheme();
-            result = "http";
-            minTimes = 0;
-
-            new RedirectionException(response.status(), "Not secure (HTTPS) redirect.", redirectingLocation,
-                    decoratorNewLocation);
-        }};
-
-        // ACT
-        secure.location(response, 33);
-    }
-
 }
