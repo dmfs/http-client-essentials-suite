@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 dmfs GmbH
+ * Copyright 2019 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,26 +29,20 @@ import static org.junit.Assert.assertThat;
 
 
 /**
- * @author Marten Gajda
+ * Unit test for {@link Relative}.
+ *
+ * @author Marten GAjda
  */
-public class TemporaryTest
+public class RelativeTest
 {
 
     @Test
     public void testFollow()
     {
-        assertThat(new Temporary(new FollowPolicy()),
+        assertThat(new Relative(new FollowPolicy()),
                 follows(
                         mockRedirect(
-                                HttpStatus.TEMPORARY_REDIRECT,
-                                URI.create("https://example.com/test"),
-                                URI.create("/new")),
-                        URI.create("https://example.com/new"),
-                        1));
-        assertThat(new Temporary(new FollowPolicy()),
-                follows(
-                        mockRedirect(
-                                HttpStatus.FOUND,
+                                HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
                                 URI.create("/new")),
                         URI.create("https://example.com/new"),
@@ -59,30 +53,37 @@ public class TemporaryTest
     @Test
     public void testNoFollow()
     {
-        assertThat(new Temporary(new NeverFollowRedirectPolicy()),
+        assertThat(new Relative(new NeverFollowRedirectPolicy()),
                 not(follows(
                         mockRedirect(
-                                HttpStatus.TEMPORARY_REDIRECT,
+                                HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
                                 URI.create("/new")),
                         URI.create("https://example.com/new"),
                         1)));
-        assertThat(new Temporary(new FollowPolicy()),
+        assertThat(new Relative(new FollowPolicy()),
                 not(follows(
                         mockRedirect(
-                                HttpStatus.MOVED_PERMANENTLY,
+                                HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
-                                URI.create("/new")),
+                                URI.create("https://example.net")),
+                        URI.create("https://example.net"),
+                        1)));
+        assertThat(new Relative(new FollowPolicy()),
+                not(follows(
+                        mockRedirect(
+                                HttpStatus.PERMANENT_REDIRECT,
+                                URI.create("https://example.com/test"),
+                                URI.create("https://example.com/new")),
                         URI.create("https://example.com/new"),
                         1)));
-        assertThat(new Temporary(new FollowPolicy()),
+        assertThat(new Relative(new FollowPolicy()),
                 not(follows(
                         mockRedirect(
-                                HttpStatus.MOVED_PERMANENTLY,
+                                HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
-                                URI.create("/new")),
-                        URI.create("https://example.com/new"),
+                                URI.create("//example.net")),
+                        URI.create("https://example.net"),
                         1)));
     }
-
 }

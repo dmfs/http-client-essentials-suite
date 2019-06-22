@@ -117,7 +117,7 @@ public interface HttpStatus
     HttpStatus MOVED_PERMANENTLY = new SimpleHttpStatus(301, "Moved Permanently");
 
     /**
-     * HTTP status: <a href="http://tools.ietf.org/html/rfc7231#section-6.4.3">302 Moved Temporarily</a>
+     * HTTP status: <a href="http://tools.ietf.org/html/rfc7231#section-6.4.3">302 Found</a>
      */
     HttpStatus FOUND = new SimpleHttpStatus(302, "Found");
 

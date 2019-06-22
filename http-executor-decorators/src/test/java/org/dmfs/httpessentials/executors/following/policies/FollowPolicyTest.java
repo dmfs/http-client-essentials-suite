@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 dmfs GmbH
+ * Copyright 2019 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,17 +29,16 @@ import static org.junit.Assert.assertThat;
 
 
 /**
- * Unit test for {@link FollowRedirectPolicy}.
+ * Unit test for {@link FollowPolicy}.
  *
  * @author Marten Gajda
  */
-public class FollowRedirectPolicyTest
+public class FollowPolicyTest
 {
-
     @Test
     public void testFollow()
     {
-        assertThat(new FollowRedirectPolicy(),
+        assertThat(new FollowPolicy(),
                 follows(
                         mockRedirect(
                                 HttpStatus.PERMANENT_REDIRECT,
@@ -48,14 +47,14 @@ public class FollowRedirectPolicyTest
                         URI.create("http://example.com/2"),
                         1
                 ));
-        assertThat(new FollowRedirectPolicy(),
+        assertThat(new FollowPolicy(),
                 follows(
                         mockRedirect(
                                 HttpStatus.TEMPORARY_REDIRECT,
                                 URI.create("http://example.com/1"),
                                 URI.create("http://example.com/2")),
                         URI.create("http://example.com/2"),
-                        2
+                        1
                 ));
         assertThat(new FollowPolicy(),
                 follows(
@@ -64,25 +63,25 @@ public class FollowRedirectPolicyTest
                                 URI.create("http://example.com/1"),
                                 URI.create("http://example.com/2")),
                         URI.create("http://example.com/2"),
-                        3
+                        1
                 ));
-        assertThat(new FollowRedirectPolicy(),
+        assertThat(new FollowPolicy(),
                 follows(
                         mockRedirect(
                                 HttpStatus.SEE_OTHER,
                                 URI.create("http://example.com/1"),
                                 URI.create("http://example.com/2")),
                         URI.create("http://example.com/2"),
-                        4
+                        1
                 ));
-        assertThat(new FollowRedirectPolicy(),
+        assertThat(new FollowPolicy(),
                 follows(
                         mockRedirect(
                                 HttpStatus.MOVED_PERMANENTLY,
                                 URI.create("http://example.com/1"),
                                 URI.create("http://example.com/2")),
                         URI.create("http://example.com/2"),
-                        5
+                        1
                 ));
     }
 
@@ -90,7 +89,7 @@ public class FollowRedirectPolicyTest
     @Test
     public void testNoFollow()
     {
-        assertThat(new FollowRedirectPolicy(),
+        assertThat(new FollowPolicy(),
                 not(follows(
                         mockRedirect(
                                 HttpStatus.OK,
@@ -98,15 +97,6 @@ public class FollowRedirectPolicyTest
                                 URI.create("http://example.com/2")),
                         URI.create("http://example.com/2"),
                         1
-                )));
-        assertThat(new FollowRedirectPolicy(),
-                not(follows(
-                        mockRedirect(
-                                HttpStatus.MOVED_PERMANENTLY,
-                                URI.create("http://example.com/1"),
-                                URI.create("http://example.com/2")),
-                        URI.create("http://example.com/2"),
-                        6
                 )));
     }
 }
