@@ -1,4 +1,4 @@
-apply plugin: 'java'
+apply plugin: 'java-library'
 
 sourceCompatibility = 1.8
 
@@ -14,20 +14,20 @@ repositories {
 }
 
 dependencies {
-    compile 'net.iharder:base64:2.3.9'
+    api project(':http-client-essentials')
+    api project(':http-client-types')
+    api 'org.dmfs:jems:' + JEMS_VERSION
+    api "org.dmfs:rfc3986-uri:0.7"
 
-    compile project(':http-client-essentials')
-    compile project(':http-client-types')
-    compile project(':http-client-headers')
-    compile project(':http-client-basics')
+    implementation 'net.iharder:base64:2.3.9'
+    implementation project(':http-client-headers')
+    implementation project(':http-client-basics')
 
-    compile "org.dmfs:rfc3986-uri:0.7"
-    compile 'org.dmfs:jems:' + JEMS_VERSION
-
-    testCompile 'junit:junit:' + JUNIT_VERSION
-    testCompile 'org.dmfs:jems-testing:' + JEMS_VERSION
-    testCompile 'org.jmockit:jmockit:1.26'
-    testCompile project(':http-client-mockutils')
-    testCompile 'org.mockito:mockito-core:' + MOCKITO_VERSION
-    testCompile project(':httpurlconnection-executor')
+    testImplementation 'junit:junit:' + JUNIT_VERSION
+    testImplementation 'org.dmfs:jems-testing:' + JEMS_VERSION
+    testImplementation 'org.jmockit:jmockit:1.26'
+    testImplementation project(':http-client-mockutils')
+    testImplementation 'org.mockito:mockito-core:' + MOCKITO_VERSION
+    testImplementation project(':httpurlconnection-executor')
+    testImplementation 'org.hamcrest:hamcrest-library:' + HAMCREST_VERSION
 }
