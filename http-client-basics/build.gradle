@@ -1,4 +1,4 @@
-apply plugin: 'java'
+apply plugin: 'java-library'
 
 sourceCompatibility = 1.8
 
@@ -21,7 +21,8 @@ dependencies {
     compile 'org.dmfs:rfc3986-uri:0.8'
     compileOnly 'org.json:json:20171018'
 
-    testCompile 'org.json:json:20171018'
-    testCompile 'junit:junit:' + JUNIT_VERSION
-    testCompile 'org.dmfs:jems-testing:' + JEMS_VERSION
+    testImplementation 'org.json:json:20171018'
+    testImplementation 'junit:junit:' + JUNIT_VERSION
+    testImplementation 'org.dmfs:jems-testing:' + JEMS_VERSION
+    testImplementation 'org.hamcrest:hamcrest-library:' + HAMCREST_VERSION
 }
