@@ -24,5 +24,6 @@ dependencies {
     testImplementation 'org.json:json:20171018'
     testImplementation 'junit:junit:' + JUNIT_VERSION
     testImplementation 'org.dmfs:jems-testing:' + JEMS_VERSION
+    testImplementation 'org.mockito:mockito-core:' + MOCKITO_VERSION
     testImplementation 'org.hamcrest:hamcrest-library:' + HAMCREST_VERSION
 }
