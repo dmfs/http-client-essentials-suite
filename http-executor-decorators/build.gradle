@@ -25,7 +25,6 @@ dependencies {
 
     testImplementation 'junit:junit:' + JUNIT_VERSION
     testImplementation 'org.dmfs:jems-testing:' + JEMS_VERSION
-    testImplementation 'org.jmockit:jmockit:1.26'
     testImplementation project(':http-client-mockutils')
     testImplementation 'org.mockito:mockito-core:' + MOCKITO_VERSION
     testImplementation project(':httpurlconnection-executor')

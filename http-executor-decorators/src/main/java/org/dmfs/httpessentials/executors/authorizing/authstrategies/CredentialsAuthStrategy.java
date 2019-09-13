@@ -95,7 +95,7 @@ public final class CredentialsAuthStrategy<CredentialsType> implements AuthStrat
         {
             final Set<String> realms = new HashSet<>();
             return new Composite(
-                    new Mapped<>(
+                    new Mapped<Pair<CharSequence, AuthStrategy>, AuthStrategy>(
                             Pair::right,
                             new Sieved<>(
                                     argument -> realms.add(argument.left().toString()),

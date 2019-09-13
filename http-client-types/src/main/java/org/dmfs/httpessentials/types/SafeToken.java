@@ -34,6 +34,12 @@ public final class SafeToken extends AbstractBaseToken
     private final static char[] SAFE_CHARS = "!#$%&'*+-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ^_`abcdefghijklmnopqrstuvwxyz|~".toCharArray();
 
 
+    public SafeToken(String delegate)
+    {
+        this((CharSequence) delegate);
+    }
+
+
     public SafeToken(CharSequence delegate)
     {
         super(new CharToken(new SafeCharSequence(delegate)));
