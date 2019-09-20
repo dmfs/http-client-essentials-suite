@@ -35,18 +35,33 @@ import org.dmfs.rfc3986.parameters.parametersets.BasicParameterList;
 public final class XWwwFormUrlEncodedEntity extends DelegatingRequestEntity
 {
 
+    public static final String DEFAULT_CHARSET = "UTF-8";
+
+
     public XWwwFormUrlEncodedEntity(Iterable<Pair<CharSequence, CharSequence>> values)
     {
-        this(new BasicParameterList(new Mapped<>(PairParameter::new, values)));
+        this(new BasicParameterList(new Mapped<>(PairParameter::new, values)), DEFAULT_CHARSET);
+    }
+
+
+    public XWwwFormUrlEncodedEntity(Iterable<Pair<CharSequence, CharSequence>> values, String charset)
+    {
+        this(new BasicParameterList(new Mapped<>(PairParameter::new, values)), charset);
+    }
+
+
+    public XWwwFormUrlEncodedEntity(final ParameterList values)
+    {
+        this(values, DEFAULT_CHARSET);
     }
 
 
     // TODO: deprecate ParameterList and just use Iterable<Pair<CharSequence, CharSequence>>
-    public XWwwFormUrlEncodedEntity(final ParameterList values)
+    public XWwwFormUrlEncodedEntity(final ParameterList values, String charset)
     {
         super(new TextRequestEntity(
-                new StructuredMediaType("application", "x-www-form-urlencoded"),
-                () -> new XWwwFormUrlEncoded(values)));
+                new StructuredMediaType("application", "x-www-form-urlencoded", charset),
+                () -> new XWwwFormUrlEncoded(values, charset)));
     }
 
 

@@ -42,9 +42,13 @@ public class XWwwFormUrlEncodedEntityTest
     public void testContentType()
     {
         assertThat(new XWwwFormUrlEncodedEntity(new EmptyIterable<>()).contentType(),
-                is(present(new StringMediaType("application/x-www-form-urlencoded"))));
+                is(present(new StringMediaType("application/x-www-form-urlencoded; charset=\"UTF-8\""))));
         assertThat(new XWwwFormUrlEncodedEntity(new EmptyParameterList()).contentType(),
-                is(present(new StringMediaType("application/x-www-form-urlencoded"))));
+                is(present(new StringMediaType("application/x-www-form-urlencoded; charset=\"UTF-8\""))));
+        assertThat(new XWwwFormUrlEncodedEntity(new EmptyIterable<>(), "latin1").contentType(),
+                is(present(new StringMediaType("application/x-www-form-urlencoded; charset=\"latin1\""))));
+        assertThat(new XWwwFormUrlEncodedEntity(new EmptyParameterList(), "latin1").contentType(),
+                is(present(new StringMediaType("application/x-www-form-urlencoded; charset=\"latin1\""))));
     }
 
 
@@ -93,4 +97,14 @@ public class XWwwFormUrlEncodedEntityTest
                 new ValuePair<>("key2", "value/+ "))).writeContent(out);
         assertThat(out.toByteArray(), is("key1=value%C3%A4%C3%B6%C3%BC&key2=value%2F%2B+".getBytes("utf-8")));
     }
+
+
+    @Test
+    public void testLatin1Content() throws IOException
+    {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        new XWwwFormUrlEncodedEntity(new Seq<>(new ValuePair<>("key", "valueäöü")), "latin1").writeContent(out);
+        assertThat(out.toByteArray(), is("key=value%E4%F6%FC".getBytes("latin1")));
+    }
+
 }
