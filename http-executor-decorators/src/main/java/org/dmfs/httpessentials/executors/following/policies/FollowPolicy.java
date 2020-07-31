@@ -37,6 +37,7 @@ import static org.dmfs.httpessentials.HttpStatus.TEMPORARY_REDIRECT;
  *
  * @author Marten Gajda
  */
+@Deprecated
 public final class FollowPolicy implements RedirectPolicy
 {
     @Override

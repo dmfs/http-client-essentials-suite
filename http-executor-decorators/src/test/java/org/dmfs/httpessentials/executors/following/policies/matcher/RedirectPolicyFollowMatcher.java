@@ -48,40 +48,6 @@ public final class RedirectPolicyFollowMatcher extends TypeSafeDiagnosingMatcher
     private final int mAttempt;
 
 
-    public static HttpResponse mockRedirect(HttpStatus status, URI source, URI location)
-    {
-        return new CustomUrisMockResponse(new StaticMockResponse(status, new SingletonHeaders(LOCATION.entity(location)), new HttpResponseEntity()
-        {
-            @Override
-            public Optional<MediaType> contentType()
-            {
-                return absent();
-            }
-
-
-            @Override
-            public Optional<Long> contentLength()
-            {
-                return absent();
-            }
-
-
-            @Override
-            public InputStream contentStream() throws IOException
-            {
-                return new InputStream()
-                {
-                    @Override
-                    public int read() throws IOException
-                    {
-                        return -1;
-                    }
-                };
-            }
-        }), source, source);
-    }
-
-
     public static Matcher<RedirectPolicy> follows(HttpResponse response, URI destination, int attempt)
     {
         return new RedirectPolicyFollowMatcher(response, destination, attempt);

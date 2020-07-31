@@ -30,6 +30,7 @@ import java.net.URI;
  *
  * @author Marten Gajda
  */
+@Deprecated
 public final class Relative implements RedirectPolicy
 {
     private final RedirectPolicy mDelegate;
