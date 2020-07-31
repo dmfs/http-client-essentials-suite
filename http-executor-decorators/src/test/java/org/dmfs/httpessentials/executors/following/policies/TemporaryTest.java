@@ -23,7 +23,7 @@ import org.junit.Test;
 import java.net.URI;
 
 import static org.dmfs.httpessentials.executors.following.policies.matcher.RedirectPolicyFollowMatcher.follows;
-import static org.dmfs.httpessentials.executors.following.policies.matcher.RedirectPolicyFollowMatcher.mockRedirect;
+import static org.dmfs.httpessentials.executors.following.strategies.matcher.RedirectStrategyFollowMatcher.mockRedirect;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 

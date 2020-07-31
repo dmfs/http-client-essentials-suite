@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 dmfs GmbH
+ * Copyright 2020 dmfs GmbH
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package org.dmfs.httpessentials.executors.following.policies;
+package org.dmfs.httpessentials.executors.following.strategies;
 
 import org.dmfs.httpessentials.HttpStatus;
 import org.junit.Test;
 
 import java.net.URI;
 
-import static org.dmfs.httpessentials.executors.following.policies.matcher.RedirectPolicyFollowMatcher.follows;
+import static org.dmfs.httpessentials.executors.following.strategies.matcher.RedirectStrategyFollowMatcher.follows;
 import static org.dmfs.httpessentials.executors.following.strategies.matcher.RedirectStrategyFollowMatcher.mockRedirect;
-import static org.hamcrest.Matchers.not;
+import static org.dmfs.httpessentials.executors.following.strategies.matcher.RedirectStrategyFollowMatcher.notFollows;
 import static org.junit.Assert.assertThat;
 
 
@@ -38,123 +38,103 @@ public class LimitedTest
     @Test
     public void testFollow()
     {
-        assertThat(new Limited(5, new FollowPolicy()),
+        assertThat(new Limited(3, new FollowStrategy()),
                 follows(
                         mockRedirect(
                                 HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
                                 URI.create("https://example.net")),
-                        URI.create("https://example.net"),
-                        1));
-        assertThat(new Limited(5, new FollowPolicy()),
+                        1,
+                        URI.create("https://example.net")));
+        assertThat(new Limited(3, new FollowStrategy()),
                 follows(
                         mockRedirect(
                                 HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
                                 URI.create("https://example.net")),
-                        URI.create("https://example.net"),
-                        2));
-        assertThat(new Limited(5, new FollowPolicy()),
+                        2,
+                        URI.create("https://example.net")));
+        assertThat(new Limited(3, new FollowStrategy()),
                 follows(
                         mockRedirect(
                                 HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
                                 URI.create("https://example.net")),
-                        URI.create("https://example.net"),
-                        3));
-        assertThat(new Limited(5, new FollowPolicy()),
+                        3,
+                        URI.create("https://example.net")));
+        assertThat(new Limited(new FollowStrategy()),
                 follows(
                         mockRedirect(
                                 HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
                                 URI.create("https://example.net")),
-                        URI.create("https://example.net"),
-                        4));
-        assertThat(new Limited(5, new FollowPolicy()),
+                        1,
+                        URI.create("https://example.net")));
+        assertThat(new Limited(new FollowStrategy()),
                 follows(
                         mockRedirect(
                                 HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
                                 URI.create("https://example.net")),
-                        URI.create("https://example.net"),
-                        5));
-        assertThat(new Limited(new FollowPolicy()),
+                        2,
+                        URI.create("https://example.net")));
+        assertThat(new Limited(new FollowStrategy()),
                 follows(
                         mockRedirect(
                                 HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
                                 URI.create("https://example.net")),
-                        URI.create("https://example.net"),
-                        1));
-        assertThat(new Limited(new FollowPolicy()),
+                        3,
+                        URI.create("https://example.net")));
+        assertThat(new Limited(new FollowStrategy()),
                 follows(
                         mockRedirect(
                                 HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
                                 URI.create("https://example.net")),
-                        URI.create("https://example.net"),
-                        2));
-        assertThat(new Limited(new FollowPolicy()),
+                        4,
+                        URI.create("https://example.net")));
+        assertThat(new Limited(new FollowStrategy()),
                 follows(
                         mockRedirect(
                                 HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
                                 URI.create("https://example.net")),
-                        URI.create("https://example.net"),
-                        3));
-        assertThat(new Limited(new FollowPolicy()),
-                follows(
-                        mockRedirect(
-                                HttpStatus.PERMANENT_REDIRECT,
-                                URI.create("https://example.com/test"),
-                                URI.create("https://example.net")),
-                        URI.create("https://example.net"),
-                        4));
-        assertThat(new Limited(new FollowPolicy()),
-                follows(
-                        mockRedirect(
-                                HttpStatus.PERMANENT_REDIRECT,
-                                URI.create("https://example.com/test"),
-                                URI.create("https://example.net")),
-                        URI.create("https://example.net"),
-                        5));
+                        5,
+                        URI.create("https://example.net")));
     }
 
 
     @Test
     public void testNoFollow()
     {
-        assertThat(new Limited(5, new NeverFollowRedirectPolicy()),
-                not(follows(
+        assertThat(new Limited(3, new NeverFollowStrategy()),
+                notFollows(
                         mockRedirect(
                                 HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
                                 URI.create("https://example.net")),
-                        URI.create("https://example.net"),
-                        1)));
-        assertThat(new Limited(5, new FollowPolicy()),
-                not(follows(
+                        1));
+        assertThat(new Limited(3, new FollowStrategy()),
+                notFollows(
                         mockRedirect(
                                 HttpStatus.OK,
                                 URI.create("https://example.com/test"),
                                 URI.create("https://example.net")),
-                        URI.create("https://example.net"),
-                        1)));
-        assertThat(new Limited(5, new FollowPolicy()),
-                not(follows(
+                        1));
+        assertThat(new Limited(3, new FollowStrategy()),
+                notFollows(
                         mockRedirect(
                                 HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
                                 URI.create("https://example.net")),
-                        URI.create("https://example.net"),
-                        6)));
-        assertThat(new Limited(new FollowPolicy()),
-                not(follows(
+                        4));
+        assertThat(new Limited(new FollowStrategy()),
+                notFollows(
                         mockRedirect(
                                 HttpStatus.PERMANENT_REDIRECT,
                                 URI.create("https://example.com/test"),
                                 URI.create("https://example.net")),
-                        URI.create("https://example.net"),
-                        6)));
+                        6));
     }
 }

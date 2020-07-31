@@ -31,6 +31,7 @@ import java.net.URI;
  * @author Marten Gajda
  * @author Gabor Keszthelyi
  */
+@Deprecated
 public interface RedirectPolicy
 {
 

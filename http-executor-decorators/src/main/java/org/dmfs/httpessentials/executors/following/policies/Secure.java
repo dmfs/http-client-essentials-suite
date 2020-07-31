@@ -31,6 +31,7 @@ import java.net.URI;
  *
  * @author Gabor Keszthelyi
  */
+@Deprecated
 public final class Secure implements RedirectPolicy
 {
 

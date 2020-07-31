@@ -20,6 +20,7 @@ package org.dmfs.httpessentials.mockutils.entities;
 import org.dmfs.httpessentials.client.HttpResponseEntity;
 import org.dmfs.httpessentials.types.MediaType;
 import org.dmfs.jems.optional.Optional;
+import org.dmfs.jems.optional.elementary.Absent;
 import org.dmfs.jems.optional.elementary.Present;
 
 import java.io.ByteArrayInputStream;
@@ -37,6 +38,12 @@ public final class StaticMockResponseEntity implements HttpResponseEntity
     private final Optional<MediaType> mContentType;
     private final Optional<Long> mContentLength;
     private final byte[] mContent;
+
+
+    public StaticMockResponseEntity()
+    {
+        this(new Absent<>(), new Absent<>(), new byte[0]);
+    }
 
 
     /**

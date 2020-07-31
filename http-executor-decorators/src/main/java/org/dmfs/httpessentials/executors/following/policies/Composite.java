@@ -32,6 +32,7 @@ import java.net.URI;
  *
  * @author Marten Gajda
  */
+@Deprecated
 public final class Composite implements RedirectPolicy
 {
     private final Iterable<RedirectPolicy> mDelegates;
