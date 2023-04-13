@@ -25,20 +25,21 @@ import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.charsequences.Quoted;
 import org.dmfs.httpessentials.executors.authorizing.utils.Parameter;
 import org.dmfs.httpessentials.types.Token;
-import org.dmfs.iterables.elementary.PresentValues;
-import org.dmfs.iterables.elementary.Seq;
-import org.dmfs.jems.charsequence.elementary.Hex;
-import org.dmfs.jems.iterable.composite.Joined;
-import org.dmfs.jems.messagedigest.MessageDigestFactory;
-import org.dmfs.jems.messagedigest.elementary.DigestFactory;
 import org.dmfs.jems.optional.Optional;
-import org.dmfs.jems.optional.decorators.Mapped;
-import org.dmfs.jems.optional.decorators.Sieved;
 import org.dmfs.jems.pair.Pair;
-import org.dmfs.jems.single.combined.Backed;
-import org.dmfs.jems.single.elementary.Digest;
+import org.dmfs.jems2.Generator;
+import org.dmfs.jems2.charsequence.Hex;
+import org.dmfs.jems2.generator.DigestGenerator;
+import org.dmfs.jems2.iterable.Joined;
+import org.dmfs.jems2.iterable.PresentValues;
+import org.dmfs.jems2.iterable.Seq;
+import org.dmfs.jems2.optional.Mapped;
+import org.dmfs.jems2.optional.Sieved;
+import org.dmfs.jems2.single.Backed;
+import org.dmfs.jems2.single.Digest;
 
 import java.net.URI;
+import java.security.MessageDigest;
 
 import static org.dmfs.jems.optional.elementary.Absent.absent;
 
@@ -58,7 +59,12 @@ public final class AuthDigestAuthorization implements Authorization
     private final int mNonceCount;
 
 
-    public AuthDigestAuthorization(HttpMethod method, URI requestUri, Parametrized digestChallenge, UserCredentials userCredentials, CharSequence cnonce, int nonceCount)
+    public AuthDigestAuthorization(HttpMethod method,
+        URI requestUri,
+        Parametrized digestChallenge,
+        UserCredentials userCredentials,
+        CharSequence cnonce,
+        int nonceCount)
     {
         mMethod = method;
         mRequestUri = requestUri;
@@ -87,49 +93,49 @@ public final class AuthDigestAuthorization implements Authorization
     public Iterable<Pair<Token, CharSequence>> parameters()
     {
         final CharSequence algorithm = new Backed<>(mDigestChallenge.parameter(Tokens.ALGORITHM), "MD5").value();
-        final MessageDigestFactory digestFactory = new DigestFactory(algorithm.toString());
+        final Generator<MessageDigest> digestFactory = new DigestGenerator(algorithm.toString());
         final Optional<CharSequence> userhash = mDigestChallenge.parameter(Tokens.USERHASH);
         final CharSequence realm = mDigestChallenge.parameter(Tokens.REALM).value();
         final CharSequence nonce = mDigestChallenge.parameter(Tokens.NONCE).value();
 
         final CharSequence username = mUserCredentials.userName();
-        CharSequence user = new Mapped<CharSequence, CharSequence>(
-                argument -> new Hex(new Digest(digestFactory, username, ":", realm).value()),
-                new Sieved<>(argument -> "true".equalsIgnoreCase(argument.toString()), userhash)).value(username);
+        CharSequence user = new Backed<>(new Mapped<CharSequence, CharSequence>(
+            argument -> new Hex(new Digest(digestFactory, username, ":", realm).value()),
+            new Sieved<>(argument -> "true".equalsIgnoreCase(argument.toString()), userhash)), username).value();
 
         return new Joined<>(
-                new Seq<>(
-                        new Parameter(Tokens.USERNAME, new Quoted(user)),
-                        new Parameter(Tokens.REALM, new Quoted(realm)),
-                        new Parameter(Tokens.NONCE, new Quoted(nonce)),
-                        new Parameter(Tokens.URI, new Quoted(mRequestUri.getRawPath())),
-                        new Parameter(Tokens.QOP, "auth"),
-                        new Parameter(Tokens.NC, new Hex(bigEndianByteArray(mNonceCount))),
-                        new Parameter(Tokens.CNONCE, new Quoted(mCnonce)),
-                        new Parameter(Tokens.ALGORITHM, algorithm),
-                        new Parameter(Tokens.RESPONSE, new Quoted(
-                                new Hex(new Digest(digestFactory,
-                                        new Hex(new Digest(digestFactory,
-                                                mUserCredentials.userName(),
-                                                ":",
-                                                realm,
-                                                ":",
-                                                mUserCredentials.password()).value()),
-                                        ":",
-                                        nonce,
-                                        ":",
-                                        new Hex(bigEndianByteArray(mNonceCount)),
-                                        ":",
-                                        mCnonce,
-                                        ":auth:",
-                                        new Hex(new Digest(digestFactory,
-                                                (CharSequence) mMethod.verb(),
-                                                ":",
-                                                mRequestUri.getRawPath()).value())
-                                ).value())))),
-                new PresentValues<>(
-                        new Mapped<>(charSequence -> new Parameter(Tokens.OPAQUE, new Quoted(charSequence)), mDigestChallenge.parameter(Tokens.OPAQUE)),
-                        new Mapped<>(argument -> new Parameter(Tokens.USERHASH, argument), mDigestChallenge.parameter(Tokens.USERHASH))));
+            new Seq<>(
+                new Parameter(Tokens.USERNAME, new Quoted(user)),
+                new Parameter(Tokens.REALM, new Quoted(realm)),
+                new Parameter(Tokens.NONCE, new Quoted(nonce)),
+                new Parameter(Tokens.URI, new Quoted(mRequestUri.getRawPath())),
+                new Parameter(Tokens.QOP, "auth"),
+                new Parameter(Tokens.NC, new Hex(bigEndianByteArray(mNonceCount))),
+                new Parameter(Tokens.CNONCE, new Quoted(mCnonce)),
+                new Parameter(Tokens.ALGORITHM, algorithm),
+                new Parameter(Tokens.RESPONSE, new Quoted(
+                    new Hex(new Digest(digestFactory,
+                        new Hex(new Digest(digestFactory,
+                            mUserCredentials.userName(),
+                            ":",
+                            realm,
+                            ":",
+                            mUserCredentials.password()).value()),
+                        ":",
+                        nonce,
+                        ":",
+                        new Hex(bigEndianByteArray(mNonceCount)),
+                        ":",
+                        mCnonce,
+                        ":auth:",
+                        new Hex(new Digest(digestFactory,
+                            (CharSequence) mMethod.verb(),
+                            ":",
+                            mRequestUri.getRawPath()).value())
+                    ).value())))),
+            new PresentValues<>(
+                new Mapped<>(charSequence -> new Parameter(Tokens.OPAQUE, new Quoted(charSequence)), mDigestChallenge.parameter(Tokens.OPAQUE)),
+                new Mapped<>(argument -> new Parameter(Tokens.USERHASH, argument), mDigestChallenge.parameter(Tokens.USERHASH))));
     }
 
 
@@ -137,10 +143,10 @@ public final class AuthDigestAuthorization implements Authorization
     private byte[] bigEndianByteArray(int i)
     {
         return new byte[] {
-                (byte) (i >>> 24),
-                (byte) (i >>> 16),
-                (byte) (i >>> 8),
-                (byte) (i)
+            (byte) (i >>> 24),
+            (byte) (i >>> 16),
+            (byte) (i >>> 8),
+            (byte) (i)
         };
     }
 }

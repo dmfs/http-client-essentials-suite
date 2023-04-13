@@ -25,19 +25,20 @@ import org.dmfs.httpessentials.executors.authorizing.UserCredentials;
 import org.dmfs.httpessentials.executors.authorizing.charsequences.Quoted;
 import org.dmfs.httpessentials.executors.authorizing.utils.Parameter;
 import org.dmfs.httpessentials.types.Token;
-import org.dmfs.iterables.elementary.PresentValues;
-import org.dmfs.iterables.elementary.Seq;
-import org.dmfs.jems.charsequence.elementary.Hex;
-import org.dmfs.jems.iterable.composite.Joined;
-import org.dmfs.jems.messagedigest.MessageDigestFactory;
-import org.dmfs.jems.messagedigest.elementary.DigestFactory;
 import org.dmfs.jems.optional.Optional;
-import org.dmfs.jems.optional.decorators.Mapped;
 import org.dmfs.jems.pair.Pair;
-import org.dmfs.jems.single.combined.Backed;
-import org.dmfs.jems.single.elementary.Digest;
+import org.dmfs.jems2.Generator;
+import org.dmfs.jems2.charsequence.Hex;
+import org.dmfs.jems2.generator.DigestGenerator;
+import org.dmfs.jems2.iterable.Joined;
+import org.dmfs.jems2.iterable.PresentValues;
+import org.dmfs.jems2.iterable.Seq;
+import org.dmfs.jems2.optional.Mapped;
+import org.dmfs.jems2.single.Backed;
+import org.dmfs.jems2.single.Digest;
 
 import java.net.URI;
+import java.security.MessageDigest;
 
 import static org.dmfs.jems.optional.elementary.Absent.absent;
 
@@ -82,38 +83,38 @@ public final class DigestAuthorization implements Authorization
     public Iterable<Pair<Token, CharSequence>> parameters()
     {
         CharSequence algorithm = new Backed<>(mDigestChallenge.parameter(Tokens.ALGORITHM), "MD5").value();
-        final MessageDigestFactory digestFactory = new DigestFactory(algorithm.toString());
+        final Generator<MessageDigest> digestFactory = new DigestGenerator(algorithm.toString());
         final CharSequence realm = mDigestChallenge.parameter(Tokens.REALM).value();
         final CharSequence nonce = mDigestChallenge.parameter(Tokens.NONCE).value();
 
         return new Joined<>(
-                new Seq<>(
-                        new Parameter(Tokens.USERNAME, new Quoted(mUserCredentials.userName())),
-                        new Parameter(Tokens.REALM, new Quoted(realm)),
-                        new Parameter(Tokens.URI, new Quoted(mRequestUri.getRawPath())),
-                        new Parameter(Tokens.NONCE, new Quoted(nonce)),
-                        new Parameter(Tokens.ALGORITHM, algorithm),
-                        new Parameter(Tokens.RESPONSE, new Quoted(
-                                new Hex(new Digest(digestFactory,
-                                        new Hex(
-                                                new Digest(digestFactory,
-                                                        mUserCredentials.userName(),
-                                                        ":",
-                                                        realm,
-                                                        ":",
-                                                        mUserCredentials.password()).value()),
-                                        ":",
-                                        nonce,
-                                        ":",
-                                        new Hex(
-                                                new Digest(digestFactory,
-                                                        (CharSequence) mMethod.verb(),
-                                                        ":",
-                                                        mRequestUri.getRawPath()).value())
-                                ).value())))
-                ),
-                new PresentValues<>(
-                        new Mapped<>(
-                                charSequence -> new Parameter(Tokens.OPAQUE, new Quoted(charSequence)), mDigestChallenge.parameter(Tokens.OPAQUE))));
+            new Seq<>(
+                new Parameter(Tokens.USERNAME, new Quoted(mUserCredentials.userName())),
+                new Parameter(Tokens.REALM, new Quoted(realm)),
+                new Parameter(Tokens.URI, new Quoted(mRequestUri.getRawPath())),
+                new Parameter(Tokens.NONCE, new Quoted(nonce)),
+                new Parameter(Tokens.ALGORITHM, algorithm),
+                new Parameter(Tokens.RESPONSE, new Quoted(
+                    new Hex(new Digest(digestFactory,
+                        new Hex(
+                            new Digest(digestFactory,
+                                mUserCredentials.userName(),
+                                ":",
+                                realm,
+                                ":",
+                                mUserCredentials.password()).value()),
+                        ":",
+                        nonce,
+                        ":",
+                        new Hex(
+                            new Digest(digestFactory,
+                                (CharSequence) mMethod.verb(),
+                                ":",
+                                mRequestUri.getRawPath()).value())
+                    ).value())))
+            ),
+            new PresentValues<>(
+                new Mapped<>(
+                    charSequence -> new Parameter(Tokens.OPAQUE, new Quoted(charSequence)), mDigestChallenge.parameter(Tokens.OPAQUE))));
     }
 }
