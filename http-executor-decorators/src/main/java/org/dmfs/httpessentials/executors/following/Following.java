@@ -18,11 +18,7 @@
 package org.dmfs.httpessentials.executors.following;
 
 import org.dmfs.httpessentials.HttpMethod;
-import org.dmfs.httpessentials.client.HttpRequest;
-import org.dmfs.httpessentials.client.HttpRequestEntity;
-import org.dmfs.httpessentials.client.HttpRequestExecutor;
-import org.dmfs.httpessentials.client.HttpResponse;
-import org.dmfs.httpessentials.client.HttpResponseHandler;
+import org.dmfs.httpessentials.client.*;
 import org.dmfs.httpessentials.exceptions.ProtocolError;
 import org.dmfs.httpessentials.exceptions.ProtocolException;
 import org.dmfs.httpessentials.exceptions.RedirectionException;
@@ -37,6 +33,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.dmfs.httpessentials.HttpStatus.*;
+import static org.dmfs.jems.optional.elementary.Absent.absent;
 
 
 /**
@@ -57,20 +56,28 @@ public final class Following implements HttpRequestExecutor
     public Following(HttpRequestExecutor delegate, RedirectPolicy redirectPolicy)
     {
         this((response, redirectNumber) -> {
-                    if (!redirectPolicy.affects(response))
-                    {
-                        return new Absent<>();
-                    }
-                    try
-                    {
-                        return new Present<>(redirectPolicy.location(response, redirectNumber));
-                    }
-                    catch (RedirectionException e)
-                    {
-                        return new Absent<>();
-                    }
-                },
-                delegate);
+                if (!(MOVED_PERMANENTLY.equals(response.status())
+                    || FOUND.equals(response.status())
+                    || SEE_OTHER.equals(response.status())
+                    || TEMPORARY_REDIRECT.equals(response.status())
+                    || PERMANENT_REDIRECT.equals(response.status())))
+                {
+                    return absent();
+                }
+                if (!redirectPolicy.affects(response))
+                {
+                    return new Absent<>();
+                }
+                try
+                {
+                    return new Present<>(redirectPolicy.location(response, redirectNumber));
+                }
+                catch (RedirectionException e)
+                {
+                    return new Absent<>();
+                }
+            },
+            delegate);
     }
 
 
@@ -135,21 +142,21 @@ public final class Following implements HttpRequestExecutor
         public HttpResponseHandler<T> responseHandler(HttpResponse response)
         {
             return new Backed<HttpResponseHandler<T>>(
-                    new Mapped<>(
-                            newLocation -> handledResponse -> {
-                                // Close InputStream to free the connection
-                                handledResponse.responseEntity().contentStream().close();
+                new Mapped<>(
+                    newLocation -> handledResponse -> {
+                        // Close InputStream to free the connection
+                        handledResponse.responseEntity().contentStream().close();
 
-                                if (!mRedirectHistory.add(newLocation))
-                                {
-                                    throw new RedirectionLoopException(handledResponse.status(), handledResponse.requestUri(), newLocation);
-                                }
+                        if (!mRedirectHistory.add(newLocation))
+                        {
+                            throw new RedirectionLoopException(handledResponse.status(), handledResponse.requestUri(), newLocation);
+                        }
 
-                                return mDelegate.execute(newLocation,
-                                        new FollowingRequest<>(mOriginalRequest, mOriginalRequestUri, mRedirectHistory));
-                            },
-                            mRedirectStrategy.location(response, mRedirectHistory.size())),
-                    () -> new RequestUriOverridingResponseHandler<>(mOriginalRequest, mOriginalRequestUri)).value();
+                        return mDelegate.execute(newLocation,
+                            new FollowingRequest<>(mOriginalRequest, mOriginalRequestUri, mRedirectHistory));
+                    },
+                    mRedirectStrategy.location(response, mRedirectHistory.size())),
+                () -> new RequestUriOverridingResponseHandler<>(mOriginalRequest, mOriginalRequestUri)).value();
         }
     }
 
