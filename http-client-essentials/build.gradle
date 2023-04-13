@@ -14,6 +14,12 @@ repositories {
 }
 
 dependencies {
-    compile 'org.dmfs:jems:' + JEMS_VERSION
-    testCompile 'junit:junit:' + JUNIT_VERSION
+    api 'org.dmfs:jems:' + JEMS_VERSION
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.9.0'
+}
+
+test {
+    useJUnitPlatform()
 }

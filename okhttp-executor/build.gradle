@@ -1,13 +1,10 @@
-plugins {
-    id 'de.fuerstenau.buildconfig' version '1.1.8'
-}
-
 apply plugin: 'java-library'
 
 sourceSets {
     main {
         java {
-            srcDirs 'src/main/java', 'build/gen/buildconfig/src/main'
+            srcDirs 'src/main/java'
+            srcDirs 'build/generated/java'
         }
     }
 }
@@ -26,26 +23,45 @@ repositories {
     mavenCentral()
 }
 
-buildConfig {
-    packageName = 'org.dmfs.httpessentials.okhttp'
-}
-
 tasks.withType(Jar) {
     eachFile {
         it.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 }
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
+task generateSources(type: Copy) {
+    from 'src/templates/java'
+    into "${buildDir}/generated/java"
+    filter(ReplaceTokens, tokens: [
+            'NAME'   : "${project.name}".toString(),
+            'VERSION': "${project.version}".toString()
+    ])
+
+}
+compileJava.dependsOn generateSources
+
+
 dependencies {
-    compile 'com.squareup.okhttp3:okhttp:' + OKHTTP_VERSION
-    compile project(':http-client-essentials')
-    compile project(':http-client-types')
-    compile project(':http-client-headers')
-    compile project(':http-client-basics')
-    compile project(':http-executor-commons')
-    testCompile 'junit:junit:' + JUNIT_VERSION
-    testCompile project(':http-client-mockutils')
-    testCompile 'org.mockito:mockito-core:' + MOCKITO_VERSION
-    testCompile 'org.dmfs:jems-testing:' + JEMS_VERSION
-    testCompile 'org.hamcrest:hamcrest-all:' + HAMCREST_VERSION
+    api project(':http-client-essentials')
+
+    implementation project(':http-client-types')
+    implementation project(':http-client-headers')
+    implementation project(':http-client-basics')
+    implementation project(':http-executor-commons')
+
+    compileOnly 'com.squareup.okhttp3:okhttp:' + OKHTTP_VERSION
+
+    testImplementation 'com.squareup.okhttp3:okhttp:' + OKHTTP_VERSION
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.9.0'
+    testImplementation project(':http-client-mockutils')
+    testImplementation 'org.mockito:mockito-core:' + MOCKITO_VERSION
+    testImplementation 'org.dmfs:jems-testing:' + JEMS_VERSION
+    testImplementation 'org.hamcrest:hamcrest:' + HAMCREST_VERSION
+}
+
+test {
+    useJUnitPlatform()
 }
