@@ -14,13 +14,20 @@ repositories {
 }
 
 dependencies {
-    compile project(':http-client-essentials')
-    compile project(':http-client-types')
-    compile project(':http-client-headers')
-    compile project(':http-client-basics')
-    compile "org.dmfs:rfc3986-uri:0.8"
+    api project(':http-client-essentials')
 
-    testCompile 'junit:junit:' + JUNIT_VERSION
-    testCompile project(':http-client-mockutils')
-    testCompile 'org.mockito:mockito-core:' + MOCKITO_VERSION
+    implementation project(':http-client-types')
+    implementation project(':http-client-headers')
+    implementation project(':http-client-basics')
+    implementation "org.dmfs:rfc3986-uri:0.8"
+    implementation 'org.dmfs:jems:' + JEMS_VERSION
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.9.0'
+    testImplementation project(':http-client-mockutils')
+    testImplementation 'org.mockito:mockito-core:' + MOCKITO_VERSION
+}
+
+test {
+    useJUnitPlatform()
 }

@@ -14,16 +14,23 @@ repositories {
 }
 
 dependencies {
-    compile 'org.dmfs:jems:' + JEMS_VERSION
-    compile project(':http-client-essentials')
-    compile project(':http-client-types')
-    compile project(':http-client-headers')
-    compile 'org.dmfs:rfc3986-uri:0.8'
+    api project(':http-client-essentials')
+
+    implementation project(':http-client-types')
+    implementation project(':http-client-headers')
+    implementation 'org.dmfs:rfc3986-uri:0.8'
+    implementation 'org.dmfs:jems:' + JEMS_VERSION
+
     compileOnly 'org.json:json:20171018'
 
     testImplementation 'org.json:json:20171018'
-    testImplementation 'junit:junit:' + JUNIT_VERSION
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.9.0'
     testImplementation 'org.dmfs:jems-testing:' + JEMS_VERSION
     testImplementation 'org.mockito:mockito-core:' + MOCKITO_VERSION
     testImplementation 'org.hamcrest:hamcrest-library:' + HAMCREST_VERSION
+}
+
+test {
+    useJUnitPlatform()
 }

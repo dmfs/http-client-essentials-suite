@@ -23,10 +23,15 @@ dependencies {
     implementation project(':http-client-headers')
     implementation project(':http-client-basics')
 
-    testImplementation 'junit:junit:' + JUNIT_VERSION
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.9.0'
     testImplementation 'org.dmfs:jems-testing:' + JEMS_VERSION
     testImplementation project(':http-client-mockutils')
     testImplementation 'org.mockito:mockito-core:' + MOCKITO_VERSION
     testImplementation project(':httpurlconnection-executor')
     testImplementation 'org.hamcrest:hamcrest-library:' + HAMCREST_VERSION
+}
+
+test {
+    useJUnitPlatform()
 }

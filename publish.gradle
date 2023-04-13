@@ -14,16 +14,6 @@ if (project.hasProperty('SONATYPE_USERNAME') && project.hasProperty('SONATYPE_PA
     }
 
     publishing {
-        repositories {
-            maven {
-                name 'release'
-                url RELEASE_REPOSITORY
-                credentials {
-                    username SONATYPE_USERNAME
-                    password SONATYPE_PASSWORD
-                }
-            }
-        }
 
         publications {
             jar(MavenPublication) {
@@ -33,7 +23,7 @@ if (project.hasProperty('SONATYPE_USERNAME') && project.hasProperty('SONATYPE_PA
 
                 pom {
                     name = project.name
-                    description = POM_DESCRIPTION
+                    //  description = POM_DESCRIPTION
                     url = POM_PROJECT_URL
                     scm {
                         url = POM_SCM_URL
@@ -61,6 +51,7 @@ if (project.hasProperty('SONATYPE_USERNAME') && project.hasProperty('SONATYPE_PA
     }
 
     signing {
+        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
         sign publishing.publications
     }
 }
