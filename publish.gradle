@@ -17,6 +17,11 @@ if (project.hasProperty('SONATYPE_USERNAME') && project.hasProperty('SONATYPE_PA
 
         publications {
             jar(MavenPublication) {
+                manifest {
+                    attributes("-exportcontents": "org.dmfs.*",
+                        "-sources": "true")
+                }
+
                 from components.java
                 artifact sourceJar
                 artifact javadocJar
