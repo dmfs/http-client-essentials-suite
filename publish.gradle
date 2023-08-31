@@ -2,6 +2,7 @@ if (project.hasProperty('SONATYPE_USERNAME') && project.hasProperty('SONATYPE_PA
 
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
+    apply plugin: 'biz.aQute.bnd.builder'
 
     task javadocJar(type: Jar, dependsOn: javadoc) {
         classifier = 'javadoc'
@@ -13,14 +14,16 @@ if (project.hasProperty('SONATYPE_USERNAME') && project.hasProperty('SONATYPE_PA
         from sourceSets.main.allJava
     }
 
+    jar {
+        manifest {
+            attributes("-exportcontents": "org.dmfs.*")
+        }
+    }
+
     publishing {
 
         publications {
             jar(MavenPublication) {
-                manifest {
-                    attributes("-exportcontents": "org.dmfs.*",
-                        "-sources": "true")
-                }
 
                 from components.java
                 artifact sourceJar
